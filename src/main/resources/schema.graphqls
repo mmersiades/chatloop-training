@@ -1,0 +1,45 @@
+type Program {
+    id: ID!
+    title: String!
+    description: String
+    courses: [Course]
+}
+
+type Course {
+    id: ID!
+    title: String!
+    description: String
+    displayOrder: Int!
+    completion: Float!
+    program: Program!
+    modules: [Module]
+}
+
+type Module {
+    id: ID!
+    title: String!
+    displayOrder: Int!
+    course: Course!
+    tasks: [Task]
+}
+
+type Task {
+    id: ID!
+    title: String!
+    module: Module!
+}
+
+type Mutation {
+    addProgram(title:String!, description:String): Program!
+	addCourse(title: String!, description:String, displayOrder:Int!, completion:Float!, programId: Int!): Course!
+	addModule(title: String!, displayOrder: Int!, courseId:Int!): Module!
+	addTask(title: String!, moduleId:Int!): Task!
+}
+
+type Query {
+	programById(id:Int): Program
+    courseById(id:Int): Course
+    moduleById(id:Int): Module
+    taskById(id:Int): Task
+}
+

@@ -1,0 +1,37 @@
+version: "3"
+services:
+  server:
+    image: neonkingkong/chatloop-training
+    ports:
+      - 8080:5000
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - RDS_HOSTNAME=db
+      - RDS_USERNAME=nkk
+      - RDS_PASSWORD=nkk
+      - RDS_DB_NAME=nkk
+      - RDS_PORT=5432
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=ap-southeast-2
+    build:
+      context: .
+    links:
+      - db
+  db:
+    image: postgres:11.4-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=nkk
+      - POSTGRES_PASSWORD=nkk
+      - POSTGRES_DB=nkk
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 28080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    links:
+      - db

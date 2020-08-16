@@ -1,0 +1,67 @@
+mutation {
+  addProgram(title:"Prog1", description:"First one") {
+    id
+    title
+    description
+  }
+}
+query{
+  programById(id:152) {
+    id
+    title
+    description
+  }
+}
+
+mutation {
+  addCourse(title:"Cour1", description:"First COurse", displayOrder:1, completion:1.0, programId:152) {
+    id
+    title
+    description
+    displayOrder
+    completion
+  }
+}
+query{
+  courseById(id:252) {
+    id
+    title
+    description
+    displayOrder
+    completion
+  }
+}
+
+
+mutation {
+  addModule(title:"Mod1", displayOrder:1, courseId:252) {
+    id
+    title
+    displayOrder
+  }
+}
+query{
+  moduleById(id:302) {
+    id
+    title
+    displayOrder
+  }
+}
+
+
+mutation {
+  addTask(title:"Task1", moduleId:302) {
+    id
+    title
+  }
+}
+query{
+  taskById(id:352) {
+    id
+    title
+  }
+}
+
+
+
+

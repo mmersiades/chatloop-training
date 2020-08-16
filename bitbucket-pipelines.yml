@@ -1,0 +1,85 @@
+image: openjdk:11-slim
+
+options:
+  docker: true
+  max-time: 10
+
+pipelines:
+  custom:
+    # Build the app and run tests
+    build:
+      - step: &build
+          name: Build and Test
+          caches:
+            - docker
+            - maven
+          script:
+            - ./mvnw --batch-mode verify
+            - cp target/chatfor10-*-elastic-beanstalk.zip target/chatfor10-elastic-beanstalk.zip
+          artifacts:
+            - target/chatfor10-elastic-beanstalk.zip
+
+    # Package the app (no tests)
+    build_without_testing:
+      - step: &build_without_testing
+          name: Build
+          caches:
+            - docker
+            - maven
+          script:
+            - ./mvnw --batch-mode package -DskipTests
+            - cp target/chatfor10-*-elastic-beanstalk.zip target/chatfor10-elastic-beanstalk.zip
+          artifacts:
+            - target/chatfor10-elastic-beanstalk.zip
+
+    # Deploy to staging environment (no tests run)
+    deploy_staging:
+      - step: *build_without_testing
+      - step: &deploy_staging
+              name: Deploy to Staging
+              deployment: staging
+              script:
+                - pipe: atlassian/aws-elasticbeanstalk-deploy:0.3.1
+                  variables:
+                    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                    AWS_DEFAULT_REGION: ap-southeast-2
+                    APPLICATION_NAME: neonkingkong
+                    ENVIRONMENT_NAME: staging-api
+                    S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
+                    ZIP_FILE: target/chatfor10-elastic-beanstalk.zip
+                    VERSION_LABEL: deploy-staging-$BITBUCKET_BUILD_NUMBER
+                    DEBUG: "true"
+
+    # Deploy to production environment (no tests run), with manual trigger in BitBucket Pipeline browser interface
+    deploy_production:
+      - step: *build_without_testing
+      - step: &deploy_production
+          name: Deploy to Production
+          deployment: production
+          trigger: manual
+          script:
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.3.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: ap-southeast-2
+                APPLICATION_NAME: neonkingkong
+                ENVIRONMENT_NAME: production-api
+                S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
+                ZIP_FILE: target/chatfor10-elastic-beanstalk.zip
+                VERSION_LABEL: deploy-production-$BITBUCKET_BUILD_NUMBER
+                DEBUG: "true"
+
+  # All branches get built and tested
+  default:
+    - step: *build
+
+  branches:
+    # Tests all commits to master
+    master:
+      - step: *build
+      # Deploys all commits to master automatically to the staging environment
+      - step: *deploy_staging
+      # Prepares all commits to master for manual deployment to production environment via the pipeline interface on BitBucket
+      - step: *deploy_production

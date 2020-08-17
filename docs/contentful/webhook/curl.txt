@@ -1,0 +1,5 @@
+curl -H "Content-Type: application/json" \
+     -H "x-contentful-webhook-name: MyHook" \
+     -H "x-contentful-topic: MyTopic" \
+     --data '{"linkType":"Space", "updatedAt":"today"}' \
+     -X POST  http://localhost:8080/webhook

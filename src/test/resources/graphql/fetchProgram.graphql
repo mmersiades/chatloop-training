@@ -1,0 +1,20 @@
+query fetchProgram($programId: String!) {
+    fetchProgram(id:$programId) {
+        id
+        name
+        description
+        courses {
+            id
+            name
+            description
+            completion
+            incorrectAttempts
+            modules {
+                id
+                name
+                isComplete
+                incorrectAttempts
+            }
+        }
+    }
+}

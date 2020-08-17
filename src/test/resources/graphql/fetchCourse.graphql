@@ -1,0 +1,15 @@
+query fetchCourse($courseId: String!)  {
+    fetchCourse(id:$courseId) {
+        id
+        name
+        description
+        completion
+        incorrectAttempts
+        modules {
+            id
+            name
+            isComplete
+            incorrectAttempts
+        }
+    }
+}

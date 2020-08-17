@@ -1,0 +1,15 @@
+mutation resetCourse($courseId:String!) {
+    resetCourse(courseId:$courseId) {
+        id
+        name
+        description
+        completion
+        incorrectAttempts
+        modules {
+            id
+            name
+            isComplete
+            incorrectAttempts
+        }
+    }
+}

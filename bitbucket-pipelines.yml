@@ -15,9 +15,9 @@ pipelines:
             - maven
           script:
             - ./mvnw --batch-mode verify
-            - cp target/chatfor10-*-elastic-beanstalk.zip target/chatfor10-elastic-beanstalk.zip
+            - cp target/chatloop-training-*-elastic-beanstalk.zip target/chatloop-training-elastic-beanstalk.zip
           artifacts:
-            - target/chatfor10-elastic-beanstalk.zip
+            - target/chatloop-training-elastic-beanstalk.zip
 
     # Package the app (no tests)
     build_without_testing:
@@ -28,9 +28,9 @@ pipelines:
             - maven
           script:
             - ./mvnw --batch-mode package -DskipTests
-            - cp target/chatfor10-*-elastic-beanstalk.zip target/chatfor10-elastic-beanstalk.zip
+            - cp target/chatloop-training-*-elastic-beanstalk.zip target/chatloop-training-elastic-beanstalk.zip
           artifacts:
-            - target/chatfor10-elastic-beanstalk.zip
+            - target/chatloop-training-elastic-beanstalk.zip
 
     # Deploy to staging environment (no tests run)
     deploy_staging:
@@ -47,7 +47,7 @@ pipelines:
                     APPLICATION_NAME: neonkingkong
                     ENVIRONMENT_NAME: staging-api
                     S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
-                    ZIP_FILE: target/chatfor10-elastic-beanstalk.zip
+                    ZIP_FILE: target/chatloop-training-elastic-beanstalk.zip
                     VERSION_LABEL: deploy-staging-$BITBUCKET_BUILD_NUMBER
                     DEBUG: "true"
 
@@ -67,7 +67,7 @@ pipelines:
                 APPLICATION_NAME: neonkingkong
                 ENVIRONMENT_NAME: production-api
                 S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
-                ZIP_FILE: target/chatfor10-elastic-beanstalk.zip
+                ZIP_FILE: target/chatloop-training-elastic-beanstalk.zip
                 VERSION_LABEL: deploy-production-$BITBUCKET_BUILD_NUMBER
                 DEBUG: "true"
 

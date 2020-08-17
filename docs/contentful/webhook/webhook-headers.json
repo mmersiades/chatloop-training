@@ -1,0 +1,7 @@
+{
+  "OurHeader": "This is our header",
+  "X-Contentful-Topic": "ContentManagement.Entry.auto_save",
+  "X-Contentful-Webhook-Name": "DevWebhook",
+  "Content-Type": "application/vnd.contentful.management.v1+json",
+  "Content-Length": 996
+}

@@ -2,3 +2,6 @@
 /work/
 /target/
 /.idea/
+/contentful-token.txt
+/h2data.mv.db
+/h2data.trace.db

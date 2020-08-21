@@ -1,0 +1,11 @@
+Naming conventions are confusing: module/task are 1 to 1, graphql API calls it
+task, in the backend we call it module, CDN has both. Would be good to unify this
+from long term maintainance perspective.
+
+Check if we need to store space/env ID as well in DB, since entity IDs are only
+unique within environment.
+
+Check order of modules with course. Is contentful guaranteed to return them in order.
+Or we dont care about order. Just check if only 1 is left uncomplete.
+
+

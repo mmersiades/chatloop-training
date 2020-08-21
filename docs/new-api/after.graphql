@@ -1,0 +1,26 @@
+query {
+    course(id: "72szZK1yf99qmh4nUVsiho") {
+        id
+        name
+        modules {
+            id
+            name
+            moduleMedia {
+                id
+                name
+                moduleVideo540
+                moduleVideo720
+                moduleVideo1080
+            }
+            moduleTask {
+                id
+                name
+                instructions
+                prompt
+                responseAlternatives
+                answer
+            }
+        }
+    }
+}
+}

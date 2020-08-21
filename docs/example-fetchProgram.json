@@ -1,0 +1,95 @@
+{
+  "data": {
+    "fetchProgram": {
+      "id": "5qlbxyqJMYZT5HXuuHUIat",
+      "name": "MOCK_PROGRAM_01",
+      "description": null,
+      "courses": [
+        {
+          "id": "2L1kH3zjtvGkNtWLw0tJgj",
+          "name": "MOCK_COURSE_02",
+          "description": null,
+          "completion": 0.0,
+          "incorrectAttempts": 0,
+          "modules": [
+            {
+              "id": "78V1VkneGg6o4J6brXXZsb",
+              "name": "MOCK_MODULE_07",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "W3b89MP68PXeiZRLvVaIq",
+              "name": "MOCK_MODULE_08",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "5BiQfRK2IZfvp9mAKFP5gs",
+              "name": "MOCK_MODULE_09",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "2Y5xfFxCY8s1OYD4jcvoBu",
+              "name": "MOCK_MODULE_10",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "4hrPcwzJGCbdTQkOgRpgdZ",
+              "name": "MOCK_MODULE_11",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            }
+          ]
+        },
+        {
+          "id": "72szZK1yf99qmh4nUVsiho",
+          "name": "MOCK_COURSE_01",
+          "description": null,
+          "completion": 0.0,
+          "incorrectAttempts": 0,
+          "modules": [
+            {
+              "id": "3jYNwr96X6ii9447rZ7fNz",
+              "name": "MOCK_MODULE_01",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "6RyYL88abClYPITQBi8Rlt",
+              "name": "MOCK_MODULE_02",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "5L6Kt1zyajIREcWm6MDD92",
+              "name": "MOCK_MODULE_03",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "LrWVSdCXUtFXsHb0OSMES",
+              "name": "MOCK_MODULE_04",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "7rXZXiGq3VZqfKm7db0PVm",
+              "name": "MOCK_MODULE_05",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            },
+            {
+              "id": "3ruXPgLIPNmVvnzo21GlEc",
+              "name": "MOCK_MODULE_06",
+              "isComplete": false,
+              "incorrectAttempts": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "sys": {
+    "space": {
+      "sys": {
+        "type": "Link",
+        "linkType": "Space",
+        "id": "zjf0mnbplhc5"
+      }
+    },
+    "id": "3jYNwr96X6ii9447rZ7fNz",
+    "type": "Entry",
+    "createdAt": "2020-08-17T01:16:49.868Z",
+    "updatedAt": "2020-08-18T10:00:37.730Z",
+    "environment": {
+      "sys": {
+        "id": "mock-and-test",
+        "type": "Link",
+        "linkType": "Environment"
+      }
+    },
+    "publishedVersion": 9,
+    "publishedAt": "2020-08-18T10:00:37.730Z",
+    "firstPublishedAt": "2020-08-17T01:17:18.760Z",
+    "createdBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "2Ssmw8Ch7ZE5bBqlcrbSxP"
+      }
+    },
+    "updatedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "1d03sDIOZZcOMUONZwP9Ej"
+      }
+    },
+    "publishedCounter": 3,
+    "version": 10,
+    "publishedBy": {
+      "sys": {
+        "type": "Link",
+        "linkType": "User",
+        "id": "1d03sDIOZZcOMUONZwP9Ej"
+      }
+    },
+    "contentType": {
+      "sys": {
+        "type": "Link",
+        "linkType": "ContentType",
+        "id": "module"
+      }
+    }
+  },
+  "fields": {
+    "name": {
+      "en-US": "MOCK_MODULE_01"
+    },
+    "moduleMedia": {
+      "en-US": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Entry",
+          "id": "mNatMRigs1KPs3O0mle8R"
+        }
+      }
+    },
+    "moduleTask": {
+      "en-US": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Entry",
+          "id": "hMKaaxFPKGkTR2bnsbDEf"
+        }
+      }
+    }
+  }
+}

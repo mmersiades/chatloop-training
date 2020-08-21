@@ -1,0 +1,17 @@
+mutation taskAttempt($courseId:String!, $moduleId:String!, $isCorrect:Boolean!) {
+    taskAttempt(courseId:$courseId,
+                moduleId:$moduleId,
+                isCorrect:$isCorrect) {
+        id
+        name
+        description
+        completion
+        incorrectAttempts
+        modules {
+            id
+            name
+            isComplete
+            incorrectAttempts
+        }
+    }
+}

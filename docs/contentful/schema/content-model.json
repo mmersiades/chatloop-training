@@ -1,0 +1,351 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 5,
+  "skip": 0,
+  "limit": 100,
+  "items": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "zjf0mnbplhc5"
+          }
+        },
+        "id": "mcq",
+        "type": "ContentType",
+        "createdAt": "2020-08-13T08:19:38.630Z",
+        "updatedAt": "2020-08-18T02:24:30.587Z",
+        "environment": {
+          "sys": {
+            "id": "mock-and-test",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "revision": 14
+      },
+      "displayField": "name",
+      "name": "mcq",
+      "description": "A multiple choice task",
+      "fields": [
+        {
+          "id": "name",
+          "name": "name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "instructions",
+          "name": "instructions",
+          "type": "Text",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "prompt",
+          "name": "prompt",
+          "type": "Text",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "responseAlternatives",
+          "name": "response-alternatives",
+          "type": "Array",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": []
+          }
+        },
+        {
+          "id": "answer",
+          "name": "answer",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "zjf0mnbplhc5"
+          }
+        },
+        "id": "program",
+        "type": "ContentType",
+        "createdAt": "2020-08-13T07:57:14.781Z",
+        "updatedAt": "2020-08-18T02:20:13.481Z",
+        "environment": {
+          "sys": {
+            "id": "mock-and-test",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "revision": 7
+      },
+      "displayField": "name",
+      "name": "program",
+      "description": "A Chatloop training program is a collection of training courses.",
+      "fields": [
+        {
+          "id": "name",
+          "name": "name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "prerequisitePrograms",
+          "name": "prerequisite-programs",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": []
+          }
+        },
+        {
+          "id": "courses",
+          "name": "courses",
+          "type": "Array",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "course"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "zjf0mnbplhc5"
+          }
+        },
+        "id": "course",
+        "type": "ContentType",
+        "createdAt": "2020-08-13T07:59:11.198Z",
+        "updatedAt": "2020-08-18T02:19:07.998Z",
+        "environment": {
+          "sys": {
+            "id": "mock-and-test",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "revision": 7
+      },
+      "displayField": "name",
+      "name": "course",
+      "description": "A Chatloop training course is a collection of training modules. ",
+      "fields": [
+        {
+          "id": "name",
+          "name": "name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "prerequisiteCourses",
+          "name": "prerequisite-courses",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": []
+          }
+        },
+        {
+          "id": "modules",
+          "name": "modules",
+          "type": "Array",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "module"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "zjf0mnbplhc5"
+          }
+        },
+        "id": "module",
+        "type": "ContentType",
+        "createdAt": "2020-08-13T08:02:45.748Z",
+        "updatedAt": "2020-08-17T00:55:46.624Z",
+        "environment": {
+          "sys": {
+            "id": "mock-and-test",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "revision": 5
+      },
+      "displayField": "name",
+      "name": "module",
+      "description": "A modules is a small (5-minute) unit of training. It consists of some media (usually a video) and a task (usually a multiple-choice question).",
+      "fields": [
+        {
+          "id": "name",
+          "name": "name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "moduleMedia",
+          "name": "module-media",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        },
+        {
+          "id": "moduleTask",
+          "name": "module-task",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "zjf0mnbplhc5"
+          }
+        },
+        "id": "moduleMedia",
+        "type": "ContentType",
+        "createdAt": "2020-08-13T08:10:01.380Z",
+        "updatedAt": "2020-08-17T00:55:32.619Z",
+        "environment": {
+          "sys": {
+            "id": "mock-and-test",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "revision": 3
+      },
+      "displayField": "name",
+      "name": "module-media",
+      "description": "This is the media for a module. Usually a video, but can also be pdf, rich text etc",
+      "fields": [
+        {
+          "id": "name",
+          "name": "name",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "moduleVideo540",
+          "name": "module-video-540",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        },
+        {
+          "id": "moduleVideo720",
+          "name": "module-video-720",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        },
+        {
+          "id": "moduleVideo1080",
+          "name": "module-video-1080",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        }
+      ]
+    }
+  ]
+}

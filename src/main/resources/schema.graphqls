@@ -1,45 +1,46 @@
+enum CourseResult {
+    NO_RESULT_YET
+    COURSE_FAILED
+    COURSE_PASSED
+}
+
 type Program {
     id: ID!
-    title: String!
+    name: String!
     description: String
     courses: [Course]
 }
 
 type Course {
     id: ID!
-    title: String!
+    name: String!
     description: String
-    displayOrder: Int!
     completion: Float!
-    program: Program!
+    incorrectAttempts: Int!
+    courseResult: CourseResult!
     modules: [Module]
 }
 
 type Module {
     id: ID!
-    title: String!
-    displayOrder: Int!
-    course: Course!
-    tasks: [Task]
+    name: String!
+    isComplete: Boolean!
+    incorrectAttempts: Int!
+    task: Task
 }
 
 type Task {
     id: ID!
-    title: String!
-    module: Module!
+    name: String!
 }
 
 type Mutation {
-    addProgram(title:String!, description:String): Program!
-	addCourse(title: String!, description:String, displayOrder:Int!, completion:Float!, programId: Int!): Course!
-	addModule(title: String!, displayOrder: Int!, courseId:Int!): Module!
-	addTask(title: String!, moduleId:Int!): Task!
+    resetCourse(courseId:String):Course
+    taskAttempt(courseId:String!, moduleId:String!, isCorrect:Boolean!):Course
 }
 
 type Query {
-	programById(id:Int): Program
-    courseById(id:Int): Course
-    moduleById(id:Int): Module
-    taskById(id:Int): Task
+    fetchProgram(id:String!): Program
+    fetchCourse(id:String!): Course
 }
 

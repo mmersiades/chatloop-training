@@ -1,67 +1,76 @@
-mutation {
-  addProgram(title:"Prog1", description:"First one") {
+query {
+  fetchProgram(id:"5qlbxyqJMYZT5HXuuHUIat") {
     id
-    title
+    name
     description
-  }
-}
-query{
-  programById(id:152) {
-    id
-    title
-    description
+    courses {
+      id
+      name
+      description
+      completion
+      incorrectAttempts
+      courseResult
+      modules {
+        id
+        name
+        isComplete
+        incorrectAttempts
+      }
+    }
   }
 }
 
-mutation {
-  addCourse(title:"Cour1", description:"First COurse", displayOrder:1, completion:1.0, programId:152) {
+
+query {
+  fetchCourse(id:"72szZK1yf99qmh4nUVsiho") {
     id
-    title
+    name
     description
-    displayOrder
     completion
+    incorrectAttempts
+    courseResult
+    modules {
+      id
+      name
+      isComplete
+      incorrectAttempts
+    }
   }
 }
-query{
-  courseById(id:252) {
+
+
+mutation {
+  resetCourse(courseId:"72szZK1yf99qmh4nUVsiho") {
     id
-    title
+    name
     description
-    displayOrder
     completion
+    incorrectAttempts
+    courseResult
+    modules {
+      id
+      name
+      isComplete
+      incorrectAttempts
+    }
   }
 }
-
 
 mutation {
-  addModule(title:"Mod1", displayOrder:1, courseId:252) {
+  taskAttempt(courseId:"72szZK1yf99qmh4nUVsiho", moduleId:"3jYNwr96X6ii9447rZ7fNz", isCorrect:true) {
     id
-    title
-    displayOrder
+    name
+    description
+    completion
+    incorrectAttempts
+    courseResult
+    modules {
+      id
+      name
+      isComplete
+      incorrectAttempts
+    }
   }
 }
-query{
-  moduleById(id:302) {
-    id
-    title
-    displayOrder
-  }
-}
-
-
-mutation {
-  addTask(title:"Task1", moduleId:302) {
-    id
-    title
-  }
-}
-query{
-  taskById(id:352) {
-    id
-    title
-  }
-}
-
-
 
 

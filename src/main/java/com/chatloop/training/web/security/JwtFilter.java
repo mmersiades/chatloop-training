@@ -1,12 +1,11 @@
 package com.chatloop.training.web.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,27 +13,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@Component
+/**
+ * Throws exception if token is missing. Otherwise, if present and valid, extracts
+ * user ID from token in form of Authentication object and propagates it via security
+ * context.
+ */
 @Slf4j
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtFilter extends BasicAuthenticationFilter {
 
-    @Autowired
-    private AuthenticationExtractor authenticationExtractor;
+    private final AuthenticationExtractor authenticationExtractor;
+
+    public JwtFilter(AuthenticationManager authManager, AuthenticationExtractor authenticationExtractor) {
+        super(authManager);
+        this.authenticationExtractor = authenticationExtractor;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws IOException, ServletException {
         String jwtToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
         if(jwtToken == null || jwtToken.isEmpty()) {
             throw new IllegalArgumentException("JWT token is missing");
         }
         Authentication auth = authenticationExtractor.getUserId(jwtToken);
+        log.info("Extracted JWT principal {}", auth.getPrincipal());
 
+        // this is then read by TrainingProgressService.getUserId()
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
-//        HttpSession session = request.getSession(true);
-//        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
 
         filterChain.doFilter(request, response);
     }
+
+    // leaving it here for now in case it is needed in the future
+    //    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        String uri = request.getRequestURI();
+//        boolean shouldNotFilter = !uri.equals("/graphql");
+//        log.trace("JWT shouldNotFilter {} : {}", uri,  shouldNotFilter);
+//        return shouldNotFilter;
+//    }
 }

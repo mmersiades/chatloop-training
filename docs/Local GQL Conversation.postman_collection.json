@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "214f91c1-6fdc-4849-9918-b1e324cce79d",
+		"name": "Local GQL Conversation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01-userPrograms",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.eSfipNeoeQepBhArkBzl43YJBIGpoOQhNHc4boax55LlJYlj30DCDiNsHqMc05Yhvk6JFvKbQrfmSmuqEX_KSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n  userPrograms {\n    id\n    name\n    description\n  }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02-userProgram",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.eSfipNeoeQepBhArkBzl43YJBIGpoOQhNHc4boax55LlJYlj30DCDiNsHqMc05Yhvk6JFvKbQrfmSmuqEX_KSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n  userProgram(id:\"5qlbxyqJMYZT5HXuuHUIat\") {\n    id\n    name\n    description\n    userCourses {\n      id\n      name\n      description\n      completion\n      incorrectAttempts\n      courseResult\n      userModules {\n        id\n        name\n        isComplete\n        incorrectAttempts\n      }\n    }\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03-userCourse",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.eSfipNeoeQepBhArkBzl43YJBIGpoOQhNHc4boax55LlJYlj30DCDiNsHqMc05Yhvk6JFvKbQrfmSmuqEX_KSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n  userCourse(id:\"72szZK1yf99qmh4nUVsiho\") {\n    id\n    name\n    description\n    completion\n    incorrectAttempts\n    courseResult\n    userModules {\n      id\n      name\n      isComplete\n      incorrectAttempts\n    }\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04-taskAttempt",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.eSfipNeoeQepBhArkBzl43YJBIGpoOQhNHc4boax55LlJYlj30DCDiNsHqMc05Yhvk6JFvKbQrfmSmuqEX_KSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  taskAttempt(courseId:\"72szZK1yf99qmh4nUVsiho\", moduleId:\"3jYNwr96X6ii9447rZ7fNz\", isCorrect:true) {\n    id\n    name\n    description\n    completion\n    incorrectAttempts\n    courseResult\n    userModules {\n      id\n      name\n      isComplete\n      incorrectAttempts\n    }\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05-resetUserCourse",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.eSfipNeoeQepBhArkBzl43YJBIGpoOQhNHc4boax55LlJYlj30DCDiNsHqMc05Yhvk6JFvKbQrfmSmuqEX_KSw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  resetUserCourse(courseId:\"72szZK1yf99qmh4nUVsiho\") {\n    id\n    name\n    description\n    completion\n    incorrectAttempts\n    courseResult\n    userModules {\n      id\n      name\n      isComplete\n      incorrectAttempts\n    }\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contentful Webhook",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-contentful-webhook-name",
+						"value": "MyWebhookName",
+						"type": "text"
+					},
+					{
+						"key": "x-contentful-topic",
+						"value": "MyWebhookTopic",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

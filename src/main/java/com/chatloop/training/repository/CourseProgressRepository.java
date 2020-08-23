@@ -12,5 +12,9 @@ public interface CourseProgressRepository extends JpaRepository<CourseProgress, 
 
     @Query("FROM CourseProgress cp WHERE cp.userId = ?1 AND cp.courseId = ?2")
     Optional<CourseProgress> findByUserIdCourseId(String userId, String courseId);
+
+    @Query("FROM CourseProgress cp WHERE cp.spaceId = ?1 AND cp.envId = ?2 AND cp.userId = ?3 AND cp.courseId = ?4")
+    Optional<CourseProgress> findByCompositeId(String spaceId, String envId,
+                                               String userId, String courseId);
 }
 

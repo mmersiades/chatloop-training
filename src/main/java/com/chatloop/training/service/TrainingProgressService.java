@@ -1,18 +1,22 @@
 package com.chatloop.training.service;
 
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserProgram;
+
+import java.util.List;
 
 /**
  * Exception is thrown if CDN does not contain resource with given ID.
  */
 public interface TrainingProgressService {
 
-    Program fetchProgram(String programId);
+    List<UserProgram> fetchUserPrograms();
 
-    Course fetchCourse(String courseId);
+    UserProgram fetchProgram(String programId);
 
-    Course resetCourse(String courseId);
+    UserCourse fetchCourse(String courseId);
 
-    Course taskAttempt(String courseId, String moduleId, boolean isCorrect);
+    UserCourse resetCourse(String courseId);
+
+    UserCourse taskAttempt(String courseId, String moduleId, boolean isCorrect);
 }

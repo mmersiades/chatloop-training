@@ -1,8 +1,9 @@
 package com.chatloop.training.service;
 
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserProgram;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,13 +24,15 @@ public interface CdnService {
      */
     void markCacheStale();
 
+    List<UserProgram> fetchUserPrograms();
+
     /**
      * If data is not in cache, should refresh the cache.
      */
-    Optional<Program> fetchProgramById(String programId);
+    Optional<UserProgram> fetchProgramById(String programId);
 
     /**
      * If data is not in the cache, should refresh cache.
      */
-    Optional<Course> fetchCourseById(String courseId);
+    Optional<UserCourse> fetchCourseById(String courseId);
 }

@@ -1,0 +1,15 @@
+FOR TESTING ONLY!
+
+See class JwtTokenGenerator to generate new tokens for development/testing.
+
+Here we have pre-generated test tokens for 3 users: tester, tester0, tester1. Verified in Postman.
+
+for user tester (dont change it, used in tests)
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNjQwOTk1MjAwfQ.87J91dwzzYrwS12sFE0LJB6KVXK0bFv3-dfKf5_FRPc-PnGkigD1rfZjN78nJuM5dF8_lwNxGZEIiqqn5iFVTQ
+
+for user tester0
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIwIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.WjJ64Bia_60CmGkQ8xJtHpec23j3QM2pNC0ICJidKKsejiav1ICqkBc5qQVQQrgVPZ7od-2v1O6WtFLb0WyO1g
+
+for user tester1
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTY0MDk5NTIwMH0.eSfipNeoeQepBhArkBzl43YJBIGpoOQhNHc4boax55LlJYlj30DCDiNsHqMc05Yhvk6JFvKbQrfmSmuqEX_KSw
+

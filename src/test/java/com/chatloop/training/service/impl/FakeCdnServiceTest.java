@@ -2,7 +2,7 @@ package com.chatloop.training.service.impl;
 
 import com.chatloop.training.CleanDbBeforeTests;
 import com.chatloop.training.LocalTestConfig;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserProgram;
 import com.chatloop.training.service.CdnService;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +25,7 @@ public class FakeCdnServiceTest {
 
     @Test
     public void testBasic() {
-        Optional<Program> program = cdnService.fetchProgramById("pro1");
+        Optional<UserProgram> program = cdnService.fetchProgramById("pro1");
         assertTrue(program.isPresent());
         assertEquals("pro1", program.get().getId());
 

@@ -2,12 +2,15 @@ package com.chatloop.training.web;
 
 import com.chatloop.training.CleanDbBeforeTests;
 import com.chatloop.training.LocalTestConfig;
+import com.chatloop.training.TestUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import com.chatloop.training.service.TrainingProgressService;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Order;
@@ -17,6 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {LocalTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @CleanDbBeforeTests
-@Ignore
+@Slf4j
 public class TrainingProgressGqlTest {
 
     @Autowired
@@ -34,13 +41,39 @@ public class TrainingProgressGqlTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Before
+    public void setUp() {
+        graphQLTestTemplate.addHeader("Authorization", "Bearer " + TestUtil.TEST_JWT);
+        log.info("Injected test JWT token for user {}", TestUtil.TEST_USER);
+    }
+
+    @Test
+    @Order(1)
+    public void testFetchUserPrograms() throws Exception {
+        String templateFile = "graphql/userPrograms.graphql";
+
+        ObjectNode variables = newVars();
+
+        GraphQLResponse response = graphQLTestTemplate.perform(templateFile, variables);
+
+        assertTrue(response.isOk());
+
+        JsonNode root = response.readTree();
+        JsonNode programs = root.path("data").path("userPrograms");
+
+        for(int i=0; i < 3; i++) {
+            assertTrue(programs.has(i));
+            assertEquals("pro" + (i+1), programs.get(i).path("id").textValue());
+        }
+    }
+
     /**
      * See example-fetchProgram.json for response JSON structure.
      */
     @Test
-    @Order(1)
-    public void testFetchProgram() throws Exception {
-        String templateFile = "graphql/fetchProgram.graphql";
+    @Order(2)
+    public void testFetchUserProgram() throws Exception {
+        String templateFile = "graphql/userProgram.graphql";
 
         ObjectNode variables = newVars();
         variables.put("programId", "pro1");
@@ -50,16 +83,16 @@ public class TrainingProgressGqlTest {
         assertTrue(response.isOk());
 
         JsonNode root = response.readTree();
-        JsonNode fetchProgram = root.path("data").path("fetchProgram");
+        JsonNode fetchProgram = root.path("data").path("userProgram");
         String progId = fetchProgram.path("id").textValue();
 
         assertEquals("pro1", progId);
     }
 
     @Test
-    @Order(2)
-    public void testFetchCourse() throws Exception {
-        String templateFile = "graphql/fetchCourse.graphql";
+    @Order(3)
+    public void testFetchUserCourse() throws Exception {
+        String templateFile = "graphql/userCourse.graphql";
 
         ObjectNode variables = objectMapper.createObjectNode();
         variables.put("courseId","cou1");
@@ -69,14 +102,14 @@ public class TrainingProgressGqlTest {
         assertTrue(response.isOk());
 
         JsonNode root = response.readTree();
-        JsonNode fetchProgram = root.path("data").path("fetchCourse");
+        JsonNode fetchProgram = root.path("data").path("userCourse");
         String courId = fetchProgram.path("id").textValue();
 
         assertEquals("cou1", courId);
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void testTaskAttempt() throws Exception {
         String templateFile = "graphql/taskAttempt.graphql";
 
@@ -97,9 +130,9 @@ public class TrainingProgressGqlTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testResetCourse() throws Exception {
-        String templateFile = "graphql/resetCourse.graphql";
+        String templateFile = "graphql/resetUserCourse.graphql";
 
         ObjectNode variables = objectMapper.createObjectNode();
         variables.put("courseId", "cou1");
@@ -109,7 +142,7 @@ public class TrainingProgressGqlTest {
         assertTrue(response.isOk());
 
         JsonNode root = response.readTree();
-        JsonNode fetchProgram = root.path("data").path("resetCourse");
+        JsonNode fetchProgram = root.path("data").path("resetUserCourse");
         String courId = fetchProgram.path("id").textValue();
 
         assertEquals("cou1", courId);

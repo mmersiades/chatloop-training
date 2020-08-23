@@ -1,11 +1,11 @@
-query fetchCourse($courseId: String!)  {
-    fetchCourse(id:$courseId) {
+query userCourse($courseId: String!)  {
+    userCourse(id:$courseId) {
         id
         name
         description
         completion
         incorrectAttempts
-        modules {
+        userModules {
             id
             name
             isComplete

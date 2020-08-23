@@ -1,26 +1,25 @@
 package com.chatloop.training.service.impl;
 
 import com.chatloop.training.cdn.Transformer;
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserProgram;
 import com.chatloop.training.service.CdnService;
 import com.contentful.java.cda.*;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 /**
  * Will cache Contentful data locally in JVM heap.
+ *
+ * Intentionally not using streams API so that it is easier to troubleshoot, given
+ * that Contentful is external service not under our control. Smart/fast tricks are
+ * not intentionally used since amount of data is very low.
  *
  * TODO on cache miss trigger resync
  */
@@ -64,7 +63,20 @@ public class StatefulCdnService implements CdnService {
     }
 
     @Override
-    public Optional<Program> fetchProgramById(String programId) {
+    public List<UserProgram> fetchUserPrograms() {
+        Transformer tform = new Transformer();
+        List<UserProgram> programs = new ArrayList<>();
+        for(CDAEntry entry : syncedSpace.entries().values()) {
+            CDAContentType cdnType = entry.contentType();
+            if(cdnType.name().equals("program")) {
+                programs.add(tform.toUserProgram(entry, true));
+            }
+        }
+        return programs;
+    }
+
+    @Override
+    public Optional<UserProgram> fetchProgramById(String programId) {
         spaceLock.writeLock().lock();
         try {
             CDAEntry entry = syncedSpace.entries().get(programId);
@@ -73,14 +85,14 @@ public class StatefulCdnService implements CdnService {
             }
             log.info("Resolved program ID {} to {}", programId, entry);
             Transformer tform = new Transformer();
-            return Optional.of(tform.toProgram(entry));
+            return Optional.of(tform.toUserProgram(entry, true));
         } finally {
             spaceLock.writeLock().unlock();
         }
     }
 
     @Override
-    public Optional<Course> fetchCourseById(String courseId) {
+    public Optional<UserCourse> fetchCourseById(String courseId) {
         spaceLock.readLock().lock();
         try {
             CDAEntry entry = syncedSpace.entries().get(courseId);
@@ -90,8 +102,8 @@ public class StatefulCdnService implements CdnService {
             }
             log.info("Resolved course ID {} to {}", courseId, entry);
             Transformer tform = new Transformer();
-            Course course = tform.toCourse(entry);
-            return Optional.of(course);
+            UserCourse userCourse = tform.toUserCourse(entry);
+            return Optional.of(userCourse);
         } finally {
             spaceLock.readLock().unlock();
         }

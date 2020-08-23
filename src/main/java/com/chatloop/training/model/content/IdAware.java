@@ -1,21 +1,28 @@
 package com.chatloop.training.model.content;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Root interface for all CDN-centric classes.
+ *
+ * Subclasses are generally 1 to 1 mapped with similar types defined in
+ * Contentful CDN, ie our UserProgram is type program in Contentful. So
+ * schema changes should be synchronized. Instance graph/tree fetched from
+ * Contentful is then fused with, or enriched by, progress data that this
+ * microservice owns and controls (see progress related model classes).
+ *
+ * So we have strict separation between read-only data owned and managed by
+ * Contentful (this package) and mutable data our microservice owns. Latter
+ * is "copy/pasted" on top of Contentful instances. This design of separation
+ * of concerns is intentional. See comments in Transformer class for some
+ * additional considerations for this design.
  */
+@Getter
+@Setter
 public abstract class IdAware {
 
     private String id;
-
-    protected IdAware() {
-    }
-
-    public final String getId() {
-        return id;
-    }
-    public final void setId(String id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {

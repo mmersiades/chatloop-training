@@ -1,8 +1,8 @@
 package com.chatloop.training.data;
 
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Module;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserModule;
+import com.chatloop.training.model.content.UserProgram;
 
 /**
  * Used to generate hierarchical data for testing with face CDN service.
@@ -16,22 +16,22 @@ public final class DataFactory {
      *      cou1/
      *          mod1/
      */
-    public Program createProgram1() {
-        Program program = new Program();
-        program.setId("pro1");
-        program.setName("Program 1");
+    public UserProgram createProgram1() {
+        UserProgram userProgram = new UserProgram();
+        userProgram.setId("pro1");
+        userProgram.setName("Program 1");
 
-        Course course = new Course();
-        course.setId("cou1");
-        course.setName("Course 1");
-        program.addCourse(course);
+        UserCourse userCourse = new UserCourse();
+        userCourse.setId("cou1");
+        userCourse.setName("Course 1");
+        userProgram.addUserCourse(userCourse);
 
-        Module module = new Module();
-        module.setId("mod1");
-        module.setName("Module 1");
-        course.addModule(module);
+        UserModule userModule = new UserModule();
+        userModule.setId("mod1");
+        userModule.setName("Module 1");
+        userCourse.addUserModule(userModule);
 
-        return program;
+        return userProgram;
     }
 
     /**
@@ -45,7 +45,7 @@ public final class DataFactory {
      *          mod221/
      *          mod222/
      */
-    public Program createProgram2() {
+    public UserProgram createProgram2() {
         return createProgram(2, 2, "2");
     }
 
@@ -62,30 +62,30 @@ public final class DataFactory {
      *      cou32/
      *          ...
      */
-    public Program createProgram3() {
+    public UserProgram createProgram3() {
         return createProgram(2, 5, "3");
     }
 
-    private Program createProgram(int courseCnt, int modulesPerCourse, String prefix) {
-        Program program = new Program();
-        program.setId("pro" + prefix);
-        program.setName("Program " + prefix);
+    private UserProgram createProgram(int courseCnt, int modulesPerCourse, String prefix) {
+        UserProgram userProgram = new UserProgram();
+        userProgram.setId("pro" + prefix);
+        userProgram.setName("Program " + prefix);
 
         for(int i=1; i < courseCnt+1; i++) {
-            Course course = new Course();
-            course.setId("cou" + prefix + i);
-            course.setName("Course " + prefix + i);
-            program.addCourse(course);
+            UserCourse userCourse = new UserCourse();
+            userCourse.setId("cou" + prefix + i);
+            userCourse.setName("Course " + prefix + i);
+            userProgram.addUserCourse(userCourse);
 
             for(int j=1; j < modulesPerCourse+1; j++) {
-                Module module = new Module();
-                module.setId("mod" + prefix + i + "" + j);
-                module.setName("Module " + prefix + i + "" + j);
-                course.addModule(module);
+                UserModule userModule = new UserModule();
+                userModule.setId("mod" + prefix + i + "" + j);
+                userModule.setName("Module " + prefix + i + "" + j);
+                userCourse.addUserModule(userModule);
             }
         }
 
-        return program;
+        return userProgram;
     }
 
 //    public static void main(String[] args) {

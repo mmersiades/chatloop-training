@@ -1,9 +1,8 @@
 package com.chatloop.training.cdn;
 
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Module;
-import com.chatloop.training.model.content.Program;
-import com.chatloop.training.model.content.Task;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserModule;
+import com.chatloop.training.model.content.UserProgram;
 import com.contentful.java.cda.CDAContentType;
 import com.contentful.java.cda.CDAEntry;
 
@@ -23,60 +22,55 @@ import java.util.List;
  */
 public class Transformer {
 
-    public List<Program> toPrograms(Collection<CDAEntry> entries) {
-        List<Program> programs = new ArrayList<>();
+    public List<UserProgram> toUserPrograms(Collection<CDAEntry> entries, boolean recursive) {
+        List<UserProgram> userPrograms = new ArrayList<>();
         for(CDAEntry entry : entries) {
             CDAContentType cdnType = entry.contentType();
             if(cdnType.name().equals("program")) {
-                programs.add(toProgram(entry));
+                userPrograms.add(toUserProgram(entry, recursive));
             }
         }
-        return programs;
+        return userPrograms;
     }
 
-    public Program toProgram(CDAEntry entry) {
-        Program program = new Program();
-        program.setId(entry.id());
-        program.setName(entry.getField("name"));
+    /**
+     * If true, subtree will be transformed as well, that is, courses.
+     */
+    public UserProgram toUserProgram(CDAEntry entry, boolean recursive) {
+        UserProgram userProgram = new UserProgram();
+        userProgram.setId(entry.id());
+        userProgram.setName(entry.getField("name"));
 
-        List<CDAEntry> courses = entry.getField("courses");
-        for(CDAEntry courseEntry : courses) {
-            Course course = toCourse(courseEntry);
-            program.addCourse(course);
+        if(recursive) {
+            List<CDAEntry> courses = entry.getField("courses");
+            for(CDAEntry courseEntry : courses) {
+                UserCourse userCourse = toUserCourse(courseEntry);
+                userProgram.addUserCourse(userCourse);
+            }
         }
 
-        return program;
+        return userProgram;
     }
 
-    public Course toCourse(CDAEntry entry) {
-        Course course = new Course();
-        course.setId(entry.id());
-        course.setName(entry.getField("name"));
+    public UserCourse toUserCourse(CDAEntry entry) {
+        UserCourse userCourse = new UserCourse();
+        userCourse.setId(entry.id());
+        userCourse.setName(entry.getField("name"));
 
         List<CDAEntry> modules = entry.getField("modules");
         for(CDAEntry moduleEntry : modules) {
-            Module module = toModule(moduleEntry);
-            course.addModule(module);
+            UserModule userModule = toUserModule(moduleEntry);
+            userCourse.addUserModule(userModule);
         }
 
-        return course;
+        return userCourse;
     }
 
-    public Module toModule(CDAEntry entry) {
-        Module module = new Module();
-        module.setId(entry.id());
-        module.setName(entry.getField("name"));
+    public UserModule toUserModule(CDAEntry entry) {
+        UserModule userModule = new UserModule();
+        userModule.setId(entry.id());
+        userModule.setName(entry.getField("name"));
 
-        CDAEntry taskEntry = entry.getField("moduleTask");
-        module.setTask(toTask(taskEntry));
-
-        return module;
-    }
-
-    public Task toTask(CDAEntry entry) {
-        Task task = new Task();
-        task.setId(entry.id());
-        task.setName(entry.getField("name"));
-        return task;
+        return userModule;
     }
 }

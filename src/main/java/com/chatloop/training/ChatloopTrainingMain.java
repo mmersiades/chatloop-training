@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class })
+//@SpringBootApplication
 public class ChatloopTrainingMain {
     public static void main(String[] args) {
         new SpringApplication(ChatloopTrainingMain.class).run(args);

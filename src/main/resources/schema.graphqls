@@ -4,43 +4,37 @@ enum CourseResult {
     COURSE_PASSED
 }
 
-type Program {
+type UserProgram {
     id: ID!
     name: String!
     description: String
-    courses: [Course]
+    userCourses: [UserCourse]
 }
 
-type Course {
+type UserCourse {
     id: ID!
     name: String!
     description: String
     completion: Float!
     incorrectAttempts: Int!
     courseResult: CourseResult!
-    modules: [Module]
+    userModules: [UserModule]
 }
 
-type Module {
+type UserModule {
     id: ID!
     name: String!
     isComplete: Boolean!
     incorrectAttempts: Int!
-    task: Task
-}
-
-type Task {
-    id: ID!
-    name: String!
 }
 
 type Mutation {
-    resetCourse(courseId:String):Course
-    taskAttempt(courseId:String!, moduleId:String!, isCorrect:Boolean!):Course
+    resetUserCourse(courseId:String):UserCourse
+    taskAttempt(courseId:String!, moduleId:String!, isCorrect:Boolean!):UserCourse
 }
 
 type Query {
-    fetchProgram(id:String!): Program
-    fetchCourse(id:String!): Course
+    userPrograms: [UserProgram]
+    userProgram(id:String!): UserProgram
+    userCourse(id:String!): UserCourse
 }
-

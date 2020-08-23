@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @CleanDbBeforeTests
-public class CourseProgressRepositoryTest {
+public class UserCourseProgressRepositoryTest {
 
     @Autowired
     private CourseProgressRepository courseProgressRepository;

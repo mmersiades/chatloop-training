@@ -20,7 +20,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "course_progress")
+@Table(name = "course_progress", uniqueConstraints = @UniqueConstraint(name = "CourseProgressUniqueConstraint",
+        columnNames = {"spaceId", "envId", "userId", "courseId"}))
 public class CourseProgress {
 
     @Id
@@ -44,38 +45,38 @@ public class CourseProgress {
     @Enumerated(EnumType.STRING)
     private CourseResult courseResult = CourseResult.NO_RESULT_YET;
 
-    @OneToMany(mappedBy="course", fetch = FetchType.EAGER)
-    private Set<ModuleProgress> modules = new HashSet<>();
+    @OneToMany(mappedBy="course", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    private Set<ModuleProgress> moduleProgresses = new HashSet<>();
 
     public void addModuleProgress(ModuleProgress moduleProgress) {
-        modules.add(moduleProgress);
+        moduleProgresses.add(moduleProgress);
     }
 
     /**
      * Sum of incorrect attempts across all module progresses.
      */
     public int getIncorrectAttempts() {
-        return modules.stream().mapToInt(ModuleProgress::getIncorrectAttempts).sum();
+        return moduleProgresses.stream().mapToInt(ModuleProgress::getIncorrectAttempts).sum();
     }
 
     /**
      * We don't expect large number of modules, so linear scan is fine performance wise.
      */
     public ModuleProgress getOrCreateModuleProgress(String moduleId) {
-        Optional<ModuleProgress> opt = modules.stream()
+        Optional<ModuleProgress> opt = moduleProgresses.stream()
                 .filter(m -> m.getModuleId().equals(moduleId)).findFirst();
 
         return opt.orElseGet(() -> {
             ModuleProgress progress = new ModuleProgress();
             progress.setModuleId(moduleId);
             progress.setCourse(this);
-            modules.add(progress);
+            moduleProgresses.add(progress);
             return progress;
         });
     }
 
     public ModuleProgress getModuleProgress(String moduleId) {
-        Optional<ModuleProgress> opt = modules.stream()
+        Optional<ModuleProgress> opt = moduleProgresses.stream()
                 .filter(m -> m.getModuleId().equals(moduleId)).findFirst();
 
         return opt.orElseThrow(() -> {
@@ -87,6 +88,6 @@ public class CourseProgress {
 //        if(modules.size() == 0) { TODO FIXME
 //            throw new IllegalStateException("Course progress has no modules " + getId());
 //        }
-        return modules.size();
+        return moduleProgresses.size();
     }
 }

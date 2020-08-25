@@ -9,15 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
-public class Module extends IdAware {
+public class UserModule extends IdAware {
 
     private String name;
 
     private boolean isComplete;
 
     private int incorrectAttempts;
-
-    private Task task;
 
     public void refreshFrom(ModuleProgress moduleProgress) {
         isComplete = moduleProgress.isComplete();

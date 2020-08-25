@@ -1,7 +1,7 @@
 package com.chatloop.training.service.impl;
 
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserProgram;
 import com.chatloop.training.data.DataFactory;
 import com.chatloop.training.service.CdnService;
 import org.slf4j.Logger;
@@ -18,27 +18,32 @@ import java.util.Optional;
 @Service
 public class FakeCdnService implements CdnService {
 
-    private final List<Program> programs = new ArrayList<>();
+    private final List<UserProgram> userPrograms = new ArrayList<>();
 
     @Override
     @PostConstruct
     public void init() {
         DataFactory factory = new DataFactory();
-        programs.add(factory.createProgram1());
-        programs.add(factory.createProgram2());
-        programs.add(factory.createProgram3());
+        userPrograms.add(factory.createProgram1());
+        userPrograms.add(factory.createProgram2());
+        userPrograms.add(factory.createProgram3());
         log.info("Using fake CDN service");
     }
 
     @Override
-    public Optional<Program> fetchProgramById(String programId) {
-        return programs.stream().filter(e -> e.getId().equals(programId)).findFirst();
+    public List<UserProgram> fetchUserPrograms() {
+        return userPrograms;
     }
 
     @Override
-    public Optional<Course> fetchCourseById(String courseId) {
-        for(Program program : programs) {
-            Optional<Course> course = program.getCourses().stream().filter(e -> e.getId().equals(courseId)).findFirst();
+    public Optional<UserProgram> fetchProgramById(String programId) {
+        return userPrograms.stream().filter(e -> e.getId().equals(programId)).findFirst();
+    }
+
+    @Override
+    public Optional<UserCourse> fetchCourseById(String courseId) {
+        for(UserProgram userProgram : userPrograms) {
+            Optional<UserCourse> course = userProgram.getUserCourses().stream().filter(e -> e.getId().equals(courseId)).findFirst();
             if(course.isPresent()) {
                 return course;
             }

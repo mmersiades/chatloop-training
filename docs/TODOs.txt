@@ -1,11 +1,39 @@
-Naming conventions are confusing: module/task are 1 to 1, graphql API calls it
-task, in the backend we call it module, CDN has both. Would be good to unify this
+Naming conventions are confusing: userModule/task are 1 to 1, graphql API calls it
+task, in the backend we call it userModule, CDN has both. Would be good to unify this
 from long term maintainance perspective.
 
 Check if we need to store space/env ID as well in DB, since entity IDs are only
 unique within environment.
 
-Check order of modules with course. Is contentful guaranteed to return them in order.
+TODO check security vs webhook (add webhook URL as exception).
+
+Check order of modules with userCourse. Is contentful guaranteed to return them in order.
 Or we dont care about order. Just check if only 1 is left uncomplete.
+
+    Program -> UserProgram
+
+    Course -> UserCourse
+
+    Module -> UserModule
+
+
+Remove task as well.
+
+Add support for fetch all user userPrograms, without any filtering.
+
+
+AS env variable in elastic beanstalk, for prod and staging.
+Idea run config file contains for local key. THey dont use app.properties.
+
+monotlith is using 401, make it consistent
+
+
+Access to fetch at 'http://localhost:8080/graphql' from origin 'http://localhost:3000' has been blocked by CORS policy:
+Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on
+the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource
+with CORS disabled.
+
+
+
 
 

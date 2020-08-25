@@ -1,5 +1,5 @@
 query {
-    course(id: "72szZK1yf99qmh4nUVsiho") {
+    userCourse(id: "72szZK1yf99qmh4nUVsiho") {
         id
         name
         modules {

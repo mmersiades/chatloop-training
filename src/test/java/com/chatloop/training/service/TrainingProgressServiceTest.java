@@ -2,9 +2,11 @@ package com.chatloop.training.service;
 
 import com.chatloop.training.CleanDbBeforeTests;
 import com.chatloop.training.LocalTestConfig;
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Module;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.TestUtil;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserModule;
+import com.chatloop.training.model.content.UserProgram;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,31 +25,36 @@ public class TrainingProgressServiceTest {
     @Autowired
     private TrainingProgressService service;
 
+    @Before
+    public void setUp() {
+        TestUtil.injectAuthentication();
+    }
+
     @Test
     public void testBasicQuery() {
-        Program program = service.fetchProgram("pro1");
-        Course course = service.fetchCourse("cou1");
-        Module module = course.getModule("mod1");
+        UserProgram userProgram = service.fetchProgram("pro1");
+        UserCourse userCourse = service.fetchCourse("cou1");
+        UserModule userModule = userCourse.getUserModule("mod1");
 
-        assertEquals("pro1", program.getId());
-        assertEquals("cou1", course.getId());
-        assertEquals("mod1", module.getId());
+        assertEquals("pro1", userProgram.getId());
+        assertEquals("cou1", userCourse.getId());
+        assertEquals("mod1", userModule.getId());
     }
 
     @Test
     public void testConversationProg1() {
-        Program program = service.fetchProgram("pro1");
-        Course course = service.fetchCourse("cou1");
-        Module module = course.getModule("mod1");
+        UserProgram userProgram = service.fetchProgram("pro1");
+        UserCourse userCourse = service.fetchCourse("cou1");
+        UserModule userModule = userCourse.getUserModule("mod1");
 
-        course = service.taskAttempt(course.getId(), module.getId(), true);
-        module = course.getModule("mod1");
+        userCourse = service.taskAttempt(userCourse.getId(), userModule.getId(), true);
+        userModule = userCourse.getUserModule("mod1");
 
-        assertEquals(1.0, course.getCompletion());
-        assertEquals(0, course.getIncorrectAttempts());
+        assertEquals(1.0, userCourse.getCompletion());
+        assertEquals(0, userCourse.getIncorrectAttempts());
 
-        assertTrue(module.isComplete());
-        assertEquals(0, module.getIncorrectAttempts());
+        assertTrue(userModule.isComplete());
+        assertEquals(0, userModule.getIncorrectAttempts());
     }
 
     /**
@@ -55,23 +62,23 @@ public class TrainingProgressServiceTest {
      */
     @Test
     public void testConversationProg2() {
-        Program program = service.fetchProgram("pro3");
-        Course course = service.fetchCourse("cou31");
-        Module module = course.getModule("mod311");
+        UserProgram userProgram = service.fetchProgram("pro3");
+        UserCourse userCourse = service.fetchCourse("cou31");
+        UserModule userModule = userCourse.getUserModule("mod311");
 
-        course = service.taskAttempt(course.getId(), module.getId(), false);
-        assertEquals(0.0, course.getCompletion());
-        assertEquals(1, course.getIncorrectAttempts());
+        userCourse = service.taskAttempt(userCourse.getId(), userModule.getId(), false);
+        assertEquals(0.0, userCourse.getCompletion());
+        assertEquals(1, userCourse.getIncorrectAttempts());
 
-        course = service.taskAttempt(course.getId(), module.getId(), false);
-        assertEquals(0.0, course.getCompletion());
+        userCourse = service.taskAttempt(userCourse.getId(), userModule.getId(), false);
+        assertEquals(0.0, userCourse.getCompletion());
 
         for(int i=1; i < 6; i++) {
-            course = service.taskAttempt(course.getId(), "mod31" + i, true);
-            module = course.getModule("mod31" + i);
-            assertTrue(module.isComplete());
-            assertEquals(0, course.getIncorrectAttempts());
+            userCourse = service.taskAttempt(userCourse.getId(), "mod31" + i, true);
+            userModule = userCourse.getUserModule("mod31" + i);
+            assertTrue(userModule.isComplete());
+            assertEquals(0, userCourse.getIncorrectAttempts());
         }
-        assertEquals(1.0, course.getCompletion());
+        assertEquals(1.0, userCourse.getCompletion());
     }
 }

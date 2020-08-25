@@ -12,6 +12,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Inherited
 @Target(TYPE)
 @Retention(RUNTIME)
-@Sql(value = "classpath:db_scripts/drop_all.sql")
+@Sql(scripts = "classpath:db_scripts/drop_all.sql")
 public @interface CleanDbBeforeTests {
 }

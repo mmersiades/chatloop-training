@@ -1,11 +1,13 @@
 package com.chatloop.training.web;
 
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserProgram;
 import com.chatloop.training.service.TrainingProgressService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class TrainingProgressQueryResolver implements GraphQLQueryResolver {
@@ -17,11 +19,15 @@ public class TrainingProgressQueryResolver implements GraphQLQueryResolver {
         this.trainingProgressService = trainingProgressService;
     }
 
-    public Program fetchProgram(String programId) {
+    public List<UserProgram> userPrograms() {
+        return trainingProgressService.fetchUserPrograms();
+    }
+
+    public UserProgram userProgram(String programId) {
         return trainingProgressService.fetchProgram(programId);
     }
 
-    public Course fetchCourse(String courseId) {
+    public UserCourse userCourse(String courseId) {
         return trainingProgressService.fetchCourse(courseId);
     }
 }

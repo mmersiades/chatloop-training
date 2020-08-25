@@ -1,0 +1,16 @@
+FOR TESTING ONLY!
+
+See class JwtTokenGenerator to generate new tokens for development/testing.
+
+Here we have pre-generated test tokens for 3 users: tester, tester0, tester1. Verified in Postman.
+Monolith's test private key was used.
+
+for user tester (dont change it, used in tests)
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw
+
+for user tester0
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIwIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTczNTY4OTYwMH0.HL9uWC5elTjPraNKfM5Xc1mVsEK61HD8xiLA0EDxPOCs3fiBMIJHK1dJiMWPtqZIYD4spDKwTFbKWcWZUQZkVQ
+
+for user tester1
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTczNTY4OTYwMH0.Cx-huuIr1auZakCSRY-CacSzaSq_K0G5Klez0HNeCTrK822QTAklTt3tmk3Hv0s483oabF7FkYzRwDWUXSlcYw
+

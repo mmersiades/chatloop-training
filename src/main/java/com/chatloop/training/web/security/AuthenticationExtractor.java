@@ -3,7 +3,6 @@ package com.chatloop.training.web.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +10,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static com.chatloop.training.web.security.SecurityConstants.BEARER_PREFIX;
 
-//@Component
+/**
+ * Verifies JWT token and extracts from it the user name (subject). If token is
+ * valid, we assume user is allowed to proceed since it has been authenticated
+ * before on NKK monolith.
+ *
+ * User ID is used in other parts of the system, including as column in database.
+ */
+@Component
 @Slf4j
 public class AuthenticationExtractor {
 
@@ -21,19 +29,21 @@ public class AuthenticationExtractor {
     private String jwtMacSecret;
 
     /**
-     * This method gets a jwt token and returns user ID.
+     * Returns empty in case token is invalid.
      */
-    public Authentication getUserId(String jwt) {
+    public Optional<Authentication> getUserId(String jwt) {
         try {
             DecodedJWT decodedToken = parseJwt(jwt, jwtMacSecret);
 
             String userId = decodedToken.getSubject();
-            log.trace("Extracted user {} from JWT token {}", userId, jwt);
+            log.info("Extracted user ID {} from JWT token", userId);
 
-            return new UsernamePasswordAuthenticationToken(userId, null);
+            // token is valid, we neither need nor have access to password/credentials
+            return Optional.of(new UsernamePasswordAuthenticationToken(userId, null));
 
-        } catch (TokenExpiredException ex) {
-            throw new JWTVerificationException("Token Expired: " + jwt, ex);
+        } catch (Exception ex) {
+            log.error("Invalid token " + jwt, ex); // token is invalid, so log it in case we need to troubleshoot
+            return Optional.empty();
         }
     }
 

@@ -24,6 +24,12 @@ public class TrainingEvent {
     private Long id;
 
     @Column(nullable = false)
+    private String spaceId;
+
+    @Column(nullable = false)
+    private String envId;
+
+    @Column(nullable = false)
     private String userId;
 
     @Column(nullable = false)

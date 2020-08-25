@@ -3,8 +3,8 @@ package com.chatloop.training.integration;
 import com.chatloop.training.CleanDbBeforeTests;
 import com.chatloop.training.IntegrationTestConfig;
 import com.chatloop.training.data.Known;
-import com.chatloop.training.model.content.Course;
-import com.chatloop.training.model.content.Program;
+import com.chatloop.training.model.content.UserCourse;
+import com.chatloop.training.model.content.UserProgram;
 import com.chatloop.training.service.CdnService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,11 +29,11 @@ public class StatefulCdnServiceTest {
 
     @Test
     public void testBasic() {
-        Optional<Program> program = cdnService.fetchProgramById(Known.PROGRAM_ID);
+        Optional<UserProgram> program = cdnService.fetchProgramById(Known.PROGRAM_ID);
         assertTrue(program.isPresent());
         assertEquals(Known.PROGRAM_ID, program.get().getId());
 
-        Optional<Course> course = cdnService.fetchCourseById(Known.COURSE_ID);
+        Optional<UserCourse> course = cdnService.fetchCourseById(Known.COURSE_ID);
         assertTrue(course.isPresent());
         assertEquals(Known.COURSE_ID, course.get().getId());
     }

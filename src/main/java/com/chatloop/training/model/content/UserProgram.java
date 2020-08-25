@@ -10,7 +10,7 @@ import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
-public class Program extends IdAware {
+public class UserProgram extends IdAware {
 
     @Setter
     private String name;
@@ -18,23 +18,23 @@ public class Program extends IdAware {
     @Setter
     private String description;
 
-    private final Set<Course> courses = new HashSet<>();
+    private final Set<UserCourse> userCourses = new HashSet<>();
 
-    public void addCourse(Course course) {
-        this.courses.add(course);
+    public void addUserCourse(UserCourse userCourse) {
+        this.userCourses.add(userCourse);
     }
 
-    public boolean containsCourse(Course course) {
-        for(Course c : this.courses) {
-            if(c.getId().equals(course.getId())) {
+    public boolean containsCourse(UserCourse userCourse) {
+        for(UserCourse c : this.userCourses) {
+            if(c.getId().equals(userCourse.getId())) {
                 return true;
             }
         }
         return false;
     }
 
-    public Program copyWithoutChildren() {
-        Program copy = new Program();
+    public UserProgram copyWithoutChildren() {
+        UserProgram copy = new UserProgram();
         copy.setId(getId());
         copy.setName(getName());
         copy.setDescription(getDescription());

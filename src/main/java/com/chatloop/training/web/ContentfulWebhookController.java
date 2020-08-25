@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * Used to receive webhook calls from Contentful when content model has
- * been changed on their side.
+ * been changed on their side. Body/payload is JSON. See Postman example.
  */
 @RestController
 @RequestMapping("webhook")

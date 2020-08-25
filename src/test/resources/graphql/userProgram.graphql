@@ -1,15 +1,15 @@
-query fetchProgram($programId: String!) {
-    fetchProgram(id:$programId) {
+query userProgram($programId: String!) {
+    userProgram(id:$programId) {
         id
         name
         description
-        courses {
+        userCourses {
             id
             name
             description
             completion
             incorrectAttempts
-            modules {
+            userModules {
                 id
                 name
                 isComplete

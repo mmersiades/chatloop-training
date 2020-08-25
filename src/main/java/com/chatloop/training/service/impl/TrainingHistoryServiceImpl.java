@@ -4,15 +4,23 @@ import com.chatloop.training.model.event.TrainingEvent;
 import com.chatloop.training.model.event.TrainingEventType;
 import com.chatloop.training.repository.TrainingHistoryRepository;
 import com.chatloop.training.service.TrainingHistoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 public class TrainingHistoryServiceImpl implements TrainingHistoryService {
+
+    @Value("${contentful.spaceId}")
+    private String spaceId;
+    @Value("${contentful.envId}")
+    private String envId;
 
     @Autowired
     private final TrainingHistoryRepository repository;
@@ -69,9 +77,9 @@ public class TrainingHistoryServiceImpl implements TrainingHistoryService {
     }
 
     private void save(TrainingEvent trainingEvent) {
+        trainingEvent.setSpaceId(spaceId);
+        trainingEvent.setEnvId(envId);
         trainingEvent = this.repository.save(trainingEvent);
         log.debug("Saved training event {}", trainingEvent);
     }
-
-    private final Logger log = LoggerFactory.getLogger(TrainingHistoryServiceImpl.class);
 }

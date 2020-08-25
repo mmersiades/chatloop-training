@@ -1,16 +1,26 @@
+// these can be manually copy/pasted into tools like Postman;
+
 query {
-  fetchProgram(id:"5qlbxyqJMYZT5HXuuHUIat") {
+  fetchUserPrograms {
     id
     name
     description
-    courses {
+  }
+}
+
+query {
+  userProgram(id:"5qlbxyqJMYZT5HXuuHUIat") {
+    id
+    name
+    description
+    userCourses {
       id
       name
       description
       completion
       incorrectAttempts
       courseResult
-      modules {
+      userModules {
         id
         name
         isComplete
@@ -22,14 +32,14 @@ query {
 
 
 query {
-  fetchCourse(id:"72szZK1yf99qmh4nUVsiho") {
+  userCourse(id:"72szZK1yf99qmh4nUVsiho") {
     id
     name
     description
     completion
     incorrectAttempts
     courseResult
-    modules {
+    userModules {
       id
       name
       isComplete
@@ -40,14 +50,14 @@ query {
 
 
 mutation {
-  resetCourse(courseId:"72szZK1yf99qmh4nUVsiho") {
+  userCourse(courseId:"72szZK1yf99qmh4nUVsiho") {
     id
     name
     description
     completion
     incorrectAttempts
     courseResult
-    modules {
+    userModules {
       id
       name
       isComplete
@@ -64,7 +74,7 @@ mutation {
     completion
     incorrectAttempts
     courseResult
-    modules {
+    userModules {
       id
       name
       isComplete

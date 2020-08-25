@@ -3,9 +3,9 @@ services:
   server:
     image: neonkingkong/chatloop-training
     ports:
-      - 8080:5000
+      - 8080:8080
     environment:
-      - SPRING_PROFILES_ACTIVE=staging
+      - SPRING_PROFILES_ACTIVE=local
       - RDS_HOSTNAME=db
       - RDS_USERNAME=nkk
       - RDS_PASSWORD=nkk
@@ -26,12 +26,12 @@ services:
       - POSTGRES_USER=nkk
       - POSTGRES_PASSWORD=nkk
       - POSTGRES_DB=nkk
-  pgadmin:
-    image: dpage/pgadmin4
-    ports:
-      - 28080:80
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
-      - PGADMIN_DEFAULT_PASSWORD=admin
-    links:
-      - db
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    ports:
+#      - 28080:80
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
+#      - PGADMIN_DEFAULT_PASSWORD=admin
+#    links:
+#      - db

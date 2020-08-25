@@ -25,6 +25,14 @@ Add support for fetch all user userPrograms, without any filtering.
 AS env variable in elastic beanstalk, for prod and staging.
 Idea run config file contains for local key. THey dont use app.properties.
 
+monotlith is using 401, make it consistent
+
+
+Access to fetch at 'http://localhost:8080/graphql' from origin 'http://localhost:3000' has been blocked by CORS policy:
+Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on
+the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource
+with CORS disabled.
+
 
 
 

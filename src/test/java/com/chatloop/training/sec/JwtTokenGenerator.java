@@ -14,17 +14,25 @@ import java.util.GregorianCalendar;
 public class JwtTokenGenerator {
 
     public static void main(String[] args) throws Exception {
-        String secret = "secret";
+        String secret = "D*G-KaPdSgUkXp2s5v8y/B?E(H+MbQeThWmYq3t6w9z$C&F)J@NcRfUjXn2r4u7x"; // monolith secret
         String issuer = "ChatloopTrainingTester";
-        String subject = "tester1"; // change user name if needed
 
-        Algorithm algorithm = Algorithm.HMAC512(secret);
-        String token = JWT.create()
-                .withIssuer(issuer)
-                .withSubject(subject)
-                .withExpiresAt(new GregorianCalendar(2022, Calendar.JANUARY, 1).getTime())
-                .sign(algorithm);
+        // or users
+        String[] subjects = new String[] {
+                "tester",
+                "tester0",
+                "tester1",
+        };
+        for(String subject : subjects) {
+            Algorithm algorithm = Algorithm.HMAC512(secret);
+            String token = JWT.create()
+                    .withIssuer(issuer)
+                    .withSubject(subject)
+                    .withExpiresAt(new GregorianCalendar(2025, Calendar.JANUARY, 1).getTime())
+                    .sign(algorithm);
 
-        System.out.println(token);
+            System.out.println(subject);
+            System.out.println(token);
+        }
     }
 }

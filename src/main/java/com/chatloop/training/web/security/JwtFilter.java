@@ -12,9 +12,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
 
 /**
- * Throws exception if token is missing. Otherwise, if present and valid, extracts
+ * Returns 401 if token is missing or invalid.. Otherwise, if present and valid, extracts
  * user ID from token in form of Authentication object and propagates it via security
  * context.
  */
@@ -31,16 +34,25 @@ public class JwtFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
+
         String jwtToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
         if(jwtToken == null || jwtToken.isEmpty()) {
-            throw new IllegalArgumentException("JWT token is missing");
+            log.error("JWT token is missing, found headers {}", Collections.list(request.getHeaderNames()));
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
-        Authentication auth = authenticationExtractor.getUserId(jwtToken);
-        log.info("Extracted JWT principal {}", auth.getPrincipal());
+
+        Optional<Authentication> auth = authenticationExtractor.getUserId(jwtToken);
+        if(auth.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        log.info("Extracted JWT principal {}", auth.get().getPrincipal());
 
         // this is then read by TrainingProgressService.getUserId()
         SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
+        sc.setAuthentication(auth.get());
 
         filterChain.doFilter(request, response);
     }

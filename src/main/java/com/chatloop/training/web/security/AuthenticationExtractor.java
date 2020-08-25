@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static com.chatloop.training.web.security.SecurityConstants.BEARER_PREFIX;
 
 /**
@@ -26,7 +28,10 @@ public class AuthenticationExtractor {
     @Value("${security.jwt.mac.secret}")
     private String jwtMacSecret;
 
-    public Authentication getUserId(String jwt) {
+    /**
+     * Returns empty in case token is invalid.
+     */
+    public Optional<Authentication> getUserId(String jwt) {
         try {
             DecodedJWT decodedToken = parseJwt(jwt, jwtMacSecret);
 
@@ -34,11 +39,11 @@ public class AuthenticationExtractor {
             log.info("Extracted user ID {} from JWT token", userId);
 
             // token is valid, we neither need nor have access to password/credentials
-            return new UsernamePasswordAuthenticationToken(userId, null);
+            return Optional.of(new UsernamePasswordAuthenticationToken(userId, null));
 
         } catch (Exception ex) {
             log.error("Invalid token " + jwt, ex); // token is invalid, so log it in case we need to troubleshoot
-            throw new JWTVerificationException("Invalid JWT token, see server log for more details");
+            return Optional.empty();
         }
     }
 

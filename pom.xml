@@ -147,16 +147,23 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.30.0</version>
                 <configuration>
+                    <verbose>true</verbose>
                     <images>
                         <image>
-                            <name>postgres:11.4-alpine</name>
-                            <alias>it-database</alias>
+                            <name>postgres</name>
+                            <alias>postgres</alias>
                             <run>
+                                <!-- see their data-jolokia example for more details -->
+                                <env>
+                                    <POSTGRES_USER>nkk</POSTGRES_USER>
+                                    <POSTGRES_PASSWORD>nkk</POSTGRES_PASSWORD>
+                                    <POSTGRES_DB>nkk</POSTGRES_DB>
+                                </env>
                                 <ports>
                                     <port>5432:5432</port>
                                 </ports>
                                 <wait>
-                                    <log>database system is ready to accept connections</log>
+                                    <log>ready to accept connections</log>
                                     <time>10000</time>
                                 </wait>
                             </run>

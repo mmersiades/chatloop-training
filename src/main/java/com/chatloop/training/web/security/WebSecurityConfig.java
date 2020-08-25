@@ -13,8 +13,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -38,12 +42,15 @@ public class WebSecurityConfig {
     public class OurWebSecConfAdapter extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.cors().and().csrf().disable()
+            http.cors().configurationSource(request -> getCorsConfiguration())
+                    .and().csrf().disable()
                     .authorizeRequests().antMatchers("/graphql").authenticated()
                     .and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             ;
             http.addFilter(new JwtFilter(authenticationManagerBean(), authenticationExtractor));
+
+//            http.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
             log.info("HTTP Security configured");
         }
@@ -68,6 +75,35 @@ public class WebSecurityConfig {
         @Override
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return new NoopAuthManager();
+        }
+
+        /**
+         * Due to having troubles reproducing preflight issue myself (prefligh requests are not supported in Postman?),
+         * will use both this method, as well as reusing same conf in above's configurationSource().
+         *
+         * Based on https://stackoverflow.com/questions/36968963/how-to-configure-cors-in-a-spring-boot-spring-security-application
+         */
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration configuration = getCorsConfiguration();
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            log.info("CORS configured, allowed origins {}, allowed methods {}, allowed headers {}",
+                    configuration.getAllowedOrigins(), configuration.getAllowedMethods(), configuration.getAllowedHeaders());
+            return source;
+        }
+
+        private CorsConfiguration getCorsConfiguration() {
+            List<String> allowedOrigins = Collections.singletonList("*");
+            List<String> allowedMethods = Collections.singletonList("*");
+            List<String> allowedHeaders = Collections.singletonList("*");
+
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(allowedOrigins);
+            configuration.setAllowedMethods(allowedMethods);
+            configuration.setAllowedHeaders(allowedHeaders);
+
+            return configuration;
         }
     }
 

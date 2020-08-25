@@ -119,7 +119,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
     <build>
         <plugins>
             <plugin>
@@ -150,14 +161,14 @@
                     <verbose>true</verbose>
                     <images>
                         <image>
-                            <name>postgres</name>
+                            <name>postgres:11.4-alpine</name>
                             <alias>postgres</alias>
                             <run>
                                 <!-- see their data-jolokia example for more details -->
                                 <env>
-                                    <POSTGRES_USER>nkk</POSTGRES_USER>
-                                    <POSTGRES_PASSWORD>nkk</POSTGRES_PASSWORD>
-                                    <POSTGRES_DB>nkk</POSTGRES_DB>
+                                    <POSTGRES_USER>cut</POSTGRES_USER>
+                                    <POSTGRES_PASSWORD>cut</POSTGRES_PASSWORD>
+                                    <POSTGRES_DB>cut</POSTGRES_DB>
                                 </env>
                                 <ports>
                                     <port>5432:5432</port>
@@ -201,6 +212,30 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <violationSeverity>warning</violationSeverity>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
@@ -232,13 +267,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
             <properties>
                 <spring.profiles.active>local</spring.profiles.active>
             </properties>

@@ -3,13 +3,13 @@ services:
   server:
     image: neonkingkong/chatloop-training
     ports:
-      - 8080:8080
+      - 8888:8888
     environment:
       - SPRING_PROFILES_ACTIVE=local
       - RDS_HOSTNAME=db
-      - RDS_USERNAME=nkk
-      - RDS_PASSWORD=nkk
-      - RDS_DB_NAME=nkk
+      - RDS_USERNAME=cut
+      - RDS_PASSWORD=cut
+      - RDS_DB_NAME=cut
       - RDS_PORT=5432
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -23,9 +23,9 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=nkk
-      - POSTGRES_PASSWORD=nkk
-      - POSTGRES_DB=nkk
+      - POSTGRES_USER=cut
+      - POSTGRES_PASSWORD=cut
+      - POSTGRES_DB=cut
 #  pgadmin:
 #    image: dpage/pgadmin4
 #    ports:

@@ -1,4 +1,4 @@
-start with "./ngrok http http://localhost:8080"
+start with "./ngrok http http://localhost:8888"
 
 Contentful hook should target "http://c20af51f00ea.ngrok.io/webhook" (note the suffix).
 

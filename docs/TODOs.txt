@@ -1,37 +1,21 @@
-Naming conventions are confusing: userModule/task are 1 to 1, graphql API calls it
-task, in the backend we call it userModule, CDN has both. Would be good to unify this
-from long term maintainance perspective.
-
-Check if we need to store space/env ID as well in DB, since entity IDs are only
-unique within environment.
-
-TODO check security vs webhook (add webhook URL as exception).
-
-Check order of modules with userCourse. Is contentful guaranteed to return them in order.
-Or we dont care about order. Just check if only 1 is left uncomplete.
-
-    Program -> UserProgram
-
-    Course -> UserCourse
-
-    Module -> UserModule
-
-
-Remove task as well.
-
-Add support for fetch all user userPrograms, without any filtering.
-
-
 AS env variable in elastic beanstalk, for prod and staging.
 Idea run config file contains for local key. THey dont use app.properties.
+JWT secret as env var.
 
-monotlith is using 401, make it consistent
+
+TODO
+    WARNING: An illegal reflective access operation has occurred
+    WARNING: Illegal reflective access by com.esotericsoftware.reflectasm.AccessClassLoader (file:/home/velziv/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+    WARNING: Please consider reporting this to the maintainers of com.esotericsoftware.reflectasm.AccessClassLoader
+    WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+    WARNING: All illegal access operations will be denied in a future release
 
 
-Access to fetch at 'http://localhost:8080/graphql' from origin 'http://localhost:3000' has been blocked by CORS policy:
-Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on
-the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource
-with CORS disabled.
+FIXED
+    Access to fetch at 'http://localhost:8080/graphql' from origin 'http://localhost:3000' has been blocked by CORS policy:
+    Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on
+    the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource
+    with CORS disabled.
 
 
 

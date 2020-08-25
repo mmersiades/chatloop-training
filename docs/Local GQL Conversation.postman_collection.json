@@ -34,12 +34,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/graphql",
+					"raw": "http://localhost:8888/graphql",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -76,12 +76,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/graphql",
+					"raw": "http://localhost:8888/graphql",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -118,12 +118,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/graphql",
+					"raw": "http://localhost:8888/graphql",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -160,12 +160,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/graphql",
+					"raw": "http://localhost:8888/graphql",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -202,12 +202,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/graphql",
+					"raw": "http://localhost:8888/graphql",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -218,7 +218,7 @@
 		{
 			"name": "Contentful Webhook",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "x-contentful-webhook-name",
@@ -231,8 +231,25 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8888/webhook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"webhook"
+					]
 				}
 			},
 			"response": []

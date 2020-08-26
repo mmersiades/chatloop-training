@@ -18,6 +18,10 @@ FIXED
     with CORS disabled.
 
 
+Deploy JAR to elastic bean container, create two elastic bean envs (for staging and prod), setup RDS DB for
+each env (staging/prod), setup route 53 for URL. It spins EC2 instances automatically.
+
+
 
 
 

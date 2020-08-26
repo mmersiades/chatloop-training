@@ -10,7 +10,8 @@ JWT secret.
 By default real, remote Contenful service is used, so internet connection is required. 
 
 Also, instance of postgres database is required. If needed, default docker container running postgres can be started via `mvn docker:start`.
-`mvn docker:stop` can be used to remove existing instance.
+`mvn docker:stop` can be used to remove existing instance. Booted postgres instance will export port 5555 to localhost, so that it does
+not conflict with any pre-existing postgres instances which may be using default port 5432. 
 
 Developers can start application in IDE by running ChatloopUserTrainingMain main spring boot class.  Create run configuration in IDE 
 which uses above class as main class and add VM option `-Dspring.profiles.active=local` to use `application-local.properties`.
@@ -20,8 +21,6 @@ Postman is recommended to manually test/learn API. `docs/` folder contains ready
 Authorization HTTP header of type Bearer Token is required to be present in each request (ie JWT token). Any such token must be signed
 or issued by provider which used secret `security.jwt.mac.secret=` property. To generate tokens for different user names, see class 
 JwtTokenGenerator in tests. For local testing, file `test-jwt-tokens.txt` contains pre-generated JWT tokens for 3 virtual users.
-
-Instance of postgres database is required. Its 
 
 Property `security.jwt.mac.secret` in `application-local.properties` contains private key used to verify JWT tokens. Default value is
 copied from Monolith for dev/testing purposes. Bearer Token HTTP header is required.   To generate tokens for different user names, see class JwtTokenGenerator in tests. 

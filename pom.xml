@@ -171,7 +171,7 @@
                                     <POSTGRES_DB>cut</POSTGRES_DB>
                                 </env>
                                 <ports>
-                                    <port>5432:5432</port>
+                                    <port>5555:5432</port>
                                 </ports>
                                 <wait>
                                     <log>ready to accept connections</log>

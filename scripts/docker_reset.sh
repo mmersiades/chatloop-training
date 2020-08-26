@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# this will stop and remove ALL containers running locally!
+
 # stop all containers
 docker stop $(docker ps -aq)
 

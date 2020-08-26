@@ -1,6 +1,4 @@
 AS env variable in elastic beanstalk, for prod and staging.
-Idea run config file contains for local key. THey dont use app.properties.
-JWT secret as env var.
 
 See more details @ https://github.com/EsotericSoftware/reflectasm/issues/64
 Won't disable this warning, hopefully library owners will resolve it soon. Should not impact us, at least not for now.

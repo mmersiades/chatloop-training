@@ -14,7 +14,7 @@ pipelines:
             - docker
             - maven
           script:
-            - ./mvnw --batch-mode docker:start # start postgres (assumes we have docker runtime on host machine)
+            - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
             - ./mvnw --batch-mode clean test # run tests
             - ./mvnw --batch-mode docker:stop # stop postgres
             - ./mvnw --batch-mode package -Dmaven.test.skip=true
@@ -48,7 +48,7 @@ pipelines:
                     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                     AWS_DEFAULT_REGION: ap-southeast-2
                     APPLICATION_NAME: neonkingkong
-                    ENVIRONMENT_NAME: staging-api
+                    ENVIRONMENT_NAME: chatloop-user-training-staging
                     S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
                     ZIP_FILE: target/chatloop-user-training-elastic-beanstalk.zip
                     VERSION_LABEL: deploy-staging-$BITBUCKET_BUILD_NUMBER
@@ -68,7 +68,7 @@ pipelines:
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: ap-southeast-2
                 APPLICATION_NAME: neonkingkong
-                ENVIRONMENT_NAME: production-api
+                ENVIRONMENT_NAME: chatloop-user-training-production
                 S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
                 ZIP_FILE: target/chatloop-user-training-elastic-beanstalk.zip
                 VERSION_LABEL: deploy-production-$BITBUCKET_BUILD_NUMBER

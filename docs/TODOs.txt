@@ -2,6 +2,7 @@ AS env variable in elastic beanstalk, for prod and staging.
 Idea run config file contains for local key. THey dont use app.properties.
 JWT secret as env var.
 
+change com -> org package names.
 
 TODO
     WARNING: An illegal reflective access operation has occurred

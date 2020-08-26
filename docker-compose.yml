@@ -28,12 +28,12 @@ services:
       - POSTGRES_USER=cut
       - POSTGRES_PASSWORD=cut
       - POSTGRES_DB=cut
-#  pgadmin:
-#    image: dpage/pgadmin4
-#    ports:
-#      - 28080:80
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
-#      - PGADMIN_DEFAULT_PASSWORD=admin
-#    links:
-#      - db
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 29000:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    links:
+      - db

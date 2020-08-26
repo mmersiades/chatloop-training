@@ -14,7 +14,10 @@ Also, instance of postgres database is required. If needed, default docker conta
 not conflict with any pre-existing postgres instances which may be using default port 5432. 
 
 Developers can start application in IDE by running ChatloopUserTrainingMain main spring boot class.  Create run configuration in IDE 
-which uses above class as main class and add VM option `-Dspring.profiles.active=local` to use `application-local.properties`.
+which uses above class as main class and add VM option `-Dspring.profiles.active=local` to use `application-local.properties`. 
+
+Also, IDEA run configuration needs environment variable `JWT_SECRET_KEY=`. Property `security.jwt.mac.secret` in `application-test.properties` 
+contains default Monolith's private key used to verify test JWT tokens which can be used as default.
 
 Postman is recommended to manually test/learn API. `docs/` folder contains ready-to-use postman collection.
 
@@ -22,23 +25,30 @@ Authorization HTTP header of type Bearer Token is required to be present in each
 or issued by provider which used secret `security.jwt.mac.secret=` property. To generate tokens for different user names, see class 
 JwtTokenGenerator in tests. For local testing, file `test-jwt-tokens.txt` contains pre-generated JWT tokens for 3 virtual users.
 
-Property `security.jwt.mac.secret` in `application-local.properties` contains private key used to verify JWT tokens. Default value is
-copied from Monolith for dev/testing purposes. Bearer Token HTTP header is required.   To generate tokens for different user names, see class JwtTokenGenerator in tests. 
-In `docs/` you can find sample Postman configuration with preconfigured JWT tokens. TODO will change later to env variable.
-
 Once application is started, GraphQL is available under JWT-secured endpoint `http://localhost:8888/graphql`. Also, there is unsecured
 webhooks endpoint which is intended to be called by Contentful under `http://localhost:8888/webhook`.
 
-You may optionally install pgadmin4 tool (postgres admin console) to get familiar with SQL schema & data.
-#### In Docker
+### Running the App in Docker
 
 First `mvn clean package -Dmaven.test.skip=true`, which builds and packages new docker image. You can verify that new image is built via
-`docker images`. Then `docker-compose up` to start both microservice as well as postgres database. They expose 8888 web port and 5555 
-postgres port.
+`docker images`. 
+
+Then `docker-compose up` to start microservice, postgres database and pgadmin contrainers. They expose 8888 web port, 5555 
+postgres port and 29000 pgadmin port (`http://localhost:29000/browser/`), all of which should be accessible on the host machine. To shutdown all containers, pressing
+Ctrl+C should do the trick.
+
+File `.env` contains environment variable `JWT_SECRET_KEY` which is used by docker-compose to propagate it to containers.
+Default value of above variable is Monolith's test JWT secret. Change it as needed.
 
 You can stop & remove ALL containers and networks with `./scripts/docker_reset.sh`. Optional, and use with care.
 
+If there are port conflict related errors or warnings, it probably means some prior containter was not shutdown (properly) and
+clean it first before retrying.
+
 ### Tests
+
+Tests require postgres database, which can be started with `mvn docker:start`. We intentionally always use postgres for more realistic
+testing rather then using embedded H2 database. 
 
 To run all tests from command line execute `mvn clean test`. It all also perform checkstyle verification.
 
@@ -46,9 +56,9 @@ To run all tests from command line execute `mvn clean test`. It all also perform
 
 Default only used for now.
 
-    local           	- when running the server locally
-    staging         	- when deploying to staging environment in AWS
-    production			- enables several production environment settings
+    local               - generally used locally
+    staging             - when deploying to staging environment in AWS
+    production          - enables several production environment settings
 
 ## Deployment
 

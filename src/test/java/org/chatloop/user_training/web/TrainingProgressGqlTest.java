@@ -1,14 +1,14 @@
 package org.chatloop.user_training.web;
 
-import org.chatloop.user_training.LocalTestConfig;
-import org.chatloop.user_training.service.TrainingProgressService;
-import org.chatloop.user_training.util.TestUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.chatloop.user_training.LocalTestConfig;
+import org.chatloop.user_training.service.TrainingProgressService;
+import org.chatloop.user_training.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Order;

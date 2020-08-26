@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 import static org.chatloop.user_training.web.security.SecurityConstants.BEARER_PREFIX;
@@ -26,6 +27,11 @@ public class AuthenticationExtractor {
 
     @Value("${security.jwt.mac.secret}")
     private String jwtMacSecret;
+
+    @PostConstruct
+    public void init() {
+        assertValid();
+    }
 
     /**
      * Returns empty in case token is invalid.
@@ -50,5 +56,15 @@ public class AuthenticationExtractor {
         return JWT.require(Algorithm.HMAC512(jwtMacSecret.getBytes()))
                 .build()
                 .verify(jwt.replace(BEARER_PREFIX, ""));
+    }
+
+    private void assertValid() {
+        final int length = jwtMacSecret == null ? 0 : jwtMacSecret.length();
+        log.info("Secret JWT key length is {}", length);
+        if (length == 0) {
+            String message = "JWT secret is either null or empty string, check JWT_SECRET_KEY env variable or security.jwt.mac.secret property";
+            log.error(message);
+            throw new IllegalStateException(message);
+        }
     }
 }

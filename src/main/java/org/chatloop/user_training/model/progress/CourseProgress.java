@@ -1,10 +1,10 @@
 package org.chatloop.user_training.model.progress;
 
-import org.chatloop.user_training.service.ContentNotFound;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.chatloop.user_training.service.ContentNotFound;
 
 import javax.persistence.*;
 import java.util.HashSet;

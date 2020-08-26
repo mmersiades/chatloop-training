@@ -1,5 +1,6 @@
 package org.chatloop.user_training.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
@@ -12,7 +13,6 @@ import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.ContentNotFound;
 import org.chatloop.user_training.service.TrainingHistoryService;
 import org.chatloop.user_training.service.TrainingProgressService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

@@ -1,10 +1,10 @@
 package org.chatloop.user_training.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.event.TrainingEvent;
 import org.chatloop.user_training.model.event.TrainingEventType;
 import org.chatloop.user_training.repository.TrainingHistoryRepository;
 import org.chatloop.user_training.service.TrainingHistoryService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

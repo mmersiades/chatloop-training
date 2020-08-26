@@ -1,11 +1,11 @@
 package org.chatloop.user_training.model.content;
 
-import org.chatloop.user_training.model.progress.CourseResult;
-import org.chatloop.user_training.service.ContentNotFound;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.chatloop.user_training.model.progress.CourseResult;
+import org.chatloop.user_training.service.ContentNotFound;
 
 import java.util.LinkedHashSet;
 import java.util.Optional;

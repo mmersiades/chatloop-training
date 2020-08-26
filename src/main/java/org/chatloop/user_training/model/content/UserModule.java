@@ -1,10 +1,10 @@
 package org.chatloop.user_training.model.content;
 
-import org.chatloop.user_training.model.progress.ModuleProgress;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.chatloop.user_training.model.progress.ModuleProgress;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter

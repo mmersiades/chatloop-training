@@ -1,8 +1,8 @@
 package org.chatloop.user_training.web;
 
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.service.TrainingProgressService;
-import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

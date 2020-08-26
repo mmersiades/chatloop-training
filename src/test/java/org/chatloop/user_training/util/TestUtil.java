@@ -1,9 +1,9 @@
 package org.chatloop.user_training.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.event.TrainingEvent;
 import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.model.progress.ModuleProgress;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

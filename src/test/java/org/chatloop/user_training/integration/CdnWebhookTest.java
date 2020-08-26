@@ -1,10 +1,10 @@
 package org.chatloop.user_training.integration;
 
-import org.chatloop.user_training.LocalTestConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.chatloop.user_training.LocalTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;

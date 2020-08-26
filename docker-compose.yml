@@ -1,6 +1,6 @@
 version: "3"
 # microservice sees DB's 5432 port since they in same network, but
-# we expose to host port 5555 for pgadmin purposes;
+# we expose to host port 5555 for pgadmin purposes; See .env file;
 services:
   server:
     image: neonkingkong/chatloop-user-training
@@ -16,6 +16,7 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=ap-southeast-2
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     build:
       context: .
     links:

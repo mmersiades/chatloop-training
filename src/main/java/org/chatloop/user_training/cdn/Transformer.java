@@ -1,10 +1,10 @@
 package org.chatloop.user_training.cdn;
 
+import com.contentful.java.cda.CDAContentType;
+import com.contentful.java.cda.CDAEntry;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
-import com.contentful.java.cda.CDAContentType;
-import com.contentful.java.cda.CDAEntry;
 
 import java.util.ArrayList;
 import java.util.Collection;

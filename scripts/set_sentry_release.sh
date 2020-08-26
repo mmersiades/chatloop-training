@@ -9,7 +9,7 @@ export SENTRY_ORG=neon-king-kong
 VERSION=$(sentry-cli releases propose-version)
 
 # Create and finalize a release
-sentry-cli releases new -p chatloop-training "$VERSION" --finalize
+sentry-cli releases new -p chatloop-user-training "$VERSION" --finalize
 
 # Associate commits with the release
 sentry-cli releases set-commits --auto "$VERSION"

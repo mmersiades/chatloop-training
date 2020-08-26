@@ -1,15 +1,17 @@
 version: "3"
+# microservice sees DB's 5432 port since they in same network, but
+# we expose to host port 5555 for pgadmin purposes;
 services:
   server:
-    image: neonkingkong/chatloop-training
+    image: neonkingkong/chatloop-user-training
     ports:
-      - 8080:8080
+      - 8888:8888
     environment:
-      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_PROFILES_ACTIVE=staging
       - RDS_HOSTNAME=db
-      - RDS_USERNAME=nkk
-      - RDS_PASSWORD=nkk
-      - RDS_DB_NAME=nkk
+      - RDS_USERNAME=cut
+      - RDS_PASSWORD=cut
+      - RDS_DB_NAME=cut
       - RDS_PORT=5432
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -21,17 +23,17 @@ services:
   db:
     image: postgres:11.4-alpine
     ports:
-      - 5432:5432
+      - 5555:5432
     environment:
-      - POSTGRES_USER=nkk
-      - POSTGRES_PASSWORD=nkk
-      - POSTGRES_DB=nkk
-#  pgadmin:
-#    image: dpage/pgadmin4
-#    ports:
-#      - 28080:80
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
-#      - PGADMIN_DEFAULT_PASSWORD=admin
-#    links:
-#      - db
+      - POSTGRES_USER=cut
+      - POSTGRES_PASSWORD=cut
+      - POSTGRES_DB=cut
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 29000:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    links:
+      - db

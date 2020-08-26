@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.nkk</groupId>
-    <artifactId>chatloop-training</artifactId>
+    <artifactId>chatloop-user-training</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>chatloop-training</name>
-    <description></description>
+    <description>Chatloop User Training</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -119,9 +119,37 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>elasic-beanstalk-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/elastic-beanstalk.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -150,17 +178,17 @@
                     <verbose>true</verbose>
                     <images>
                         <image>
-                            <name>postgres</name>
+                            <name>postgres:11.4-alpine</name>
                             <alias>postgres</alias>
                             <run>
                                 <!-- see their data-jolokia example for more details -->
                                 <env>
-                                    <POSTGRES_USER>nkk</POSTGRES_USER>
-                                    <POSTGRES_PASSWORD>nkk</POSTGRES_PASSWORD>
-                                    <POSTGRES_DB>nkk</POSTGRES_DB>
+                                    <POSTGRES_USER>cut</POSTGRES_USER>
+                                    <POSTGRES_PASSWORD>cut</POSTGRES_PASSWORD>
+                                    <POSTGRES_DB>cut</POSTGRES_DB>
                                 </env>
                                 <ports>
-                                    <port>5432:5432</port>
+                                    <port>5555:5432</port>
                                 </ports>
                                 <wait>
                                     <log>ready to accept connections</log>
@@ -194,11 +222,35 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>neonkingkong/chatloop-training</repository>
+                    <repository>neonkingkong/chatloop-user-training</repository>
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <violationSeverity>warning</violationSeverity>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -232,13 +284,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
             <properties>
                 <spring.profiles.active>local</spring.profiles.active>
             </properties>

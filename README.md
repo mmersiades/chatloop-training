@@ -32,9 +32,11 @@ webhooks endpoint which is intended to be called by Contentful under `http://loc
 You may optionally install pgadmin4 tool (postgres admin console) to get familiar with SQL schema & data.
 #### In Docker
 
-You can reset all containers and networks with `./scripts/docker_reset.sh`.
+First `mvn clean package -Dmaven.test.skip=true`, which builds and packages new docker image. You can verify that new image is built via
+`docker images`. Then `docker-compose up` to start both microservice as well as postgres database. They expose 8888 web port and 5555 
+postgres port.
 
-First `mvn clean package -Dmaven.test.skip=true` then `docker-compose up`.
+You can stop & remove ALL containers and networks with `./scripts/docker_reset.sh`. Optional, and use with care.
 
 ### Tests
 

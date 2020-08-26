@@ -1,11 +1,13 @@
 version: "3"
+# microservice sees DB's 5432 port since they in same network, but
+# we expose to host port 5555 for pgadmin purposes;
 services:
   server:
-    image: neonkingkong/chatloop-training
+    image: neonkingkong/chatloop-user-training
     ports:
       - 8888:8888
     environment:
-      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_PROFILES_ACTIVE=staging
       - RDS_HOSTNAME=db
       - RDS_USERNAME=cut
       - RDS_PASSWORD=cut

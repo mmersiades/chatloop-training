@@ -50,7 +50,7 @@ clean it first before retrying.
 Tests require postgres database, which can be started with `mvn docker:start`. We intentionally always use postgres for more realistic
 testing rather then using embedded H2 database. 
 
-To run all tests from command line execute `mvn clean test`. It all also perform checkstyle verification.
+To run all tests from command line execute `mvn clean test`. It will also perform checkstyle verification.
 
 ### Profile options:
 
@@ -64,17 +64,28 @@ Default only used for now.
 
 To package project, run `mvn clean package`.
 
+Environment variables that generally may need to be changed/provided for remote/AWS deployment are:
+
+* RDS_HOSTNAME
+* RDS_PORT
+* RDS_DB_NAME
+* RDS_USERNAME
+* RDS_PASSWORD
+* CFUL_SPACE_ID
+* CFUL_ENV_ID
+* CFUL_DELIVERY_TOKEN
+* JWT_SECRET_KEY
+* SPRING_PROFILES_ACTIVE
+
 ### To AWS
 
 To create (test) environment, set platform to Docker, upload `chatloop-user-training-elastic-beanstalk.zip` from local machine.
 Configure postgres RDB database (its config params will be auto-injected into container via RDS* env variables). Enable some
 security keypair so you can ssh in case of any issues.
 
-Following environment variables should be provided for microservice instance.
-`AWS_ACCESS_KEY_ID=GivenByAdmin
-AWS_SECRET_ACCESS_KEY=GivenByAdmin
-JWT_SECRET_KEY=D*G-KaPdSgUkXp2s5v8y/B?E(H+MbQeThWmYq3t6w9z$C&F)J@NcRfUjXn2r4u7x
-SPRING_PROFILES_ACTIVE=staging`
+Following additional environment variables should be provided for microservice instance:
+* AWS_ACCESS_KEY_ID=GivenByAdmin
+* AWS_SECRET_ACCESS_KEY=GivenByAdmin
 
 #### Troubleshooting
 

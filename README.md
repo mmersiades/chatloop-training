@@ -66,7 +66,46 @@ To package project, run `mvn clean package`.
 
 ### To AWS
 
-...
+To create (test) environment, set platform to Docker, upload `chatloop-user-training-elastic-beanstalk.zip` from local machine.
+Configure postgres RDB database (its config params will be auto-injected into container via RDS* env variables). Enable some
+security keypair so you can ssh in case of any issues.
+
+Following environment variables should be provided for microservice instance.
+`AWS_ACCESS_KEY_ID=GivenByAdmin
+AWS_SECRET_ACCESS_KEY=GivenByAdmin
+JWT_SECRET_KEY=D*G-KaPdSgUkXp2s5v8y/B?E(H+MbQeThWmYq3t6w9z$C&F)J@NcRfUjXn2r4u7x
+SPRING_PROFILES_ACTIVE=staging`
+
+#### Troubleshooting
+
+In test setups, create your own public/private key in AWS and enable it during instance configuration. For prod use whatever prod key pair
+is generally used.
+
+Above is test JWT secret which works with our test users (tester etc). Real monolith's key should generally be used.
+
+
+To troubleshoot remote docker deployments, follow below instructions. Sudo is required for most commands once ssh-ed.
+
+Download your public/private key and save it to `~/.ssh/` directory. Exec `chmod 400 YouKey.pem`. This key should be enabled on instance
+during environment creation process.
+
+`ssh -v -i "YouKey.pem" ec2-user@PublicDNSAddress-southeast-2.compute.amazonaws.com`. Once ssh-ed, `sudo docker ps -a` etc can be used to
+interact with docker.
+
+`/opt/elasticbeanstalk/deployment/env.list` contains env variables that will be injected into docker container, which can be also checked
+with `./bin/get-config environment`.
+
+File `deployments/app_source_bundle` is actually the beanstalk ZIP file, just rename it, and unpackage if you need to check configuration.
+You can also rebuild image remotely with `sudo docker image build .`.
+
+Check if microservice container has connectivity to RDS via `ssh -vv PublicDNSAddress.rds.amazonaws.com -p 5432`. Should print message
+`Connection closed by remote host`.
+
+`sudo docker tag 12fa899eaca4 cut/cutms`
+`sudo docker run --name cut -d cut/cutms`
+`sudo docker run --env-file ./env.list --name cut –d cut/cutms`
+
+Or use beanstalk CLI client.
 
 ## FAQ
 

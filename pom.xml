@@ -25,6 +25,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <guava.version>20.0</guava.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+        <start-class>org.chatloop.user_training.ChatloopUserTrainingMain</start-class>
     </properties>
 
     <dependencies>
@@ -133,6 +134,11 @@
     </reporting>
     <build>
         <plugins>
+            <!-- Ensure this plugin is before beanstalk, otherwise built JAR may not contain BOOT-INF/ folder -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
@@ -149,10 +155,6 @@
                         <descriptor>src/assembly/elastic-beanstalk.xml</descriptor>
                     </descriptors>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

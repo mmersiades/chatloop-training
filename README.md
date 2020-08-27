@@ -71,3 +71,11 @@ To package project, run `mvn clean package`.
 ## FAQ
 
 ...
+
+## Misc
+
+Start docker container of application manually. Handy when troubleshooting beanstalk setup. Shows list of all env
+variables required.
+
+`docker run --name chatloop-user-training -e RDS_HOSTNAME=db -e RDS_PORT=5432 -e RDS_DB_NAME=cut -e RDS_USERNAME=cut -e RDS_PASSWORD=cut -e JWT_SECRET_KEY= -e SPRING_PROFILES_ACTIVE=staging -p 8888:8080 -d neonkingkong/chatloop-user-training`
+

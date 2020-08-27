@@ -21,5 +21,7 @@ each env (staging/prod), setup route 53 for URL. It spins EC2 instances automati
 
 
 
+Choose application load balancer. Only conf setting you cant change.
+
 
 

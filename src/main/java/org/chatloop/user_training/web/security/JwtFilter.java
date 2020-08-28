@@ -36,7 +36,7 @@ public class JwtFilter extends BasicAuthenticationFilter {
 
         String jwtToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
         if (jwtToken == null || jwtToken.isEmpty()) {
-            log.error("JWT token is missing, found headers {}", Collections.list(request.getHeaderNames()));
+            log.error("JWT token is missing for path {}, found headers {}", request.getRequestURI(), Collections.list(request.getHeaderNames()));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

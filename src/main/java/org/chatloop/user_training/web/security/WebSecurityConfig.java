@@ -55,6 +55,7 @@ public class WebSecurityConfig {
         public void configure(WebSecurity web) throws Exception {
             log.info("Path /webhook is intentionally not secured (to be called by Contentful)");
             web.ignoring().antMatchers("/webhook/**");
+            web.ignoring().antMatchers("/actuator/**"); // for health checks, such as AWS
             if (isLocalOrTest()) {
                 // eventually these should be deleted, since we moved to postgres and postman;
                 // leave it here for now in case we need to switch for testing etc;

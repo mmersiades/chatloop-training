@@ -73,30 +73,37 @@ clean it first before retrying. Or, if unable to connect type of errors are seen
 
 ### AWS Deployment
 
-To package project, run `mvn clean package`.
+To package project, run `mvn clean package -Dmaven.test.skip=true`.
 
 Environment variables that generally may need to be changed/provided for remote/AWS deployment are:
 
-* RDS_HOSTNAME
-* RDS_PORT
-* RDS_DB_NAME
-* RDS_USERNAME
-* RDS_PASSWORD
 * CFUL_SPACE_ID
 * CFUL_ENV_ID
 * CFUL_DELIVERY_TOKEN
 * JWT_SECRET_KEY
 * SPRING_PROFILES_ACTIVE
 
-### To AWS
+Following additional environment variables should be provided for microservice instance:
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+
+These env variables are auto-injected by AWS itself.
+
+* RDS_HOSTNAME
+* RDS_PORT
+* RDS_DB_NAME
+* RDS_USERNAME
+* RDS_PASSWORD
 
 To create (test) environment, set platform to Docker, upload `chatloop-user-training-elastic-beanstalk.zip` from local machine.
 Configure postgres RDB database (its config params will be auto-injected into container via RDS* env variables). Enable some
-security keypair so you can ssh in case of any issues.
+security keypair so you can ssh in case of any issues. 
 
-Following additional environment variables should be provided for microservice instance:
-* AWS_ACCESS_KEY_ID=GivenByAdmin
-* AWS_SECRET_ACCESS_KEY=GivenByAdmin
+If you are using load balancer, health check path to be used should be set to `/actuator/health`, ie our app exposes endpoint
+such as `http://localhost:8888/actuator/health`. Thus AWS LB Listener is HTTP/80 pointing to Process HTTP/80, HTTP code 200 and
+health check path `/actuator/health`. 
+
+When load balancer is configured, environment URL should be used to connect to the app, rather than instance DNS name.
 
 #### Troubleshooting
 
@@ -134,6 +141,8 @@ Or use beanstalk CLI client.
 ...
 
 ## Misc
+
+When interacting with maven, tests can be skipped with `-Dmaven.test.skip=true` flag.
 
 Start docker container of application manually. Handy when troubleshooting beanstalk setup. Shows list of all env
 variables required.

@@ -7,16 +7,16 @@ services:
     ports:
       - 8888:8888
     environment:
-      - SPRING_PROFILES_ACTIVE=staging
-      - RDS_HOSTNAME=db
-      - RDS_USERNAME=cut
-      - RDS_PASSWORD=cut
-      - RDS_DB_NAME=cut
-      - RDS_PORT=5432
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_REGION=ap-southeast-2
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - CFUL_SPACE_ID=${CFUL_SPACE_ID}
+      - CFUL_ENV_ID=${CFUL_ENV_ID}
+      - CFUL_DELIVERY_TOKEN=${CFUL_DELIVERY_TOKEN}
+      - RDS_HOSTNAME=${RDS_HOSTNAME}
+      - RDS_PORT=${RDS_PORT}
+      - RDS_DB_NAME=${RDS_DB_NAME}
+      - RDS_USERNAME=${RDS_USERNAME}
+      - RDS_PASSWORD=${RDS_PASSWORD}
     build:
       context: .
     links:
@@ -26,15 +26,15 @@ services:
     ports:
       - 5555:5432
     environment:
-      - POSTGRES_USER=cut
-      - POSTGRES_PASSWORD=cut
-      - POSTGRES_DB=cut
+      - POSTGRES_DB=${RDS_DB_NAME}
+      - POSTGRES_USER=${RDS_USERNAME}
+      - POSTGRES_PASSWORD=${RDS_PASSWORD}
   pgadmin:
     image: dpage/pgadmin4
     ports:
       - 29000:80
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@chatloop.io
-      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     links:
       - db

@@ -1,10 +1,7 @@
 AS env variable in elastic beanstalk, for prod and staging.
-Idea run config file contains for local key. THey dont use app.properties.
-JWT secret as env var.
 
-change com -> org package names.
-
-TODO
+See more details @ https://github.com/EsotericSoftware/reflectasm/issues/64
+Won't disable this warning, hopefully library owners will resolve it soon. Should not impact us, at least not for now.
     WARNING: An illegal reflective access operation has occurred
     WARNING: Illegal reflective access by com.esotericsoftware.reflectasm.AccessClassLoader (file:/home/velziv/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
     WARNING: Please consider reporting this to the maintainers of com.esotericsoftware.reflectasm.AccessClassLoader
@@ -23,6 +20,8 @@ Deploy JAR to elastic bean container, create two elastic bean envs (for staging 
 each env (staging/prod), setup route 53 for URL. It spins EC2 instances automatically.
 
 
+
+Choose application load balancer. Only conf setting you cant change.
 
 
 

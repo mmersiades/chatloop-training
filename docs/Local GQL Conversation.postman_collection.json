@@ -8,16 +8,6 @@
 		{
 			"name": "01-userPrograms",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -34,12 +24,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8888/graphql",
+					"raw": "http://{{CutWebHost}}/graphql",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{CutWebHost}}"
 					],
-					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -50,16 +39,6 @@
 		{
 			"name": "02-userProgram",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -76,12 +55,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8888/graphql",
+					"raw": "http://{{CutWebHost}}/graphql",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{CutWebHost}}"
 					],
-					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -92,16 +70,6 @@
 		{
 			"name": "03-userCourse",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -118,12 +86,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8888/graphql",
+					"raw": "http://{{CutWebHost}}/graphql",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{CutWebHost}}"
 					],
-					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -134,16 +101,6 @@
 		{
 			"name": "04-taskAttempt",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -160,12 +117,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8888/graphql",
+					"raw": "http://{{CutWebHost}}/graphql",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{CutWebHost}}"
 					],
-					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -176,16 +132,6 @@
 		{
 			"name": "05-resetUserCourse",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -202,12 +148,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8888/graphql",
+					"raw": "http://{{CutWebHost}}/graphql",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{CutWebHost}}"
 					],
-					"port": "8888",
 					"path": [
 						"graphql"
 					]
@@ -218,6 +163,9 @@
 		{
 			"name": "Contentful Webhook",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -241,18 +189,61 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8888/webhook",
+					"raw": "http://ec2-54-79-9-113.ap-southeast-2.compute.amazonaws.com:80/webhook",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"ec2-54-79-9-113",
+						"ap-southeast-2",
+						"compute",
+						"amazonaws",
+						"com"
 					],
-					"port": "8888",
+					"port": "80",
 					"path": [
 						"webhook"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "707c08aa-3545-4c43-afe8-c131211b30e8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "fab95de6-cb90-463b-8559-0a5ccf06c785",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d0e0af42-da93-4857-812a-7efaf5d107d9",
+			"key": "CutWebHost",
+			"value": "http://localhost:8888"
 		}
 	],
 	"protocolProfileBehavior": {}

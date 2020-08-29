@@ -51,7 +51,7 @@ pipelines:
                     ENVIRONMENT_NAME: staging-user-training
                     S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
                     ZIP_FILE: target/chatloop-user-training-elastic-beanstalk.zip
-                    VERSION_LABEL: deploy-staging-$BITBUCKET_BUILD_NUMBER
+                    VERSION_LABEL: deploy-staging-user-training-$BITBUCKET_BUILD_NUMBER
                     DEBUG: "true"
 
     # Deploy to production environment (no tests run), with manual trigger in BitBucket Pipeline browser interface
@@ -71,7 +71,7 @@ pipelines:
                 ENVIRONMENT_NAME: production-user-training
                 S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
                 ZIP_FILE: target/chatloop-user-training-elastic-beanstalk.zip
-                VERSION_LABEL: deploy-production-$BITBUCKET_BUILD_NUMBER
+                VERSION_LABEL: deploy-production-user-training-$BITBUCKET_BUILD_NUMBER
                 DEBUG: "true"
 
   # All branches get built and tested

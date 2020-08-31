@@ -1,0 +1,30 @@
+First export all user IDs from monolith's database into a local file. Assume file is called 'monolith-user-ids.csv'.
+This can be done thru command line with psql or via pgadmin web console, with manual download of CSV file. See example
+test file with same name in test package.
+
+    -- export user IDs which are in given roles
+    select
+        users.id as user_id
+    from
+        public.users as users,
+        public.user_roles as roles
+    where
+        users.id = roles.user_id AND
+        roles.role in ('ROLE_PARTNER', 'ROLE_TUTOR')
+    order by
+        users.id;
+
+
+Next, we need list of all unique space_id/env_id/course_id/module_id tuples from Contentful. Class CdnCrawler can be
+used to extract CSV file by connecting to real Contentful. Assume file is called 'contentful-data.csv'. See example
+test file with same name in test package.
+
+Then, update paths in 'migrator.sql' script to point to location where you keep CSV files. Relative paths
+are allowed, such as ./ to refer to current directory where you may have saved CSV files and from which
+you started psql.
+
+Now we are ready to import data and populate our tables.
+
+From within psql, execute command "\i ./docs/migration/migrator.sql;". This assumes that psql was started
+in root directory of Java project. Adjust path accordingly.
+

@@ -42,6 +42,20 @@ public class StatefulCdnService implements CdnService {
     // TODO double check, not much in their docs about thread safety
     private final ReadWriteLock spaceLock = new ReentrantReadWriteLock();
 
+    /**
+     * Only for crawler.
+     */
+    public CDAClient getClient() {
+        return client;
+    }
+
+    /**
+     * Only for crawler.
+     */
+    public SynchronizedSpace getSyncedSpace() {
+        return syncedSpace;
+    }
+
     @PostConstruct
     public void init() {
         createClient();

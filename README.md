@@ -168,6 +168,10 @@ You can also rebuild image remotely with `sudo docker image build .`.
 
 Or use beanstalk CLI client.
 
+## Migration
+
+See `docs/migration/migration-guide.txt`.
+
 ## Misc
 
 When interacting with Maven, tests can be skipped with `-Dmaven.test.skip=true` flag.

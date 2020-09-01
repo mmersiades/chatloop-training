@@ -48,6 +48,9 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
         List<UserProgram> userPrograms = cdnService.fetchUserPrograms();
         for (UserProgram userProgram : userPrograms) {
+            if (userProgram.getUserCourseCnt() == 0) {
+                log.warn("Program {}/{} with 0 courses, is Contentful model correct?", userProgram.getName(), userProgram.getId());
+            }
             for (UserCourse userCourse : userProgram.getUserCourses()) {
                 getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
                 userCourse.calculateDerivedInfo();

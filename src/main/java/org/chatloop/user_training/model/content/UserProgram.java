@@ -40,4 +40,8 @@ public class UserProgram extends IdAware {
         copy.setDescription(getDescription());
         return copy;
     }
+
+    public int getUserCourseCnt() {
+        return userCourses.size();
+    }
 }

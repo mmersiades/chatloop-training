@@ -44,7 +44,16 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
-        return cdnService.fetchUserPrograms();
+        String userId = getUserId();
+
+        List<UserProgram> userPrograms = cdnService.fetchUserPrograms();
+        for (UserProgram userProgram : userPrograms) {
+            for (UserCourse userCourse : userProgram.getUserCourses()) {
+                getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
+                userCourse.calculateDerivedInfo();
+            }
+        }
+        return userPrograms;
     }
 
     /**

@@ -78,20 +78,25 @@ public class StatefulCdnService implements CdnService {
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
-        Transformer tform = new Transformer();
-        List<UserProgram> programs = new ArrayList<>();
-        for (CDAEntry entry : syncedSpace.entries().values()) {
-            CDAContentType cdnType = entry.contentType();
-            if (cdnType.name().equals("program")) {
-                programs.add(tform.toUserProgram(entry, true));
+        spaceLock.readLock().lock();
+        try {
+            Transformer tform = new Transformer();
+            List<UserProgram> programs = new ArrayList<>();
+            for (CDAEntry entry : syncedSpace.entries().values()) {
+                CDAContentType cdnType = entry.contentType();
+                if (cdnType.name().equals("program")) {
+                    programs.add(tform.toUserProgram(entry, true));
+                }
             }
+            return programs;
+        } finally {
+            spaceLock.readLock().unlock();
         }
-        return programs;
     }
 
     @Override
     public Optional<UserProgram> fetchProgramById(String programId) {
-        spaceLock.writeLock().lock();
+        spaceLock.readLock().lock();
         try {
             CDAEntry entry = syncedSpace.entries().get(programId);
             if (entry == null) {
@@ -101,7 +106,7 @@ public class StatefulCdnService implements CdnService {
             Transformer tform = new Transformer();
             return Optional.of(tform.toUserProgram(entry, true));
         } finally {
-            spaceLock.writeLock().unlock();
+            spaceLock.readLock().unlock();
         }
     }
 

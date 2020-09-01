@@ -19,7 +19,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query {\n  userPrograms {\n    id\n    name\n    description\n  }\n}\n",
+						"query": "query {\n    userPrograms {\n        id\n        name\n        description\n        userCourses {\n            id\n            name\n            completion\n        }\n    }\n}\n",
 						"variables": ""
 					}
 				},
@@ -189,16 +189,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://ec2-54-79-9-113.ap-southeast-2.compute.amazonaws.com:80/webhook",
+					"raw": "http://{{CutWebHost}}/webhook",
 					"protocol": "http",
 					"host": [
-						"ec2-54-79-9-113",
-						"ap-southeast-2",
-						"compute",
-						"amazonaws",
-						"com"
+						"{{CutWebHost}}"
 					],
-					"port": "80",
 					"path": [
 						"webhook"
 					]
@@ -241,9 +236,9 @@
 	],
 	"variable": [
 		{
-			"id": "d0e0af42-da93-4857-812a-7efaf5d107d9",
+			"id": "e0b8a4c1-8239-45bb-ad49-b2520605d3bf",
 			"key": "CutWebHost",
-			"value": "http://localhost:8888"
+			"value": "localhost:8888"
 		}
 	],
 	"protocolProfileBehavior": {}

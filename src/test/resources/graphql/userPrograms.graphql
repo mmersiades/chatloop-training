@@ -3,5 +3,10 @@ query {
         id
         name
         description
+        userCourses {
+            id
+            name
+            completion
+        }
     }
 }

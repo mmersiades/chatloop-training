@@ -2,7 +2,6 @@ package org.chatloop.user_training.service.impl;
 
 import com.contentful.java.cda.*;
 import lombok.extern.slf4j.Slf4j;
-import org.chatloop.user_training.cdn.Transformer;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.service.CdnService;

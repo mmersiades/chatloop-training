@@ -10,15 +10,22 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Profile("test")
 @Service
 public class FakeCdnService implements CdnService {
 
     private final List<UserProgram> userPrograms = new ArrayList<>();
+    private final AtomicReference<Instant> lastReset = new AtomicReference<>(Instant.now());
+
+    public Instant getLastReset() {
+        return lastReset.get();
+    }
 
     @Override
     @PostConstruct
@@ -53,6 +60,7 @@ public class FakeCdnService implements CdnService {
 
     @Override
     public void markCacheStale() {
+        lastReset.set(Instant.now());
     }
 
     private final Logger log = LoggerFactory.getLogger(FakeCdnService.class);

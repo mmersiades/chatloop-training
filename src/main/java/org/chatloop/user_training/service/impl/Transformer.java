@@ -1,4 +1,4 @@
-package org.chatloop.user_training.cdn;
+package org.chatloop.user_training.service.impl;
 
 import com.contentful.java.cda.CDAContentType;
 import com.contentful.java.cda.CDAEntry;

@@ -1,3 +1,7 @@
+psql is official postgres CLI client. Install it by followig installation instructions for you OS. To login use
+`psql --host HOST --port=PORT --username=USER` such as `psql --host localhost --port=5555 --username=cut`. Prompt
+will ask you for password, which should be cut for local postgres.
+
 First export all user IDs from monolith's database into a local file. Assume file is called 'monolith-user-ids.csv'.
 This can be done thru command line with psql or via pgadmin web console, with manual download of CSV file. See example
 test file with same name in test package.

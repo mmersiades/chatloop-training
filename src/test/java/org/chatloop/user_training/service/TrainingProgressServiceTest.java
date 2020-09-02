@@ -4,6 +4,7 @@ import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.progress.CourseResult;
 import org.chatloop.user_training.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,6 +76,8 @@ public class TrainingProgressServiceTest {
 
         userCourse = service.taskAttempt(userCourse.getId(), userModule.getId(), false);
         assertEquals(0.0, userCourse.getCompletion());
+        assertEquals(CourseResult.COURSE_FAILED, userCourse.getCourseResult());
+        userCourse = service.resetCourse(userCourse.getId());
 
         for (int i = 1; i < 6; i++) {
             userCourse = service.taskAttempt(userCourse.getId(), "mod31" + i, true);

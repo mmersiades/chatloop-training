@@ -59,18 +59,14 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
         return userPrograms;
     }
 
-    /**
-     * For now we assume this is always called first, thus ensuring that DB
-     * always contains all courses/modules progresses for each user. TODO relax this requirement
-     */
     @Override
     public UserProgram fetchProgram(String programId) {
         String userId = getUserId();
 
         UserProgram userProgram = getProgramFromCdnStrict(programId);
         for (UserCourse userCourse : userProgram.getUserCourses()) {
-            getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
-            userCourse.calculateDerivedInfo();
+            CourseProgress progress = getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
+            updateCdnModelWithProgressInfo(userCourse, progress);
         }
         return userProgram;
     }
@@ -117,8 +113,13 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
         } else {
             historyService.onTaskIncorrect(userId, courseId, moduleId);
             if (isLimitExceeded(progress)) {
+                progress.setCourseResult(CourseResult.COURSE_FAILED);
                 historyService.onCourseFailed(userId, courseId);
-                resetCourseProgress(userCourse, progress);
+                /*
+                 * Based on discussion with UI team, disabling for now automatic course
+                 * reset, but rather leaving it up to users/UI to invoke reset command.
+                 */
+//                resetCourseProgress(userCourse, progress);
             }
         }
         courseRepo.save(progress);

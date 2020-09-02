@@ -44,7 +44,19 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
-        return cdnService.fetchUserPrograms();
+        String userId = getUserId();
+
+        List<UserProgram> userPrograms = cdnService.fetchUserPrograms();
+        for (UserProgram userProgram : userPrograms) {
+            if (userProgram.getUserCourseCnt() == 0) {
+                log.warn("Program {}/{} with 0 courses, is Contentful model correct?", userProgram.getName(), userProgram.getId());
+            }
+            for (UserCourse userCourse : userProgram.getUserCourses()) {
+                getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
+                userCourse.calculateDerivedInfo();
+            }
+        }
+        return userPrograms;
     }
 
     /**

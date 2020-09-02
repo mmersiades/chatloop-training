@@ -35,6 +35,9 @@ public class StatefulCdnService implements CdnService {
     @Value("${contentful.deliveryToken}")
     private String deliveryToken;
 
+    @Value("${contentful.log.fetched}")
+    private boolean logFetched;
+
     private CDAClient client;
 
     private SynchronizedSpace syncedSpace;
@@ -68,8 +71,21 @@ public class StatefulCdnService implements CdnService {
         log.info("Cached marked as stale, starting re-sync of space {}", spaceId);
         spaceLock.writeLock().lock();
         try {
-            SyncQuery syncQuery = client.sync(syncedSpace);
+            SyncQuery syncQuery = this.client.sync(); // replaces below
             syncedSpace = syncQuery.fetch();
+            /**
+             * This call may lead to missing pointer/edge between program and course. So even
+             * though they are linked in Contentful, we observe it via their Java client API
+             * as missing. Given very low amount of data we work with, as well as expected low
+             * rate of change on Contentful, doing full sync should be fine from perf perspective.
+             * Issue was happening when course is repeatable unpublished/published. Unfortunately
+             * their Javadoc is very limited. If performance requirements are dramatically changed
+             * then this can be revisited, including contacting their support for help. For now single
+             * write lock ensures we don't flood Contentful with large number of requests.
+             */
+//            SyncQuery syncQuery = client.sync(syncedSpace);
+//            syncedSpace = syncQuery.fetch();
+            logFetchedContent();
         } finally {
             spaceLock.writeLock().unlock();
         }
@@ -78,20 +94,25 @@ public class StatefulCdnService implements CdnService {
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
-        Transformer tform = new Transformer();
-        List<UserProgram> programs = new ArrayList<>();
-        for (CDAEntry entry : syncedSpace.entries().values()) {
-            CDAContentType cdnType = entry.contentType();
-            if (cdnType.name().equals("program")) {
-                programs.add(tform.toUserProgram(entry, true));
+        spaceLock.readLock().lock();
+        try {
+            Transformer tform = new Transformer();
+            List<UserProgram> programs = new ArrayList<>();
+            for (CDAEntry entry : syncedSpace.entries().values()) {
+                CDAContentType cdnType = entry.contentType();
+                if (cdnType.name().equals("program")) {
+                    programs.add(tform.toUserProgram(entry, true));
+                }
             }
+            return programs;
+        } finally {
+            spaceLock.readLock().unlock();
         }
-        return programs;
     }
 
     @Override
     public Optional<UserProgram> fetchProgramById(String programId) {
-        spaceLock.writeLock().lock();
+        spaceLock.readLock().lock();
         try {
             CDAEntry entry = syncedSpace.entries().get(programId);
             if (entry == null) {
@@ -101,7 +122,7 @@ public class StatefulCdnService implements CdnService {
             Transformer tform = new Transformer();
             return Optional.of(tform.toUserProgram(entry, true));
         } finally {
-            spaceLock.writeLock().unlock();
+            spaceLock.readLock().unlock();
         }
     }
 
@@ -144,6 +165,7 @@ public class StatefulCdnService implements CdnService {
         SyncQuery syncQuery = this.client.sync();
         syncedSpace = syncQuery.fetch();
         log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
+        logFetchedContent();
     }
 
     private void createClient() {
@@ -153,6 +175,22 @@ public class StatefulCdnService implements CdnService {
                 .setToken(deliveryToken)
                 .build();
         log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
+    }
+
+    private void logFetchedContent() {
+        if (!logFetched) {
+            return;
+        }
+        int count = 0;
+        Set<String> types = new HashSet<>(Arrays.asList("program", "course", "module"));
+        for (CDAEntry entry : syncedSpace.entries().values()) {
+            CDAContentType cdnType = entry.contentType();
+            if (types.contains(cdnType.name())) {
+                ++count;
+                log.info("Fetched {} / {} / {}", cdnType.name(), entry.getField("name"), entry.id());
+            }
+        }
+        log.info("Fetched total {} entries", count);
     }
 
     private static final Set<String> REQUIRED_TYPEs = new HashSet<>(Arrays.asList("program", "course", "module"));

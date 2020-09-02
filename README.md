@@ -18,7 +18,9 @@ This data is then available for the front-end to request via a graphql endpoint.
 For app development, it is recommended to run teh app in the IDE, rather than in a Docker container (see Local Deployment Test below).
 
 Most of the parameters that may need to be changed are in `application.properties`, including postgres, contentful, web server port,
-JWT secret. For local development we always use local spring profile.
+JWT secret. For local development we always use local spring profile, where we also treat `security.jwt.mac.secret` bit differently
+from rest of configuration options and it should be provided as environment variable as per `application-local.properties` when running
+via main method.
 
 By default, real, remote Contentful service is used, so internet connection is required. 
 
@@ -167,6 +169,10 @@ You can also rebuild image remotely with `sudo docker image build .`.
 `sudo docker run --env-file ./env.list --name cut –d cut/cutms`
 
 Or use beanstalk CLI client.
+
+## Migration
+
+See `docs/migration/migration-guide.txt`.
 
 ## Misc
 

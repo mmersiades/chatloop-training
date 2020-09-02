@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS public.module_progress
         ON DELETE NO ACTION
 );
 
-CREATE SEQUENCE IF NOT EXISTS training_event_sequence_gen START 1;
-CREATE SEQUENCE IF NOT EXISTS course_progress_sequence_gen START 1;
-CREATE SEQUENCE IF NOT EXISTS module_progress_sequence_gen START 1;
+-- INCREMENT should match SequenceGenerator.allocationSize in POJOs to avoid negative primary keys or conflicts;
+CREATE SEQUENCE IF NOT EXISTS training_event_sequence_gen INCREMENT 100 START 1;
+CREATE SEQUENCE IF NOT EXISTS course_progress_sequence_gen INCREMENT 100 START 1;
+CREATE SEQUENCE IF NOT EXISTS module_progress_sequence_gen INCREMENT 100 START 1;

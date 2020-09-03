@@ -176,6 +176,11 @@ See `docs/migration/migration-guide.txt`.
 
 ## Misc
 
+To run test coverage, execute `mvn clean verify`. Test report should be under `chatloop-training/target/jacoco-report/index.html` which can be
+opened in browser. Long term wise, as more functionality is being migrated from Monolith to this or other microservices, I would suggest to consider 
+creating automated REST/GQL test suite in Postman (or other similar tools), which would cover UI, Contentful and backend microservices, and whose
+tests would be conversational ie model exactly the flow of business use cases. 
+
 When interacting with Maven, tests can be skipped with `-Dmaven.test.skip=true` flag.
 
 Start docker container of application manually. Handy when troubleshooting beanstalk setup. Shows list of all env

@@ -227,6 +227,6 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         log.info("Extracted user ID {}", principal);
-        return (String) principal;
+        return String.valueOf(principal);
     }
 }

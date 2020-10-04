@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
  * Use this to generate new JWT token which can be used for testing/dev.
  *
  * Feel free to change subject (user name) to any value you prefer.
+ *
+ * Can be viewed in https://jwt.io/.
  */
 public class JwtTokenGenerator {
 
@@ -28,6 +30,7 @@ public class JwtTokenGenerator {
             String token = JWT.create()
                     .withIssuer(issuer)
                     .withSubject(subject)
+                    .withClaim("user_id", 123) // needed
                     .withExpiresAt(new GregorianCalendar(2025, Calendar.JANUARY, 1).getTime())
                     .sign(algorithm);
 

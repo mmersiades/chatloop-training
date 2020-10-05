@@ -2,6 +2,7 @@ package org.chatloop.user_training.web.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,8 @@ import static org.chatloop.user_training.web.security.SecurityConstants.BEARER_P
  * before on NKK monolith.
  *
  * User ID is used in other parts of the system, including as column in database.
+ *
+ * Monolith uses claim user_id to propagate info, rather than subject.
  */
 @Component
 @Slf4j
@@ -40,8 +43,15 @@ public class AuthenticationExtractor {
         try {
             DecodedJWT decodedToken = parseJwt(jwt, jwtMacSecret);
 
-            String userId = decodedToken.getSubject();
-            log.info("Extracted user ID {} from JWT token", userId);
+            String subject = decodedToken.getSubject();
+            Claim claim = decodedToken.getClaim(USER_ID_CLAIM_NAME);
+            if (claim == null || claim.isNull()) {
+                String message = "JWT token is missing user_id claim for subject " + subject;
+                log.error(message);
+                throw new RuntimeException(message);
+            }
+            Integer userId = claim.asInt();
+            log.info("Extracted subject {}, user ID {} from JWT token", subject, userId);
 
             // token is valid, we neither need nor have access to password/credentials
             return Optional.of(new UsernamePasswordAuthenticationToken(userId, null));
@@ -67,4 +77,9 @@ public class AuthenticationExtractor {
             throw new IllegalStateException(message);
         }
     }
+
+    /**
+     * Must be in-sync with nkk monolith.
+     */
+    public static final String USER_ID_CLAIM_NAME = "user_id";
 }

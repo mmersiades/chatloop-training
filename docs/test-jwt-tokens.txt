@@ -6,11 +6,23 @@ Here we have pre-generated test tokens for 3 users: tester, tester0, tester1. Ve
 Monolith's test private key was used.
 
 for user tester (dont change it, used in tests)
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.Ry2B84G_GoCTfvtHn7N7yjQTlZfjZwcQXMDWjaOdhv2YeicV1Zw_BBAOFi_9OkSiaq_E-Z_SJXWaSZQVf2r2aw
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJ1c2VyX2lkIjoxMjMsImlzcyI6IkNoYXRsb29wVHJhaW5pbmdUZXN0ZXIiLCJleHAiOjE3MzU2ODk2MDB9.7cjWRh1tnqdISdfZGLLz6OFZThcXcjGWohXczPdYfQHvGtwp5mpYK3g-yPL11zhn0wC9GJRPqN7x1NSw8fmywg
 
 for user tester0
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIwIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTczNTY4OTYwMH0.HL9uWC5elTjPraNKfM5Xc1mVsEK61HD8xiLA0EDxPOCs3fiBMIJHK1dJiMWPtqZIYD4spDKwTFbKWcWZUQZkVQ
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIwIiwidXNlcl9pZCI6MTIzLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.9mj_ssUeh8z22B2T3W26hMBIQaPHaZ4PzwrjL-k--gAPHfLNAWKaBLie0G5VFKhT34ovv1nkKyLm83mnb5QU3g
 
 for user tester1
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiaXNzIjoiQ2hhdGxvb3BUcmFpbmluZ1Rlc3RlciIsImV4cCI6MTczNTY4OTYwMH0.Cx-huuIr1auZakCSRY-CacSzaSq_K0G5Klez0HNeCTrK822QTAklTt3tmk3Hv0s483oabF7FkYzRwDWUXSlcYw
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwidXNlcl9pZCI6MTIzLCJpc3MiOiJDaGF0bG9vcFRyYWluaW5nVGVzdGVyIiwiZXhwIjoxNzM1Njg5NjAwfQ.I1iCwywJ2HGJesDOs7PY0sVcw_3Lx6rAfKFhTlYillpnKaAFsxzc3zrUT--k2S90I14MNOm2WpcQXusRwk1Pzw
 
+
+Example signature from monolith:
+
+{
+  "sub": "partner@gmail.com",
+  "user_id": 490689,
+  "roles": [
+    "ROLE_PARTNER"
+  ],
+  "exp": 1601888594,
+  "user_display_name": "Dave"
+}

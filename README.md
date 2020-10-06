@@ -159,6 +159,7 @@ Finally to test the AWS CLI, open a terminal and run:
 #### Creating the auxiliary AWS infrastructure
 
 In the subfolder `infrastructure/terraform` are a bunch of subfolders for the environments `staging-api`, `production-api`, `staging-user-training` and `production-user-training`:
+
 * `infrastructure/terraform/modules` - defines the template for AWS resources which need to exist in every environment (database etc)
 * `infrastructure/terraform/staging` - invokes the template with the parameters to create the `staging-api` envionment
 * `infrastructure/terraform/production` - invokes the template with the parameters to create the `production-api` envionment

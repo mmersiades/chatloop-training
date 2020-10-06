@@ -8,3 +8,7 @@
 /contentful-data.csv
 /monolith-user-ids.csv
 .DS_Store
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+

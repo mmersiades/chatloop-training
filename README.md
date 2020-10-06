@@ -84,7 +84,113 @@ clean it first before retrying. Or, if unable to connect type of errors are seen
 
 ### Manual AWS Deployment
 
-To package project, run `mvn clean package -Dmaven.test.skip=true`. This will generate a package called `chatloop-user-training-elastic-beanstalk.zip`.
+Lists the steps which are needed to perform a deployment to AWS.
+
+### Prerequisites
+
+The following tools should be installed on your machine.
+
+#### Terraform
+
+To deploy infrastructure and service, you will use Terraform 0.12.
+
+It can be manually installed by downloading the lastest 0.12.x release here:
+https://releases.hashicorp.com/terraform/
+
+As an alternative, you may also use a package manager for you OS.
+
+###### MacOS
+
+`brew install terraform@0.12`
+
+###### Windows
+
+`choco install terraform --version 0.12.29 --allow-downgrade`
+
+To check which version you are running, execute: `terraform -v`
+
+##### Python 3
+
+Make sure you have python 3 installed on your machine as well.
+see https://www.python.org/downloads/
+
+##### AWS CLI
+
+Install AWS CLI version 2 on you machine.
+see https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+After AWS CLI is installed, you should set up your AWS credentials using
+profiles. In your user directory, after you installed the AWS CLI, there should
+be a hidden folder for configuration and credentials: `~/.aws/`
+
+First log in to AWS console and get a key pair for your user:
+https://signin.aws.amazon.com/console
+
+In the top right corner, expand the dropdown menu under your account name and select `My Security Credentials`.
+You are now heading over to Amazons IAM service. In the center of the screen, expand the item "Access keys (access key ID and secret access key)"
+and click the "Create New Access Key" button. Note: you can only have 2 key pairs at the same time.
+
+A key pair contains two values. The "AWS Access Key" and the "AWS Secret Access Key". The "AWS Secret Access Key" will only be shown once, after it is created.
+So make sure to download the csv file containing the key pair or copy paste the key pair into a text editor for now.
+
+It is time to finish your AWS CLI configuration. Let's assume the profile we want to create is called `chatloop`
+Open or create `~/.aws/config` in a text editor and add this:
+
+```
+[default]
+region=us-west-1
+
+[profile chatloop]
+region=ap-southeast-2
+```
+
+Next, open or create `~/.aws/credentials` in a text editor and use the key pair which you created earlier:
+
+```
+[chatloop]
+aws_access_key_id=<your key>
+aws_secret_access_key=<your secret>
+```
+
+Finally to test the AWS CLI, open a terminal and run:
+`aws s3 ls` which should list your existing S3 buckets.
+
+
+#### Creating the auxiliary AWS infrastructure
+
+In the subfolder `infrastructure/terraform` are a bunch of subfolders for the environments `staging-api`, `production-api`, `staging-user-training` and `production-user-training`:
+* `infrastructure/terraform/modules` - defines the template for AWS resources which need to exist in every environment (database etc)
+* `infrastructure/terraform/staging` - invokes the template with the parameters to create the `staging-api` envionment
+* `infrastructure/terraform/production` - invokes the template with the parameters to create the `production-api` envionment
+* `infrastructure/terraform/staging-user-training` - invokes the template with the parameters to create the `staging-user-training` envionment
+* `infrastructure/terraform/production-user-training` - invokes the template with the parameters to create the `production-user-training` envionment
+
+The next step has to be done once before using Terraform to initialize any of the environments.
+
+Log in to the AWS console and select the correct region in the upper right. Go to the "Secrets Manager" service, click "Store new scret", click "Other type of secrets", switch to the Plaintext tab and
+drop the DB password for your environments database (plain, no JSON):
+
+```json
+superSecr3tPassw0rd // don't use this
+```
+
+The name of the new secret should be `chatloop-<environment name>-db-password`. Leave all other options to their default values
+and click "Next" a couple of times and finally "Store" to create the secret.
+
+Now it's time to execute Terraform. Change into one of the subfolders above and run the commands below (`staging` as an example).
+
+```bash
+cd infrastructure/terraform/staging
+terraform init
+terraform apply
+```
+
+Review the changes and - if everything looks fine - confirm by typing `yes` and hit ENTER. Note the database hostname output at the end.
+
+
+#### Packaging
+
+To package the project, run `mvn clean package -Dmaven.test.skip=true`. This will generate a package called `chatloop-user-training-elastic-beanstalk.zip`.
 
 Environment variables that generally may need to be changed/provided for remote/AWS deployment are:
 
@@ -100,13 +206,13 @@ Following additional environment variables should be provided for microservice i
 
 These 7 variables can be manually added via the Elastic Beanstalk environment configuration web interface.
 
-The 5 env variables below are auto-injected by AWS itself.
+These 5 env variables need also be set manually
 
-* RDS_HOSTNAME
-* RDS_PORT
-* RDS_DB_NAME
-* RDS_USERNAME
-* RDS_PASSWORD
+* RDS_HOSTNAME - output when Terraform finished creating the environments database
+* RDS_PORT - 5432
+* RDS_DB_NAME - ebdb
+* RDS_USERNAME - neonkingkong
+* RDS_PASSWORD - to be found in AWS Secrets Manager
 
 To create an Elastic Beanstalk environment via the AWS web console:
 

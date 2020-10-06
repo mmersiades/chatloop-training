@@ -7,3 +7,8 @@
 /h2data.trace.db
 /contentful-data.csv
 /monolith-user-ids.csv
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+

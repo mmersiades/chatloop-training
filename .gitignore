@@ -7,3 +7,4 @@
 /h2data.trace.db
 /contentful-data.csv
 /monolith-user-ids.csv
+.DS_Store

@@ -20,7 +20,7 @@ CREATE TEMPORARY TABLE temp_unique_courses_modules (
 \COPY temp_unique_courses_modules(space_id, env_id, course_id, module_id) FROM './contentful-data.csv' DELIMITER ',' CSV HEADER;
 
 
-INSERT INTO public.course_progress (id, space_id, env_id, course_id, user_id, course_result)
+INSERT INTO course_progress (id, space_id, env_id, course_id, user_id, course_result)
 SELECT
     nextval('course_progress_sequence_gen'),
     t2.space_id,

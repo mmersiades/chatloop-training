@@ -15,11 +15,11 @@ This data is then available for the front-end to request via a graphql endpoint.
 
 ### Running the App in IDE
 
-For app development, it is recommended to run teh app in the IDE, rather than in a Docker container (see Local Deployment Test below).
+For app development, it is recommended to run the app in the IDE, rather than in a Docker container (see Local Deployment Test below).
 
 Most of the parameters that may need to be changed are in `application.properties`, including postgres, contentful, web server port,
 JWT secret. For local development we always use local spring profile, where we also treat `security.jwt.mac.secret` bit differently
-from rest of configuration options and it should be provided as environment variable as per `application-local.properties` when running
+from rest of configuration options, and it should be provided as environment variable as per `application-local.properties` when running
 via main method.
 
 By default, real, remote Contentful service is used, so internet connection is required. 
@@ -94,7 +94,7 @@ The following tools should be installed on your machine.
 
 To deploy infrastructure and service, you will use Terraform 0.12.
 
-It can be manually installed by downloading the lastest 0.12.x release here:
+It can be manually installed by downloading the latest 0.12.x release here:
 https://releases.hashicorp.com/terraform/
 
 As an alternative, you may also use a package manager for you OS.
@@ -152,7 +152,7 @@ aws_access_key_id=<your key>
 aws_secret_access_key=<your secret>
 ```
 
-Finally to test the AWS CLI, open a terminal and run:
+Finally, to test the AWS CLI, open a terminal and run:
 `aws s3 ls` which should list your existing S3 buckets.
 
 
@@ -161,17 +161,17 @@ Finally to test the AWS CLI, open a terminal and run:
 In the subfolder `infrastructure/terraform` are a bunch of subfolders for the environments `staging-api`, `production-api`, `staging-user-training` and `production-user-training`:
 
 * `infrastructure/terraform/modules` - defines the template for AWS resources which need to exist in every environment (database etc)
-* `infrastructure/terraform/staging` - invokes the template with the parameters to create the `staging-api` envionment
-* `infrastructure/terraform/production` - invokes the template with the parameters to create the `production-api` envionment
-* `infrastructure/terraform/staging-user-training` - invokes the template with the parameters to create the `staging-user-training` envionment
-* `infrastructure/terraform/production-user-training` - invokes the template with the parameters to create the `production-user-training` envionment
+* `infrastructure/terraform/staging` - invokes the template with the parameters to create the `staging-api` environment
+* `infrastructure/terraform/production` - invokes the template with the parameters to create the `production-api` environment
+* `infrastructure/terraform/staging-user-training` - invokes the template with the parameters to create the `staging-user-training` environment
+* `infrastructure/terraform/production-user-training` - invokes the template with the parameters to create the `production-user-training` environment
 
 The next step has to be done once before using Terraform to initialize any of the environments.
 
 Log in to the AWS console and select the correct region in the upper right. Go to the "Secrets Manager" service, click "Store new scret", click "Other type of secrets", switch to the Plaintext tab and
 drop the DB password for your environments database (plain, no JSON):
 
-```json
+```
 superSecr3tPassw0rd // don't use this
 ```
 
@@ -284,7 +284,7 @@ See `docs/migration/migration-guide.txt`.
 ## Misc
 
 To run test coverage, execute `mvn clean verify`. Test report should be under `chatloop-training/target/jacoco-report/index.html` which can be
-opened in browser. Long term wise, as more functionality is being migrated from Monolith to this or other microservices, I would suggest to consider 
+opened in the browser. Long term wise, as more functionality is being migrated from Monolith to this or other microservices, I would suggest considering 
 creating automated REST/GQL test suite in Postman (or other similar tools), which would cover UI, Contentful and backend microservices, and whose
 tests would be conversational ie model exactly the flow of business use cases. 
 

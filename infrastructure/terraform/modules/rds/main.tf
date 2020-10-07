@@ -4,16 +4,22 @@ data "aws_secretsmanager_secret_version" "db_password" {
 }
 
 # rds
+locals {
+  is_user_training = replace(var.resource_prefix, "user-training", "") != var.resource_prefix ? true : false
+}
+
 resource "aws_db_subnet_group" "chatloop" {
+  count       = local.is_user_training ? 0 : 1
   name        = "${var.resource_prefix}-subnet-group"
   subnet_ids  = var.vpc_subnet_ids
 }
 
 resource "aws_db_instance" "chatloop" {
+  count                     = local.is_user_training ? 0 : 1
   allocated_storage         = 10
   backup_retention_period   = 10
   backup_window             = "04:00-05:00"
-  db_subnet_group_name      = aws_db_subnet_group.chatloop.id
+  db_subnet_group_name      = aws_db_subnet_group.chatloop[count.index].id
   engine                    = "postgres"
   engine_version            = "11.4"
   final_snapshot_identifier = "snapshot-${var.resource_prefix}-${md5(timestamp())}"
@@ -43,6 +49,7 @@ resource "aws_db_instance" "chatloop" {
 
 # rds
 resource "aws_db_instance" "chatloop_public" {
+  count                     = local.is_user_training ? 1 : 0
   allocated_storage         = 10
   backup_retention_period   = 10
   backup_window             = "04:00-05:00"

@@ -158,11 +158,9 @@ Finally, to test the AWS CLI, open a terminal and run:
 
 #### Creating the auxiliary AWS infrastructure
 
-In the subfolder `infrastructure/terraform` are a bunch of subfolders for the environments `staging-api`, `production-api`, `staging-user-training` and `production-user-training`:
+In the subfolder `infrastructure/terraform` are a bunch of subfolders for the environments `staging-user-training` and `production-user-training`:
 
 * `infrastructure/terraform/modules` - defines the template for AWS resources which need to exist in every environment (database etc)
-* `infrastructure/terraform/staging` - invokes the template with the parameters to create the `staging-api` environment
-* `infrastructure/terraform/production` - invokes the template with the parameters to create the `production-api` environment
 * `infrastructure/terraform/staging-user-training` - invokes the template with the parameters to create the `staging-user-training` environment
 * `infrastructure/terraform/production-user-training` - invokes the template with the parameters to create the `production-user-training` environment
 
@@ -222,21 +220,25 @@ To create an Elastic Beanstalk environment via the AWS web console:
 rather than creating the environment at this stage.
 3. Set the environment variables in the "Software" panel.
 4. In the "Capacity" panel, select "load balancer" over "single instance".
-5. In the load balancer panel, set up a listener for `https`
+5. In the "load balancer" panel, set up a listener for `https`
 
   - Port: 443
   - Protocol: HTTPS
   - SSL certificate: choose the chatloop.org one
   - SSL policy: ELBSecurityPolicy-2016-08
   - Default process: default
-  
-6. In the "Rolling updates" panel, select "Rolling with additional batches".
-7. In the "Security" panel, assign an SSH keypair, so you can SSH into the EC2 container if you need to.
-8. In the "Database" panel, configure postgres RDB database (its config params will be auto-injected into the container via RDS* env variables).
 
-If you are using load balancer, health check path to be used should be set to `/actuator/health`, ie our app exposes endpoint
-such as `http://localhost:8888/actuator/health`. Thus, AWS LB Listener is HTTP/80 pointing to Process HTTP/80, HTTP code 200 and
-health check path `/actuator/health`. This path can be set via the EC2 web console, on the "Target groups" page.
+6. Also in the "load balancer" panel, add a process for the health checks:
+
+  - Name: `default`
+  - Port: `80`
+  - Protocol: `HTTP`
+  - Health check path: `/actuator/health`
+  - Stickiness: `disabled`
+   
+7. In the "Rolling updates" panel, select "Rolling with additional batches".
+8. In the "Security" panel, assign an SSH keypair, so you can SSH into the EC2 container if you need to.
+9. Leave the "Database" panel blank.
 
 When load balancer is configured, environment URL should be used to connect to the app, rather than instance DNS name.
 

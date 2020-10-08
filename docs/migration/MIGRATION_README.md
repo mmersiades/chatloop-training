@@ -104,7 +104,7 @@ name in test package.
 #### Step 3 - SSH tunnel
 _Note: As of Oct 2020, ssh is *not* needed, but this is a temporary condition_
 If you're trying to insert this data into an RDS database (ie, not local), you'll need to establish an SSH tunnel now.
-See the instructions about.
+See the instructions above.
 
 #### Step 4 - Run migration script
 If you've saved `monolith-user-ids.csv` or `contentful-data.csv` to somewhere that's NOT the project's root folder,

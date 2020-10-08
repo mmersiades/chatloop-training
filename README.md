@@ -176,10 +176,10 @@ superSecr3tPassw0rd // don't use this
 The name of the new secret should be `chatloop-<environment name>-db-password`. Leave all other options to their default values
 and click "Next" a couple of times and finally "Store" to create the secret.
 
-Now it's time to execute Terraform. Change into one of the subfolders above and run the commands below (`staging` as an example).
+Now it's time to execute Terraform. Change into one of the subfolders above and run the commands below (`staging-user-training` as an example).
 
 ```bash
-cd infrastructure/terraform/staging
+cd infrastructure/terraform/staging-user-training
 terraform init
 terraform apply
 ```

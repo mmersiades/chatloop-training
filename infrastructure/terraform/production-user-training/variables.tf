@@ -5,7 +5,7 @@ variable "region" {
 
 variable "namespace" {
   description = "name of a logical namespace, i.e. api"
-  default = "api"
+  default = "user-training"
 }
 
 variable "environment" {

@@ -33,7 +33,7 @@ module "rds" {
   source = "../modules/rds"
 
   resource_prefix            = local.resource_prefix
-  source_snapshot_identifier = "staging-api-encrypted-202009290900"
+
   vpc_subnet_ids             = module.vpc.vpc_subnet_ids
   database_security_group_id = module.sgs.sg_database_id
   db_name                    = "ebdb"

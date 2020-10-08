@@ -9,11 +9,12 @@ There are quite a few steps in this migration process, which are outlined here a
 
 1. Get a list of user ids from the monolith.
 2. Get the latest content data (programs, courses modules etc) from Contentful.
-3. Open an SSH tunnel to the database (not needed for local).
+3. Open an SSH tunnel to the database (currently not needed. Temporarily).
 4. Use psql to run the `migrator.sql` script.
 
 #### Prerequisites
 ##### SSH
+_Note: As of Oct 2020, ssh is *not* needed, but this is a temporary condition_
 You'll need to be able to create a ssh tunnel with the database. You'll need to do this via the EC2 instance associate
 with the Elastic Beanstalk environment. For this, you'll need a `pem` key, which can be created in the AWS console EC2
 UI, under "Key Pairs" in the menu. The `pem` key should have read-only permissions, which can be set with this command:
@@ -53,15 +54,16 @@ You'll need to know:
 ##### psql
 psql is official postgres CLI client. Install it by following installation instructions for your OS.
 
-To login use `psql --host=HOST --port=PORT --username=USER`.
+To login use `psql --host=HOST --port=PORT --username=USER --dbname=DBNAME`.
 
-For local, this would be: `psql --host localhost --port=5555 --username=cut`. 
+For local, this would be: `psql --host localhost --port=5555 --username=cut --dbname=cut`. 
 
 Notes
 
 * HOST = "RDS db hostname" (see above)
 * PORT = `5432`
 * USER = "db username" (see above)
+* DBNAME = `ebdb`
 
 If the psql connection is successful, the prompt will ask you for your password, which should be `cut` for local
 postgres, the "db password" (see above) for RDS databases.
@@ -100,8 +102,9 @@ you would run any individual test.
 name in test package.
 
 #### Step 3 - SSH tunnel
+_Note: As of Oct 2020, ssh is *not* needed, but this is a temporary condition_
 If you're trying to insert this data into an RDS database (ie, not local), you'll need to establish an SSH tunnel now.
-See the instructions about.
+See the instructions above.
 
 #### Step 4 - Run migration script
 If you've saved `monolith-user-ids.csv` or `contentful-data.csv` to somewhere that's NOT the project's root folder,

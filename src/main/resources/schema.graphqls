@@ -16,6 +16,7 @@ type UserCourse {
     name: String!
     description: String
     completion: Float!
+    attemptLimit: Int!
     incorrectAttempts: Int!
     courseResult: CourseResult!
     userModules: [UserModule]

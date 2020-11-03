@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.model.progress.CourseResult;
 import org.chatloop.user_training.service.ContentNotFound;
+import org.chatloop.user_training.service.impl.LimitCalculator;
 
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -26,6 +28,8 @@ public class UserCourse extends IdAware {
 
     @Setter
     private int incorrectAttempts;
+
+    private int attemptLimit;
 
     @Setter
     private CourseResult courseResult = CourseResult.NO_RESULT_YET;
@@ -69,5 +73,10 @@ public class UserCourse extends IdAware {
 
     private int numOfCompletedModules() {
         return (int) userModules.stream().filter(UserModule::isComplete).count();
+    }
+
+    public void setAttemptLimit(CourseProgress progress) {
+        LimitCalculator calc = new LimitCalculator();
+        this.attemptLimit = calc.getLimit(progress.getNumberOfModules());
     }
 }

@@ -89,6 +89,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
         CourseProgress progress = getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
 
         resetCourseProgress(userCourse, progress);
+        userCourse.setAttemptLimit(progress);
 
         return userCourse;
     }
@@ -126,6 +127,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 //        moduleRepo.save(moduleProgress);
 
         updateCdnModelWithProgressInfo(userCourse, progress);
+        userCourse.setAttemptLimit(progress);
 
         return userCourse;
     }
@@ -159,6 +161,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
         }
         userCourse.setCourseResult(progress.getCourseResult());
         userCourse.calculateDerivedInfo();
+        userCourse.setAttemptLimit(progress);
     }
 
     private boolean isLimitExceeded(CourseProgress progress) {

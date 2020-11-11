@@ -7,6 +7,7 @@ import org.chatloop.user_training.IntegrationTestConfig;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
+import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class StatefulCdnServiceQualificationsTest {
     @Profile("qualifications")
     @TestConfiguration
     static class TestConfigOverrides {
+        @Autowired
+        private Transformer transformer;
+
+        @Autowired
+        private ChatloopApplicationEventPublisher publisher;
+
         @Bean
         @Primary
         public CdnService stubbedCdnService() {
@@ -46,7 +53,11 @@ public class StatefulCdnServiceQualificationsTest {
             entry.setField("name", "TopicText");
             entry.setField("requirements", Map.of("2L1kH3zjtvGkNtWLw0tJgj", 1.0, "72szZK1yf99qmh4nUVsiho", 1.0));
 
-            return new StatefulCdnServiceStub(Map.of("E1JGCjpIANkayuNpEXQfS", entry));
+            return new StatefulCdnServiceStub(
+                    transformer,
+                    publisher,
+                    Map.of("E1JGCjpIANkayuNpEXQfS", entry)
+            );
         }
     }
 

@@ -6,6 +6,7 @@ import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.content.UserQualification;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;

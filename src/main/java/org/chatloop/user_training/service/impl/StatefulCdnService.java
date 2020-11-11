@@ -7,7 +7,11 @@ import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
+import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
+import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
  * TODO on cache miss trigger resync
  */
 @Slf4j
+@Service
 public class StatefulCdnService implements CdnService {
 
     @Value("${contentful.spaceId}")
@@ -45,12 +50,11 @@ public class StatefulCdnService implements CdnService {
 
     private final Transformer transformer;
 
-    public StatefulCdnService() {
-        this(new Transformer());
-    }
+    private final ChatloopApplicationEventPublisher applicationEventPublisher;
 
-    public StatefulCdnService(Transformer transformer) {
+    public StatefulCdnService(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher) {
         this.transformer = transformer;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     // TODO double check, not much in their docs about thread safety
@@ -81,6 +85,9 @@ public class StatefulCdnService implements CdnService {
 
         log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
         logFetchedContent();
+
+        ApplicationEvent event = new ContentUpdatedEvent(StatefulCdnService.class);
+        this.applicationEventPublisher.publishEvent(event);
     }
 
     @Override

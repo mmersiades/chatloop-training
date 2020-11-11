@@ -3,6 +3,7 @@ package org.chatloop.user_training.service.impl;
 import com.contentful.java.cda.CDAClient;
 import com.contentful.java.cda.CDAEntry;
 import com.contentful.java.cda.SynchronizedSpace;
+import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 
 import java.util.Map;
 
@@ -25,7 +26,8 @@ public class StatefulCdnServiceStub extends StatefulCdnService {
 
     private final SynchronizedSpace stubbedSpace;
 
-    public StatefulCdnServiceStub(Map<String, CDAEntry> entries) {
+    public StatefulCdnServiceStub(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher, Map<String, CDAEntry> entries) {
+        super(transformer, applicationEventPublisher);
         this.stubbedSpace = new StubbedSynchronizedSpace(entries);
     }
 

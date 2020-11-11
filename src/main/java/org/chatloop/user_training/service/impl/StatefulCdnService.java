@@ -60,9 +60,15 @@ public class StatefulCdnService implements CdnService {
 
     @PostConstruct
     public void init() {
-        createClient();
+        this.client = createClient();
+
+        log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
+
         syncSchema();
-        syncData();
+        this.syncedSpace = syncData();
+
+        log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
+        logFetchedContent();
     }
 
     @Override
@@ -143,8 +149,12 @@ public class StatefulCdnService implements CdnService {
         }
     }
 
-    private void syncSchema() {
-        FetchQuery query = client.fetch(CDAContentType.class);
+    /**
+     * Runs a bunch of validations against the Contentful schema. For instance it checks,
+     * that all required content types exist.
+     */
+    protected void syncSchema() {
+        FetchQuery<CDAContentType> query = client.fetch(CDAContentType.class);
         CDAArray types = query.all();
 
         Set<String> detectedContentTypes = types.items().stream()
@@ -160,20 +170,23 @@ public class StatefulCdnService implements CdnService {
         log.info("Schema synchronized, detected content types {}", detectedContentTypes);
     }
 
-    private void syncData() {
+    /**
+     * Fetches and returns a {@link SynchronizedSpace} from Contentful.
+     */
+    protected SynchronizedSpace syncData() {
         SyncQuery syncQuery = this.client.sync();
-        syncedSpace = syncQuery.fetch();
-        log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
-        logFetchedContent();
+        return syncQuery.fetch();
     }
 
-    private void createClient() {
-        this.client = CDAClient.builder()
+    /**
+     * Initializes the {@link CDAClient} for communication with Contentful.
+     */
+    protected CDAClient createClient() {
+        return CDAClient.builder()
                 .setSpace(spaceId)
                 .setEnvironment(envId)
                 .setToken(deliveryToken)
                 .build();
-        log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
     }
 
     private void logFetchedContent() {

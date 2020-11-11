@@ -25,8 +25,8 @@ public class StatefulCdnServiceStub extends StatefulCdnService {
 
     private final SynchronizedSpace stubbedSpace;
 
-    public StatefulCdnServiceStub(SynchronizedSpace stubbedSpace) {
-        this.stubbedSpace = stubbedSpace;
+    public StatefulCdnServiceStub(Map<String, CDAEntry> entries) {
+        this.stubbedSpace = new StubbedSynchronizedSpace(entries);
     }
 
     @Override

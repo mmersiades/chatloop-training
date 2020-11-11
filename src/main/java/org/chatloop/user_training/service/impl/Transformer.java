@@ -5,10 +5,12 @@ import com.contentful.java.cda.CDAEntry;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Ideally Contentful Java API would provide tooling to automatically generate
@@ -72,5 +74,16 @@ public class Transformer {
         userModule.setName(entry.getField("name"));
 
         return userModule;
+    }
+
+    public UserQualification toUserQualification(CDAEntry entry) {
+        UserQualification userQualification = new UserQualification();
+        userQualification.setId(entry.id());
+        String name = entry.getField("name");
+        userQualification.setName(name);
+
+        Map<String, Double> requirements = entry.getField("requirements");
+        userQualification.setCourseIds(requirements.keySet());
+        return userQualification;
     }
 }

@@ -2,6 +2,7 @@ package org.chatloop.user_training.service;
 
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,17 @@ public interface CdnService {
      */
     void markCacheStale();
 
+    /**
+     * Fetches and returns a list of all {@link UserProgram}s from the underlying content database.
+     * @return {@link List}
+     */
     List<UserProgram> fetchUserPrograms();
+
+    /**
+     * Fetches and returns a list of all {@link UserQualification}s from the underlying content database.
+     * @return {@link List}
+     */
+    List<UserQualification> fetchUserQualifications();
 
     /**
      * If data is not in cache, should refresh the cache.

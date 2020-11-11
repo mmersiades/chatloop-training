@@ -2,8 +2,10 @@ package org.chatloop.user_training.service.impl;
 
 import com.contentful.java.cda.*;
 import lombok.extern.slf4j.Slf4j;
+import org.chatloop.user_training.model.content.ContentTypes;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -40,6 +42,16 @@ public class StatefulCdnService implements CdnService {
     private CDAClient client;
 
     private SynchronizedSpace syncedSpace;
+
+    private final Transformer transformer;
+
+    public StatefulCdnService() {
+        this(new Transformer());
+    }
+
+    public StatefulCdnService(Transformer transformer) {
+        this.transformer = transformer;
+    }
 
     // TODO double check, not much in their docs about thread safety
     private final ReadWriteLock spaceLock = new ReentrantReadWriteLock();
@@ -101,15 +113,29 @@ public class StatefulCdnService implements CdnService {
     public List<UserProgram> fetchUserPrograms() {
         spaceLock.readLock().lock();
         try {
-            Transformer tform = new Transformer();
             List<UserProgram> programs = new ArrayList<>();
             for (CDAEntry entry : syncedSpace.entries().values()) {
-                CDAContentType cdnType = entry.contentType();
-                if (cdnType.name().equals("program")) {
-                    programs.add(tform.toUserProgram(entry, true));
+                if (ContentTypes.PROGRAM.supports(entry)) {
+                    programs.add(transformer.toUserProgram(entry, true));
                 }
             }
             return programs;
+        } finally {
+            spaceLock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public List<UserQualification> fetchUserQualifications() {
+        spaceLock.readLock().lock();
+        try {
+            List<UserQualification> qualifications = new ArrayList<>();
+            for (CDAEntry entry : syncedSpace.entries().values()) {
+                if (ContentTypes.QUALIFICATION.supports(entry)) {
+                    qualifications.add(transformer.toUserQualification(entry));
+                }
+            }
+            return qualifications;
         } finally {
             spaceLock.readLock().unlock();
         }
@@ -124,8 +150,7 @@ public class StatefulCdnService implements CdnService {
                 return Optional.empty();
             }
             log.info("Resolved program ID {} to {}", programId, entry);
-            Transformer tform = new Transformer();
-            return Optional.of(tform.toUserProgram(entry, true));
+            return Optional.of(transformer.toUserProgram(entry, true));
         } finally {
             spaceLock.readLock().unlock();
         }
@@ -141,8 +166,7 @@ public class StatefulCdnService implements CdnService {
                 return Optional.empty();
             }
             log.info("Resolved course ID {} to {}", courseId, entry);
-            Transformer tform = new Transformer();
-            UserCourse userCourse = tform.toUserCourse(entry);
+            UserCourse userCourse = transformer.toUserCourse(entry);
             return Optional.of(userCourse);
         } finally {
             spaceLock.readLock().unlock();
@@ -194,7 +218,8 @@ public class StatefulCdnService implements CdnService {
             return;
         }
         int count = 0;
-        Set<String> types = new HashSet<>(Arrays.asList("program", "course", "module"));
+
+        Set<String> types = new HashSet<>(ContentTypes.allContentTypes());
         for (CDAEntry entry : syncedSpace.entries().values()) {
             CDAContentType cdnType = entry.contentType();
             if (types.contains(cdnType.name())) {
@@ -205,7 +230,7 @@ public class StatefulCdnService implements CdnService {
         log.info("Fetched total {} entries", count);
     }
 
-    private static final Set<String> REQUIRED_TYPEs = new HashSet<>(Arrays.asList("program", "course", "module"));
+    private static final Set<String> REQUIRED_TYPEs = new HashSet<>(ContentTypes.allContentTypes());
 
 //    private Program getParentFor(Course course) {
 //        for(Program program : this.programs) {

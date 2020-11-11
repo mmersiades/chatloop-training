@@ -2,6 +2,7 @@ package org.chatloop.user_training.service.impl;
 
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.util.data.DataFactory;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class FakeCdnService implements CdnService {
 
     private final List<UserProgram> userPrograms = new ArrayList<>();
+    private final List<UserQualification> userQualifications = new ArrayList<>();
     private final AtomicReference<Instant> lastReset = new AtomicReference<>(Instant.now());
 
     public Instant getLastReset() {
@@ -40,6 +42,11 @@ public class FakeCdnService implements CdnService {
     @Override
     public List<UserProgram> fetchUserPrograms() {
         return userPrograms;
+    }
+
+    @Override
+    public List<UserQualification> fetchUserQualifications() {
+        return userQualifications;
     }
 
     @Override

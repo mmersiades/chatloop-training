@@ -5,7 +5,7 @@ import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
 
 /**
- * Used to generate hierarchical data for testing with face CDN service.
+ * Used to generate hierarchical data for testing with fake CDN service.
  */
 public final class DataFactory {
 

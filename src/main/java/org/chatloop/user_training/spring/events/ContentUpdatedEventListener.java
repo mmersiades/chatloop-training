@@ -1,6 +1,7 @@
 package org.chatloop.user_training.spring.events;
 
 import lombok.extern.slf4j.Slf4j;
+import org.chatloop.user_training.service.CdnService;
 import org.springframework.context.ApplicationListener;
 
 @Slf4j

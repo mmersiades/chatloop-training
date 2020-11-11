@@ -1,11 +1,15 @@
 package org.chatloop.user_training;
 
+import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CdnService;
+import org.chatloop.user_training.service.CourseProgressionService;
+import org.chatloop.user_training.service.impl.CourseProgressionServiceImpl;
 import org.chatloop.user_training.service.impl.StatefulCdnService;
 import org.chatloop.user_training.service.impl.Transformer;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 import org.chatloop.user_training.spring.events.DefaultChatloopApplicationEventPublisher;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +40,11 @@ public class ChatloopUserTrainingMain implements ApplicationEventPublisherAware 
     @Bean
     public ChatloopApplicationEventPublisher chatloopApplicationEventPublisher() {
         return new DefaultChatloopApplicationEventPublisher(applicationEventPublisher);
+    }
+
+    @Bean
+    public CourseProgressionService courseProgressionService(@Autowired CourseProgressRepository courseProgressRepository) {
+        return new CourseProgressionServiceImpl(courseProgressRepository);
     }
 
     @Bean

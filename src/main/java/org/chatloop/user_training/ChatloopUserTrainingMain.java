@@ -8,15 +8,11 @@ import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.service.impl.*;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
-import org.chatloop.user_training.spring.events.ContentUpdatedEventListener;
 import org.chatloop.user_training.spring.events.DefaultChatloopApplicationEventPublisher;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Bean;
@@ -51,8 +47,9 @@ public class ChatloopUserTrainingMain implements ApplicationEventPublisherAware 
     }
 
     @Bean
-    public QualificationEvaluationService qualificationEvaluationService(@Autowired CdnService cdnService, @Autowired CourseProgressionService courseProgressionService) {
-        return new QualificationEvaluationServiceImpl(cdnService, courseProgressionService);
+    public QualificationEvaluationService qualificationEvaluationService(@Autowired CdnService cdnService,
+        @Autowired CourseProgressionService courseProgressionService, @Autowired EarnedQualificationsService earnedQualificationsService) {
+        return new QualificationEvaluationServiceImpl(cdnService, courseProgressionService, earnedQualificationsService);
     }
 
     @Bean

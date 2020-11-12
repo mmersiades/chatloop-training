@@ -32,17 +32,15 @@ public class EarnedQualificationsServiceImplTest {
 
     @Test
     public void testServiceOps() {
-        String userIdJohn = "john";
-        String jane = "jane";
+        String johny = "johny";
         String doTopicTexts = "doTopicTexts";
-        String coronaVirus = "coronaVirus";
 
-        assertTrue(service.fetchEarnedQualifications(jane).isEmpty());
+        assertTrue(service.fetchEarnedQualifications(johny).isEmpty());
 
-        EarnedQualifications singleQualification = Fixture.earnedQualifications(jane, doTopicTexts);
+        EarnedQualifications singleQualification = Fixture.earnedQualifications(johny, doTopicTexts);
         service.storeEarnedQualifications(singleQualification);
 
-        Optional<EarnedQualifications> earnedByJane = service.fetchEarnedQualifications(jane);
+        Optional<EarnedQualifications> earnedByJane = service.fetchEarnedQualifications(johny);
         assertTrue(earnedByJane.isPresent());
         assertEquals(singleQualification, earnedByJane.get());
     }

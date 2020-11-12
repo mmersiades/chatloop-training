@@ -4,27 +4,34 @@ import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.model.progress.CourseResult;
+import org.chatloop.user_training.model.progress.EarnedQualifications;
 import org.chatloop.user_training.model.progress.EvaluationResult;
 import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.CourseProgressionService;
+import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
+import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
+import org.springframework.context.ApplicationListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * {@inheritDoc}
  */
 @Slf4j
-public class QualificationEvaluationServiceImpl implements QualificationEvaluationService {
+public class QualificationEvaluationServiceImpl implements QualificationEvaluationService, ApplicationListener<ContentUpdatedEvent> {
 
     private final CdnService cdnService;
     private final CourseProgressionService progressionService;
+    private final EarnedQualificationsService earnedQualificationsService;
 
-    public QualificationEvaluationServiceImpl(CdnService cdnService, CourseProgressionService progressionService) {
+    public QualificationEvaluationServiceImpl(CdnService cdnService, CourseProgressionService progressionService, EarnedQualificationsService earnedQualificationsService) {
         this.cdnService = cdnService;
         this.progressionService = progressionService;
+        this.earnedQualificationsService = earnedQualificationsService;
     }
 
     /**
@@ -79,6 +86,47 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
         }
 
         return result;
+    }
+
+    @Override
+    public void onApplicationEvent(ContentUpdatedEvent contentUpdatedEvent) {
+        log.debug("Received {}", contentUpdatedEvent.getClass().getSimpleName());
+
+        var toRemove = new ArrayList<EarnedQualifications>();
+        var changes = new ArrayList<EarnedQualifications>();
+
+        var existingQualifications = earnedQualificationsService
+                .fetchAllEarnedQualifications()
+                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
+
+        var evaluatedQualifications = evaluateAllUsers()
+                .asEarnedQualifications()
+                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
+
+        // find users who lost all their earned qualifications
+        for (String userId : existingQualifications.keySet()) {
+            if (!evaluatedQualifications.containsKey(userId)) {
+                toRemove.add(existingQualifications.get(userId));
+            }
+        }
+
+        // find users whose qualifications have changed
+        for (String userId : evaluatedQualifications.keySet()) {
+            var now = evaluatedQualifications.get(userId);
+            var before = existingQualifications.get(userId);
+            // if the user didn't have any previous qualifications or they were different
+            if (before == null || !now.getQualifications().containsAll(before.getQualifications()) || !before.getQualifications().containsAll(now.getQualifications())) {
+                changes.add(now);
+            }
+        }
+
+        // handle removals
+        earnedQualificationsService.removeEarnedQualifications(toRemove.toArray(new EarnedQualifications[0]));
+
+        // handle changes
+        earnedQualificationsService.storeEarnedQualifications(changes.toArray(new EarnedQualifications[0]));
+
+        // notify downstream
     }
 
     /**

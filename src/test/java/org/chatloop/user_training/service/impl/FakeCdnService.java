@@ -36,6 +36,7 @@ public class FakeCdnService implements CdnService {
         userPrograms.add(factory.createProgram1());
         userPrograms.add(factory.createProgram2());
         userPrograms.add(factory.createProgram3());
+        userQualifications.addAll(factory.userQualifications());
         log.info("Using fake CDN service");
     }
 

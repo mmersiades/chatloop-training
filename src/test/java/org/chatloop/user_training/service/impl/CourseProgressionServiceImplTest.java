@@ -30,7 +30,7 @@ public class CourseProgressionServiceImplTest {
     private CourseProgressRepository repository;
 
     @Test
-    public void testMarkCacheStale() {
+    public void testUserProgressForCourse() {
         String userIdJohn = "john";
         String userIdJane = "jane";
         String courseA = "A";
@@ -38,6 +38,7 @@ public class CourseProgressionServiceImplTest {
 
         repository.save(Fixture.courseProgressFor(userIdJohn, courseA));
         assertEquals(1, service.userProgressForCourse(courseA).count());
+        assertTrue(service.userProgressForCourse(userIdJohn, courseA).isPresent());
         assertEquals(0, service.userProgressForCourse(courseB).count());
 
         repository.save(Fixture.courseProgressFor(userIdJane, courseA));

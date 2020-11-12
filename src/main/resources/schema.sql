@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS public.course_progress
     CONSTRAINT course_progress_unique_constraint UNIQUE (space_id, env_id, user_id, course_id)
 );
 
+CREATE TABLE IF NOT EXISTS public.earned_qualifications
+(
+    user_id character varying(255) PRIMARY KEY,
+    qualifications text NULL
+);
+
 CREATE TABLE IF NOT EXISTS public.module_progress
 (
     id bigint NOT NULL,

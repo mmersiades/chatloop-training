@@ -1,13 +1,21 @@
 package org.chatloop.user_training.util.data;
 
+import org.assertj.core.util.Lists;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Used to generate hierarchical data for testing with fake CDN service.
  */
 public final class DataFactory {
+
+    public static final String COURSE_1 = "cou1";
+    public static final String COURSE_2 = "cou2";
 
     /**
      * Program with single course with single module.
@@ -22,7 +30,7 @@ public final class DataFactory {
         userProgram.setName("Program 1");
 
         UserCourse userCourse = new UserCourse();
-        userCourse.setId("cou1");
+        userCourse.setId(DataFactory.COURSE_1);
         userCourse.setName("Course 1");
         userProgram.addUserCourse(userCourse);
 
@@ -86,6 +94,16 @@ public final class DataFactory {
         }
 
         return userProgram;
+    }
+
+    /**
+     * Returns two {@link UserQualification}s, one called {@code doTopicTexts} the other {@code covid19}.
+     * @return List<UserQualification>
+     */
+    public Collection<UserQualification> userQualifications() {
+        UserQualification doTopicTexts = UserQualification.create("doTopicTexts", DataFactory.COURSE_1);
+        UserQualification covid19 = UserQualification.create("covid19", DataFactory.COURSE_1, DataFactory.COURSE_2);
+        return Lists.list(doTopicTexts, covid19);
     }
 
 //    public static void main(String[] args) {

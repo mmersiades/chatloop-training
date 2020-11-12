@@ -1,13 +1,16 @@
 package org.chatloop.user_training;
 
 import org.chatloop.user_training.repository.CourseProgressRepository;
+import org.chatloop.user_training.repository.EarnedQualificationsRepository;
 import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.CourseProgressionService;
-import org.chatloop.user_training.service.impl.CourseProgressionServiceImpl;
-import org.chatloop.user_training.service.impl.StatefulCdnService;
-import org.chatloop.user_training.service.impl.Transformer;
+import org.chatloop.user_training.service.EarnedQualificationsService;
+import org.chatloop.user_training.service.QualificationEvaluationService;
+import org.chatloop.user_training.service.impl.*;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
+import org.chatloop.user_training.spring.events.ContentUpdatedEventListener;
 import org.chatloop.user_training.spring.events.DefaultChatloopApplicationEventPublisher;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -28,7 +31,7 @@ public class ChatloopUserTrainingMain implements ApplicationEventPublisherAware 
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+    public void setApplicationEventPublisher(@NotNull ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -43,8 +46,18 @@ public class ChatloopUserTrainingMain implements ApplicationEventPublisherAware 
     }
 
     @Bean
-    public CourseProgressionService courseProgressionService(@Autowired CourseProgressRepository courseProgressRepository) {
-        return new CourseProgressionServiceImpl(courseProgressRepository);
+    public CourseProgressionService courseProgressionService(@Autowired CourseProgressRepository repository) {
+        return new CourseProgressionServiceImpl(repository);
+    }
+
+    @Bean
+    public QualificationEvaluationService qualificationEvaluationService(@Autowired CdnService cdnService, @Autowired CourseProgressionService courseProgressionService) {
+        return new QualificationEvaluationServiceImpl(cdnService, courseProgressionService);
+    }
+
+    @Bean
+    public EarnedQualificationsService earnedQualificationsService(@Autowired EarnedQualificationsRepository repository) {
+        return new EarnedQualificationsServiceImpl(repository);
     }
 
     @Bean

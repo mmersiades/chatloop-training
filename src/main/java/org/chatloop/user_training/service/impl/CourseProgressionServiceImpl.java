@@ -4,6 +4,7 @@ import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -22,5 +23,13 @@ public class CourseProgressionServiceImpl implements CourseProgressionService {
     @Override
     public Stream<CourseProgress> userProgressForCourse(String courseId) {
         return repository.findByCourseId(courseId).stream();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<CourseProgress> userProgressForCourse(String userId, String courseId) {
+        return repository.findByUserIdCourseId(userId, courseId);
     }
 }

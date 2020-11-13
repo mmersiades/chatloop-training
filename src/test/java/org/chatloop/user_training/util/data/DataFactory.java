@@ -7,7 +7,6 @@ import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.content.UserQualification;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Used to generate hierarchical data for testing with fake CDN service.
@@ -16,6 +15,9 @@ public final class DataFactory {
 
     public static final String COURSE_1 = "cou1";
     public static final String COURSE_2 = "cou2";
+
+    public static final String QUALIFICATION_TWENTY_QUESTIONS = "twentyQuestions";
+    public static final String QUALIFICATION_TOPIC_TEXTS = "topicTexts";
 
     /**
      * Program with single course with single module.
@@ -97,13 +99,13 @@ public final class DataFactory {
     }
 
     /**
-     * Returns two {@link UserQualification}s, one called {@code doTopicTexts} the other {@code covid19}.
+     * Returns two {@link UserQualification}s, one called {@code topicTexts} the other {@code twentyQuestions}.
      * @return List<UserQualification>
      */
     public Collection<UserQualification> userQualifications() {
-        UserQualification doTopicTexts = UserQualification.create("doTopicTexts", DataFactory.COURSE_1);
-        UserQualification covid19 = UserQualification.create("covid19", DataFactory.COURSE_1, DataFactory.COURSE_2);
-        return Lists.list(doTopicTexts, covid19);
+        UserQualification topicTexts = UserQualification.create(QUALIFICATION_TOPIC_TEXTS, DataFactory.COURSE_1);
+        UserQualification twentyQuestions = UserQualification.create(QUALIFICATION_TWENTY_QUESTIONS, DataFactory.COURSE_1, DataFactory.COURSE_2);
+        return Lists.list(topicTexts, twentyQuestions);
     }
 
 //    public static void main(String[] args) {

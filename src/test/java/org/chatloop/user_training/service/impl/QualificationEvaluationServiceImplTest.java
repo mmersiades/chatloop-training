@@ -5,6 +5,7 @@ import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.model.progress.EarnedQualifications;
 import org.chatloop.user_training.model.progress.EvaluationResult;
 import org.chatloop.user_training.repository.CourseProgressRepository;
+import org.chatloop.user_training.repository.EarnedQualificationsRepository;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.util.Fixture;
 import org.chatloop.user_training.util.data.DataFactory;
@@ -37,6 +38,9 @@ class QualificationEvaluationServiceImplTest {
 
     @Autowired
     private CourseProgressRepository courseProgressRepository;
+
+    @Autowired
+    private EarnedQualificationsRepository earnedQualificationsRepository;
 
     @Test
     public void testEvaluateAllUsers() {
@@ -76,9 +80,7 @@ class QualificationEvaluationServiceImplTest {
 
         for (EarnedQualifications eqf : twoQualifications) {
             assertTrue(eqf.getUserId().equals("usr300") || eqf.getUserId().equals("usr301"));
-            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet("doTopicTexts", "covid19"));
+            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet("topicTexts", "twentyQuestions"));
         }
-
-
     }
 }

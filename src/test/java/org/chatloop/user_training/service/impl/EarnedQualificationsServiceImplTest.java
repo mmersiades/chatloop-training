@@ -33,11 +33,11 @@ public class EarnedQualificationsServiceImplTest {
     @Test
     public void testServiceOps() {
         String johny = "johny";
-        String doTopicTexts = "doTopicTexts";
+        String topicTexts = "topicTexts";
 
         assertTrue(service.fetchEarnedQualifications(johny).isEmpty());
 
-        EarnedQualifications singleQualification = Fixture.earnedQualifications(johny, doTopicTexts);
+        EarnedQualifications singleQualification = Fixture.earnedQualifications(johny, topicTexts);
         service.storeEarnedQualifications(singleQualification);
 
         Optional<EarnedQualifications> earnedByJane = service.fetchEarnedQualifications(johny);

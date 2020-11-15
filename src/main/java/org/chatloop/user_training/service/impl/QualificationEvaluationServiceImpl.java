@@ -11,18 +11,19 @@ import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
-import org.springframework.context.ApplicationListener;
+import org.chatloop.user_training.spring.events.CourseResetEvent;
+import org.springframework.context.event.EventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@inheritDoc}
  */
 @Slf4j
-public class QualificationEvaluationServiceImpl implements QualificationEvaluationService, ApplicationListener<ContentUpdatedEvent> {
+public class QualificationEvaluationServiceImpl implements QualificationEvaluationService {
 
     private final CdnService cdnService;
     private final CourseProgressionService progressionService;
@@ -35,18 +36,35 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
     }
 
     /**
-     * Evaluates the course progress for all users and updates their earned qualifications. This is done in
-     * the following steps:
-     * - retrieves all available qualifications
-     * - for each qualification looks at the course progress requirements and fetches user course progression
-     * - evaluates which users satisfy all requirements and stores them in the database
-     * @return EvaluationResult
+     * @inheritDoc
+     */
+    @Override
+    public EvaluationResult evaluateUsers(String... userIds) {
+        log.info("Starting to evaluate qualifications for the following users: {}.", Arrays.toString(userIds));
+        return runEvaluation((courseId) -> progressionService.userProgressForCourse(courseId, userIds));
+    }
+
+    /**
+     * @inheritDoc
      */
     @Override
     public EvaluationResult evaluateAllUsers() {
         log.info("Starting to evaluate qualifications for all users.");
-        EvaluationResult result = new EvaluationResult();
+        return runEvaluation(progressionService::progressForCourse);
+    }
 
+    /**
+     * Evaluates course progress computes earned qualifications. This is done in
+     * the following steps:
+     * - retrieves all available qualifications
+     * - for each qualification, look at the course progress requirements and fetches course progression using the
+     *   specified {@code courseProgressFinder}
+     * - evaluates which users satisfy all requirements and stores them in the database
+     * @param courseProgressFinder a {@link Function} which is used to fetch course progress
+     * @return EvaluationResult
+     */
+    private EvaluationResult runEvaluation(Function<String, Stream<CourseProgress>> courseProgressFinder) {
+        EvaluationResult result = new EvaluationResult();
         List<UserQualification> userQualifications = fetchExistingQualifications();
         log.debug("Found {} existing qualifications which users may qualify for.", userQualifications.size());
         if (!userQualifications.isEmpty()) {
@@ -57,7 +75,7 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
                 if (!requiredCoursesIds.isEmpty()) {
                     String firstCourseId = requiredCoursesIds.remove(0);
                     log.debug("Fetching progress in course {} for all users.", firstCourseId);
-                    progressionService.userProgressForCourse(firstCourseId)
+                    courseProgressFinder.apply(firstCourseId)
                             .filter(courseProgress -> courseProgress.getCourseResult() == CourseResult.COURSE_PASSED)
                             .forEach(courseProgress -> {
                                 String candidateId = courseProgress.getUserId();
@@ -66,7 +84,7 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
                                 boolean satisfiesAll = true;
                                 for (String requiredCourseId : requiredCoursesIds) {
                                     log.debug("Checking if user {} has also passed course {}.", candidateId, requiredCourseId);
-                                    Optional<CourseProgress> otherCourseProgress = progressionService.userProgressForCourse(candidateId, requiredCourseId);
+                                    Optional<CourseProgress> otherCourseProgress = progressionService.singleUserProgressForCourse(candidateId, requiredCourseId);
                                     satisfiesAll = otherCourseProgress
                                             .map(other -> other.getCourseResult() == CourseResult.COURSE_PASSED)
                                             .orElse(false);
@@ -88,37 +106,83 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
         return result;
     }
 
-    @Override
+    /**
+     * Listens to a {ContentUpdatedEvent} which indicates that the underlying content model has changed.
+     * When this happens, we need to (re)evaluate the earned qualifications for all users, update the
+     * database and notify downstream services about the change delta.
+     * @param contentUpdatedEvent the {@link ContentUpdatedEvent}
+     */
+    @EventListener
     public void onApplicationEvent(ContentUpdatedEvent contentUpdatedEvent) {
         log.debug("Received {}", contentUpdatedEvent.getClass().getSimpleName());
 
+        var previouslyEarnedQualifications = earnedQualificationsService
+                .fetchAllEarnedQualifications()
+                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
+        log.debug("A total of {} users have previously earned a qualification.", previouslyEarnedQualifications.size());
+
+        var newlyEvaluatedEarnedQualifications = evaluateAllUsers()
+                .asEarnedQualifications()
+                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
+        log.debug("Evaluated that {} users earned at least one qualification.", newlyEvaluatedEarnedQualifications.size());
+
+        processQualificationChanges(previouslyEarnedQualifications, newlyEvaluatedEarnedQualifications);
+    }
+
+    /**
+     * Listens to a {CourseResetEvent} which indicates a user has reset the progess of a single
+     * course. As this could potentially alter the earned qualifications of that particular user,
+     * we need to (re)evaluate the earned qualifications, update the
+     * database and notify downstream services about the change delta.
+     * @param courseResetEvent the {@link CourseResetEvent}
+     */
+    @EventListener
+    public void onApplicationEvent(CourseResetEvent courseResetEvent) {
+        log.debug("Received {}", courseResetEvent.getClass().getSimpleName());
+
+        String userId = courseResetEvent.getUserId();
+        var previouslyEarnedQualifications = earnedQualificationsService
+                .fetchEarnedQualifications(userId)
+                .map(earnedQualifications -> Collections.singletonMap(userId, earnedQualifications))
+                .orElse(Collections.emptyMap());
+        log.debug("User {} has previously earned {} qualification(s).", userId, previouslyEarnedQualifications.isEmpty() ? 0 : previouslyEarnedQualifications.get(userId).getQualifications().size());
+
+        var newlyEvaluatedEarnedQualifications = evaluateUsers(userId)
+                .asEarnedQualifications()
+                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
+        log.debug("After running (re)evaluation, user {} earned {} qualification.", userId, newlyEvaluatedEarnedQualifications.size());
+
+        processQualificationChanges(previouslyEarnedQualifications, newlyEvaluatedEarnedQualifications);
+    }
+
+    /**
+     * Given previously earned qualifications, and a collection of qualifications after (re)evaluation, this function
+     * performs all necessary database update and notifies downstream services about the change delta.
+     * @param previouslyEarnedQualifications collection of previously earned qualifications
+     * @param newlyEvaluatedEarnedQualifications collection of evaluated qualifications
+     */
+    private void processQualificationChanges(Map<String, EarnedQualifications> previouslyEarnedQualifications, Map<String, EarnedQualifications> newlyEvaluatedEarnedQualifications) {
         var toRemove = new ArrayList<EarnedQualifications>();
         var changes = new ArrayList<EarnedQualifications>();
 
-        var existingQualifications = earnedQualificationsService
-                .fetchAllEarnedQualifications()
-                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
-
-        var evaluatedQualifications = evaluateAllUsers()
-                .asEarnedQualifications()
-                .collect(Collectors.toMap(EarnedQualifications::getUserId, e -> e));
-
         // find users who lost all their earned qualifications
-        for (String userId : existingQualifications.keySet()) {
-            if (!evaluatedQualifications.containsKey(userId)) {
-                toRemove.add(existingQualifications.get(userId));
+        for (String userId : previouslyEarnedQualifications.keySet()) {
+            if (!newlyEvaluatedEarnedQualifications.containsKey(userId)) {
+                toRemove.add(previouslyEarnedQualifications.get(userId));
             }
         }
+        log.debug("{} users no longer qualify for at least one qualification.", toRemove.size());
 
         // find users whose qualifications have changed
-        for (String userId : evaluatedQualifications.keySet()) {
-            var now = evaluatedQualifications.get(userId);
-            var before = existingQualifications.get(userId);
+        for (String userId : newlyEvaluatedEarnedQualifications.keySet()) {
+            var now = newlyEvaluatedEarnedQualifications.get(userId);
+            var before = previouslyEarnedQualifications.get(userId);
             // if the user didn't have any previous qualifications or they were different
             if (before == null || !now.getQualifications().containsAll(before.getQualifications()) || !before.getQualifications().containsAll(now.getQualifications())) {
                 changes.add(now);
             }
         }
+        log.debug("For {} users qualifications have changed.", changes.size());
 
         // handle removals
         earnedQualificationsService.removeEarnedQualifications(toRemove.toArray(new EarnedQualifications[0]));
@@ -127,6 +191,7 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
         earnedQualificationsService.storeEarnedQualifications(changes.toArray(new EarnedQualifications[0]));
 
         // notify downstream
+        log.debug("Notifying downstream services about changes to qualifications.");
     }
 
     /**

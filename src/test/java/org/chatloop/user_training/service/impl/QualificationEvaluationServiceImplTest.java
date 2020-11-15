@@ -43,6 +43,38 @@ class QualificationEvaluationServiceImplTest {
     private EarnedQualificationsRepository earnedQualificationsRepository;
 
     @Test
+    public void testEvaluateUsers() {
+        String fred = "fred";
+        String marlen = "marlen";
+        List<EarnedQualifications> withoutAnyProgress = service
+                .evaluateUsers(fred, marlen)
+                .asEarnedQualifications()
+                .collect(Collectors.toList());
+        assertTrue(withoutAnyProgress.isEmpty());
+
+        courseProgressRepository.save(Fixture.courseProgressFor(fred, DataFactory.COURSE_1));
+        courseProgressRepository.save(Fixture.courseProgressFor(marlen, DataFactory.COURSE_1));
+        courseProgressRepository.save(Fixture.courseProgressFor(fred, DataFactory.COURSE_2));
+
+        List<EarnedQualifications> withCourseProgress = service
+                .evaluateUsers(fred, marlen)
+                .asEarnedQualifications()
+                .collect(Collectors.toList());
+        assertEquals(2, withCourseProgress.size());
+
+        List<EarnedQualifications> twoQualifications = withCourseProgress
+                .stream()
+                .filter(earnedQualifications -> earnedQualifications.getQualifications().size() == 2)
+                .collect(Collectors.toList());
+        assertEquals(1, twoQualifications.size());
+
+        for (EarnedQualifications eqf : twoQualifications) {
+            assertEquals(eqf.getUserId(), "fred");
+            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet("topicTexts", "twentyQuestions"));
+        }
+    }
+
+    @Test
     public void testEvaluateAllUsers() {
         List<EarnedQualifications> withoutAnyProgress = service
                 .evaluateAllUsers()

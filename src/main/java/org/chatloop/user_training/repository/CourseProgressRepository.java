@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface CourseProgressRepository extends JpaRepository<CourseProgress, Long> {
 
-    @Query("FROM CourseProgress cp WHERE cp.userId = ?1 AND cp.courseId = ?2")
-    Optional<CourseProgress> findByUserIdCourseId(String userId, String courseId);
+    @Query("FROM CourseProgress cp WHERE cp.courseId = ?1 AND cp.userId in ?2")
+    List<CourseProgress> findByCourseIdAndUserIds(String courseId, List<String> userIds);
 
     @Query("FROM CourseProgress cp WHERE cp.courseId = ?1")
     List<CourseProgress> findByCourseId(String courseId);

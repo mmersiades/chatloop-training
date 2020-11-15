@@ -1,7 +1,6 @@
 package org.chatloop.user_training.service.impl;
 
 import org.chatloop.user_training.IntegrationTestConfig;
-import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.util.Fixture;
@@ -30,20 +29,43 @@ public class CourseProgressionServiceImplTest {
     private CourseProgressRepository repository;
 
     @Test
-    public void testUserProgressForCourse() {
+    public void testProgressForCourse() {
         String userIdJohn = "john";
         String userIdJane = "jane";
         String courseA = "A";
         String courseB = "B";
 
         repository.save(Fixture.courseProgressFor(userIdJohn, courseA));
-        assertEquals(1, service.userProgressForCourse(courseA).count());
-        assertTrue(service.userProgressForCourse(userIdJohn, courseA).isPresent());
-        assertEquals(0, service.userProgressForCourse(courseB).count());
+        assertEquals(1, service.progressForCourse(courseA).count());
+        assertTrue(service.singleUserProgressForCourse(userIdJohn, courseA).isPresent());
+        assertEquals(0, service.progressForCourse(courseB).count());
 
         repository.save(Fixture.courseProgressFor(userIdJane, courseA));
         repository.save(Fixture.courseProgressFor(userIdJohn, courseB));
-        assertEquals(2, service.userProgressForCourse(courseA).count());
-        assertEquals(1, service.userProgressForCourse(courseB).count());
+        assertEquals(2, service.progressForCourse(courseA).count());
+        assertEquals(1, service.progressForCourse(courseB).count());
+    }
+
+    @Test
+    public void testUserProgressForCourse() {
+        String john = "john";
+        String jane = "jane";
+        String luke = "luke";
+        String course = "B";
+
+        assertEquals(0, service.userProgressForCourse(course, john, jane, luke).count());
+        repository.save(Fixture.courseProgressFor(john, course));
+        repository.save(Fixture.courseProgressFor(jane, course));
+        assertEquals(2, service.userProgressForCourse(course, john, jane, luke).count());
+    }
+
+    @Test
+    public void testSingleUserProgressForCourse() {
+        String billy = "billy";
+        String course = "B";
+
+        assertFalse(service.singleUserProgressForCourse(billy, course).isPresent());
+        repository.save(Fixture.courseProgressFor(billy, course));
+        assertTrue(service.singleUserProgressForCourse(billy, course).isPresent());
     }
 }

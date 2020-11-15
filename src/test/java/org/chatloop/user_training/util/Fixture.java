@@ -5,7 +5,6 @@ import org.chatloop.user_training.model.progress.CourseResult;
 import org.chatloop.user_training.model.progress.EarnedQualifications;
 
 import java.util.Arrays;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Fixture {

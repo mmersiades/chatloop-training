@@ -8,8 +8,14 @@ import org.chatloop.user_training.model.progress.EvaluationResult;
 public interface QualificationEvaluationService {
 
     /**
-     * Evaluates the course progress for all users and updates their earned qualifications.
+     * Evaluates the course progress for all users and computes their earned qualifications.
      * @return EvaluationResult
      */
     EvaluationResult evaluateAllUsers();
+
+    /**
+     * Evaluates the course progress for the given users and computes their earned qualifications.
+     * @return EvaluationResult
+     */
+    EvaluationResult evaluateUsers(String... userIds);
 }

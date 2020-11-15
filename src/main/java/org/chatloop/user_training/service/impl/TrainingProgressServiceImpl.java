@@ -13,8 +13,10 @@ import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.ContentNotFound;
 import org.chatloop.user_training.service.TrainingHistoryService;
 import org.chatloop.user_training.service.TrainingProgressService;
+import org.chatloop.user_training.spring.events.CourseResetEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
     private CourseProgressRepository courseRepo;
     @Autowired
     private ModuleProgressRepository moduleRepo;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
@@ -90,6 +94,9 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
         resetCourseProgress(userCourse, progress);
         userCourse.setAttemptLimit(progress);
+
+        CourseResetEvent event = new CourseResetEvent(userId, this);
+        publisher.publishEvent(event);
 
         return userCourse;
     }

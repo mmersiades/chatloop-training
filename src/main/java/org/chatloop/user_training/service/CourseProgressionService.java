@@ -11,12 +11,12 @@ import java.util.stream.Stream;
 public interface CourseProgressionService {
 
     /**
-     * Returns a {@link Stream} containing items denoting the progress of individual users
+     * Returns a {@link Stream} containing elements denoting the progress of all users
      * in the course having the specified {@code courseId}.
      * @param courseId the id of a course
      * @return {@link Stream}
      */
-    Stream<CourseProgress> userProgressForCourse(String courseId);
+    Stream<CourseProgress> progressForCourse(String courseId);
 
     /**
      * Potentially returns the {@link CourseProgress} for the specified user in the course having the
@@ -25,5 +25,14 @@ public interface CourseProgressionService {
      * @param courseId the id of a course
      * @return Optional<CourseProgress>
      */
-    Optional<CourseProgress> userProgressForCourse(String userId, String courseId);
+    Optional<CourseProgress> singleUserProgressForCourse(String userId, String courseId);
+
+    /**
+     * Returns a {@link Stream} containing elements denoting the progress users having the given {@code userId}s
+     * in the course having the specified {@code courseId}.
+     * @param courseId the id of a course
+     * @param userIds the user id's of the user's to fetch course progress for
+     * @return {@link Stream}
+     */
+    Stream<CourseProgress> userProgressForCourse(String courseId, String... userIds);
 }

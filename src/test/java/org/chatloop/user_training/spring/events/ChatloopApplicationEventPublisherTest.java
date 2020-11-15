@@ -1,6 +1,7 @@
 package org.chatloop.user_training.spring.events;
 
 import org.chatloop.user_training.LocalTestConfig;
+import org.chatloop.user_training.model.progress.CourseResult;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.repository.EarnedQualificationsRepository;
 import org.chatloop.user_training.service.QualificationEvaluationService;
@@ -37,7 +38,7 @@ class ChatloopApplicationEventPublisherTest {
     private EarnedQualificationsRepository earnedQualificationsRepository;
 
     @Test
-    public void testOnApplicationEvent() {
+    public void testOnContentUpdatedEvent() {
         // john: nothing earned, qualifies for topicTexts
         courseProgressRepository.save(Fixture.courseProgressFor("john", DataFactory.COURSE_1));
 
@@ -80,4 +81,18 @@ class ChatloopApplicationEventPublisherTest {
         assertThat(michaelEarned.get(0).getQualifications()).containsExactly(DataFactory.QUALIFICATION_TOPIC_TEXTS, DataFactory.QUALIFICATION_TWENTY_QUESTIONS);
     }
 
+    @Test
+    public void testOnCourseResetEvent() {
+        // lars: topicTexts and twentyQuestions earned, qualifies for nothing (course 1 reset)
+        String lars = "lars";
+        earnedQualificationsRepository.save(Fixture.earnedQualifications(lars, DataFactory.QUALIFICATION_TOPIC_TEXTS, DataFactory.QUALIFICATION_TWENTY_QUESTIONS));
+        courseProgressRepository.save(Fixture.courseProgressFor(lars, DataFactory.COURSE_1, CourseResult.NO_RESULT_YET));
+        courseProgressRepository.save(Fixture.courseProgressFor(lars, DataFactory.COURSE_2));
+
+        // triggers an evaluation and updates to the database
+        publisher.publishEvent(new CourseResetEvent(lars, this));
+
+        var earned = earnedQualificationsRepository.findById(lars);
+        assertFalse(earned.isPresent());
+    }
 }

@@ -1,12 +1,15 @@
 package org.chatloop.user_training.service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.event.TrainingEvent;
 import org.chatloop.user_training.model.event.TrainingEventType;
 import org.chatloop.user_training.repository.TrainingHistoryRepository;
 import org.chatloop.user_training.service.TrainingHistoryService;
+import org.chatloop.user_training.spring.events.CoursePassedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +26,12 @@ public class TrainingHistoryServiceImpl implements TrainingHistoryService {
     @Autowired
     private final TrainingHistoryRepository repository;
 
-    public TrainingHistoryServiceImpl(TrainingHistoryRepository repository) {
+    @Autowired
+    private final ApplicationEventPublisher publisher;
+
+    public TrainingHistoryServiceImpl(TrainingHistoryRepository repository, ApplicationEventPublisher publisher) {
         this.repository = repository;
+        this.publisher = publisher;
     }
 
     @Override
@@ -34,6 +41,8 @@ public class TrainingHistoryServiceImpl implements TrainingHistoryService {
         event.setCourseId(courseId);
         event.setTrainingEventType(TrainingEventType.COURSE_COMPLETE);
         save(event);
+
+        publisher.publishEvent(new CoursePassedEvent(userId, this));
     }
 
     @Override

@@ -5,6 +5,8 @@ import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.content.UserQualification;
+import org.chatloop.user_training.util.enums.Courses;
+import org.chatloop.user_training.util.enums.Qualifications;
 
 import java.util.Collection;
 
@@ -12,12 +14,6 @@ import java.util.Collection;
  * Used to generate hierarchical data for testing with fake CDN service.
  */
 public final class DataFactory {
-
-    public static final String COURSE_1 = "cou1";
-    public static final String COURSE_2 = "cou2";
-
-    public static final String QUALIFICATION_TWENTY_QUESTIONS = "twentyQuestions";
-    public static final String QUALIFICATION_TOPIC_TEXTS = "topicTexts";
 
     /**
      * Program with single course with single module.
@@ -32,7 +28,7 @@ public final class DataFactory {
         userProgram.setName("Program 1");
 
         UserCourse userCourse = new UserCourse();
-        userCourse.setId(DataFactory.COURSE_1);
+        userCourse.setId(Courses.COU1.name());
         userCourse.setName("Course 1");
         userProgram.addUserCourse(userCourse);
 
@@ -103,8 +99,8 @@ public final class DataFactory {
      * @return List<UserQualification>
      */
     public Collection<UserQualification> userQualifications() {
-        UserQualification topicTexts = UserQualification.create(QUALIFICATION_TOPIC_TEXTS, DataFactory.COURSE_1);
-        UserQualification twentyQuestions = UserQualification.create(QUALIFICATION_TWENTY_QUESTIONS, DataFactory.COURSE_1, DataFactory.COURSE_2);
+        UserQualification topicTexts = UserQualification.create(Qualifications.TOPIC_TEXTS.name(), Courses.COU1.name());
+        UserQualification twentyQuestions = UserQualification.create(Qualifications.TWENTY_QUESTIONS.name(), Courses.COU1.name(), Courses.COU2.name());
         return Lists.list(topicTexts, twentyQuestions);
     }
 

@@ -1,9 +1,11 @@
 package org.chatloop.user_training.service.impl;
 
+import org.apache.catalina.User;
 import org.chatloop.user_training.IntegrationTestConfig;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.util.Fixture;
+import org.chatloop.user_training.util.enums.UserIds;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,8 @@ public class CourseProgressionServiceImplTest {
 
     @Test
     public void testProgressForCourse() {
-        String userIdJohn = "john";
-        String userIdJane = "jane";
+        String userIdJohn = UserIds.JOHN.name();
+        String userIdJane = UserIds.JANE.name();
         String courseA = "A";
         String courseB = "B";
 
@@ -48,9 +50,9 @@ public class CourseProgressionServiceImplTest {
 
     @Test
     public void testUserProgressForCourse() {
-        String john = "john";
-        String jane = "jane";
-        String luke = "luke";
+        String john = UserIds.JOHN.name();
+        String jane = UserIds.JANE.name();
+        String luke = UserIds.LUKE.name();
         String course = "B";
 
         assertEquals(0, service.userProgressForCourse(course, john, jane, luke).count());

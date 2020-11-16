@@ -11,6 +11,8 @@ import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
+import org.chatloop.user_training.spring.events.CoursePassedEvent;
+import org.chatloop.user_training.spring.events.CourseRelatedUserEvent;
 import org.chatloop.user_training.spring.events.CourseResetEvent;
 import org.springframework.context.event.EventListener;
 
@@ -130,17 +132,16 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
     }
 
     /**
-     * Listens to a {CourseResetEvent} which indicates a user has reset the progess of a single
-     * course. As this could potentially alter the earned qualifications of that particular user,
-     * we need to (re)evaluate the earned qualifications, update the
-     * database and notify downstream services about the change delta.
-     * @param courseResetEvent the {@link CourseResetEvent}
+     * Listens to a {CourseRelatedUserEvent} which indicates a user has either passed or reset a single course.
+     * As this could potentially alter the earned qualifications of that particular user, we need to (re)evaluate
+     * the earned qualifications, update the database and notify downstream services about the change delta.
+     * @param courseRelatedUserEvent the {@link CoursePassedEvent}
      */
     @EventListener
-    public void onApplicationEvent(CourseResetEvent courseResetEvent) {
-        log.debug("Received {}", courseResetEvent.getClass().getSimpleName());
+    public void onApplicationEvent(CourseRelatedUserEvent courseRelatedUserEvent) {
+        log.debug("Received {}", courseRelatedUserEvent.getClass().getSimpleName());
 
-        String userId = courseResetEvent.getUserId();
+        String userId = courseRelatedUserEvent.getUserId();
         var previouslyEarnedQualifications = earnedQualificationsService
                 .fetchEarnedQualifications(userId)
                 .map(earnedQualifications -> Collections.singletonMap(userId, earnedQualifications))

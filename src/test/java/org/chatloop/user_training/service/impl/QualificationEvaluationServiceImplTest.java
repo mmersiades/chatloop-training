@@ -9,6 +9,8 @@ import org.chatloop.user_training.repository.EarnedQualificationsRepository;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.util.Fixture;
 import org.chatloop.user_training.util.data.DataFactory;
+import org.chatloop.user_training.util.enums.Courses;
+import org.chatloop.user_training.util.enums.Qualifications;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.util.collections.Sets;
@@ -39,9 +41,6 @@ class QualificationEvaluationServiceImplTest {
     @Autowired
     private CourseProgressRepository courseProgressRepository;
 
-    @Autowired
-    private EarnedQualificationsRepository earnedQualificationsRepository;
-
     @Test
     public void testEvaluateUsers() {
         String fred = "fred";
@@ -52,9 +51,9 @@ class QualificationEvaluationServiceImplTest {
                 .collect(Collectors.toList());
         assertTrue(withoutAnyProgress.isEmpty());
 
-        courseProgressRepository.save(Fixture.courseProgressFor(fred, DataFactory.COURSE_1));
-        courseProgressRepository.save(Fixture.courseProgressFor(marlen, DataFactory.COURSE_1));
-        courseProgressRepository.save(Fixture.courseProgressFor(fred, DataFactory.COURSE_2));
+        courseProgressRepository.save(Fixture.courseProgressFor(fred, Courses.COU1.name()));
+        courseProgressRepository.save(Fixture.courseProgressFor(marlen, Courses.COU1.name()));
+        courseProgressRepository.save(Fixture.courseProgressFor(fred, Courses.COU2.name()));
 
         List<EarnedQualifications> withCourseProgress = service
                 .evaluateUsers(fred, marlen)
@@ -70,7 +69,7 @@ class QualificationEvaluationServiceImplTest {
 
         for (EarnedQualifications eqf : twoQualifications) {
             assertEquals(eqf.getUserId(), "fred");
-            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet("topicTexts", "twentyQuestions"));
+            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet(Qualifications.TOPIC_TEXTS.name(), Qualifications.TWENTY_QUESTIONS.name()));
         }
     }
 
@@ -87,7 +86,7 @@ class QualificationEvaluationServiceImplTest {
                 IntStream.range(0, 1000)
                     .mapToObj(i -> {
                         var userId = String.format("usr%s", i);
-                        return Fixture.courseProgressFor(userId, DataFactory.COURSE_1);
+                        return Fixture.courseProgressFor(userId, Courses.COU1.name());
                     }).collect(Collectors.toList())
         );
 
@@ -95,7 +94,7 @@ class QualificationEvaluationServiceImplTest {
         IntStream.range(300, 302)
                 .forEach(i -> {
                     var userId = String.format("usr%s", i);
-                    courseProgressRepository.save(Fixture.courseProgressFor(userId, DataFactory.COURSE_2));
+                    courseProgressRepository.save(Fixture.courseProgressFor(userId, Courses.COU2.name()));
                 });
 
         List<EarnedQualifications> withCourseProgress = service
@@ -112,7 +111,7 @@ class QualificationEvaluationServiceImplTest {
 
         for (EarnedQualifications eqf : twoQualifications) {
             assertTrue(eqf.getUserId().equals("usr300") || eqf.getUserId().equals("usr301"));
-            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet("topicTexts", "twentyQuestions"));
+            assertThat(eqf.getQualifications()).hasSameElementsAs(Sets.newSet(Qualifications.TOPIC_TEXTS.name(), Qualifications.TWENTY_QUESTIONS.name()));
         }
     }
 }

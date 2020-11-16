@@ -6,6 +6,7 @@ import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.util.Fixture;
+import org.chatloop.user_training.util.enums.UserIds;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class EarnedQualificationsServiceImplTest {
 
     @Test
     public void testServiceOps() {
-        String johny = "johny";
+        String johny = UserIds.JOHNNY.name();
         String topicTexts = "topicTexts";
 
         assertTrue(service.fetchEarnedQualifications(johny).isEmpty());

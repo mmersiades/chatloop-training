@@ -10,6 +10,7 @@ import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.service.TrainingProgressService;
 import org.chatloop.user_training.util.TestUtil;
 import org.chatloop.user_training.util.data.DataFactory;
+import org.chatloop.user_training.util.enums.Courses;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Order;
@@ -93,7 +94,7 @@ public class TrainingProgressGqlTest {
         String templateFile = "graphql/userCourse.graphql";
 
         ObjectNode variables = objectMapper.createObjectNode();
-        variables.put("courseId", DataFactory.COURSE_1);
+        variables.put("courseId", Courses.COU1.name());
 
         GraphQLResponse response = graphQLTestTemplate.perform(templateFile, variables);
 
@@ -103,7 +104,7 @@ public class TrainingProgressGqlTest {
         JsonNode fetchProgram = root.path("data").path("userCourse");
         String courId = fetchProgram.path("id").textValue();
 
-        assertEquals(DataFactory.COURSE_1, courId);
+        assertEquals(Courses.COU1.name(), courId);
     }
 
     @Test
@@ -112,7 +113,7 @@ public class TrainingProgressGqlTest {
         String templateFile = "graphql/taskAttempt.graphql";
 
         ObjectNode variables = objectMapper.createObjectNode();
-        variables.put("courseId", DataFactory.COURSE_1);
+        variables.put("courseId", Courses.COU1.name());
         variables.put("moduleId", "mod1");
         variables.put("isCorrect", true);
 
@@ -124,7 +125,7 @@ public class TrainingProgressGqlTest {
         JsonNode fetchProgram = root.path("data").path("taskAttempt");
         String courId = fetchProgram.path("id").textValue();
 
-        assertEquals(DataFactory.COURSE_1, courId);
+        assertEquals(Courses.COU1.name(), courId);
     }
 
     @Test
@@ -133,7 +134,7 @@ public class TrainingProgressGqlTest {
         String templateFile = "graphql/resetUserCourse.graphql";
 
         ObjectNode variables = objectMapper.createObjectNode();
-        variables.put("courseId", DataFactory.COURSE_1);
+        variables.put("courseId", Courses.COU1.name());
 
         GraphQLResponse response = graphQLTestTemplate.perform(templateFile, variables);
 
@@ -143,7 +144,7 @@ public class TrainingProgressGqlTest {
         JsonNode fetchProgram = root.path("data").path("resetUserCourse");
         String courId = fetchProgram.path("id").textValue();
 
-        assertEquals(DataFactory.COURSE_1, courId);
+        assertEquals(Courses.COU1.name(), courId);
     }
 
     private ObjectNode newVars() {

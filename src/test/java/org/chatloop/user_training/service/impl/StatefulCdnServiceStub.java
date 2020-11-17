@@ -5,7 +5,10 @@ import com.contentful.java.cda.CDAEntry;
 import com.contentful.java.cda.SynchronizedSpace;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A {@link StatefulCdnService} which can be primed with test data and act as a stub.
@@ -24,11 +27,11 @@ public class StatefulCdnServiceStub extends StatefulCdnService {
         }
     }
 
-    private final SynchronizedSpace stubbedSpace;
+    private final List<SynchronizedSpace> stubbedSpaces;
 
-    public StatefulCdnServiceStub(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher, Map<String, CDAEntry> entries) {
+    public StatefulCdnServiceStub(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher, Map<String, CDAEntry>... entryResponses) {
         super(transformer, applicationEventPublisher);
-        this.stubbedSpace = new StubbedSynchronizedSpace(entries);
+        this.stubbedSpaces = Arrays.stream(entryResponses).map(StubbedSynchronizedSpace::new).collect(Collectors.toList());
     }
 
     @Override
@@ -36,7 +39,11 @@ public class StatefulCdnServiceStub extends StatefulCdnService {
 
     @Override
     protected SynchronizedSpace syncData() {
-        return stubbedSpace;
+        var space = stubbedSpaces.remove(0);
+        if (stubbedSpaces.isEmpty()) {
+            stubbedSpaces.add(space);
+        }
+        return space;
     }
 
     @Override

@@ -10,10 +10,7 @@ import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
-import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
-import org.chatloop.user_training.spring.events.CoursePassedEvent;
-import org.chatloop.user_training.spring.events.CourseRelatedUserEvent;
-import org.chatloop.user_training.spring.events.CourseResetEvent;
+import org.chatloop.user_training.spring.events.*;
 import org.springframework.context.event.EventListener;
 
 import java.util.*;
@@ -109,14 +106,14 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
     }
 
     /**
-     * Listens to a {ContentUpdatedEvent} which indicates that the underlying content model has changed.
+     * Listens to a {@link ContentRelatedChangeEvent} which indicates that the underlying content model has changed.
      * When this happens, we need to (re)evaluate the earned qualifications for all users, update the
      * database and notify downstream services about the change delta.
-     * @param contentUpdatedEvent the {@link ContentUpdatedEvent}
+     * @param contentRelatedChangeEvent the {@link ContentRelatedChangeEvent}
      */
     @EventListener
-    public void onApplicationEvent(ContentUpdatedEvent contentUpdatedEvent) {
-        log.debug("Received {}", contentUpdatedEvent.getClass().getSimpleName());
+    public void onApplicationEvent(ContentRelatedChangeEvent contentRelatedChangeEvent) {
+        log.debug("Received {}", contentRelatedChangeEvent.getClass().getSimpleName());
 
         var previouslyEarnedQualifications = earnedQualificationsService
                 .fetchAllEarnedQualifications()

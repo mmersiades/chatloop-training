@@ -9,12 +9,15 @@ import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
+import org.chatloop.user_training.spring.events.UserQualificationsUpdatedEvent;
+import org.chatloop.user_training.util.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -52,6 +55,8 @@ public class StatefulCdnService implements CdnService {
 
     private final ChatloopApplicationEventPublisher applicationEventPublisher;
 
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
+
     public StatefulCdnService(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher) {
         this.transformer = transformer;
         this.applicationEventPublisher = applicationEventPublisher;
@@ -76,27 +81,34 @@ public class StatefulCdnService implements CdnService {
 
     @PostConstruct
     public void init() {
-        this.client = createClient();
+        if (initialized.compareAndSet(false, true)) {
+            this.client = createClient();
 
-        log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
+            log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
 
-        syncSchema();
-        this.syncedSpace = syncData();
+            syncSchema();
+            this.syncedSpace = syncData();
 
-        log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
-        logFetchedContent();
+            log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
+            logFetchedContent();
 
-        ApplicationEvent event = new ContentUpdatedEvent(StatefulCdnService.class);
-        this.applicationEventPublisher.publishEvent(event);
+            ApplicationEvent event = new ContentUpdatedEvent(StatefulCdnService.class);
+            this.applicationEventPublisher.publishEvent(event);
+        }
     }
 
     @Override
     public void markCacheStale() {
         log.info("Cached marked as stale, starting re-sync of space {}", spaceId);
+
+        // get current user qualifications, so we can compare after the sync
+        var preSyncUserQualifications = this.fetchUserQualifications()
+                .stream().collect(Collectors.toMap(UserQualification::getName, UserQualification::getCourseIds));
+        log.info("Pre sync user qualifications: {}", MapUtils.convertWithStream(preSyncUserQualifications));
+
         spaceLock.writeLock().lock();
         try {
-            SyncQuery syncQuery = this.client.sync(); // replaces below
-            syncedSpace = syncQuery.fetch();
+            syncedSpace = this.syncData();
             /**
              * This call may lead to missing pointer/edge between program and course. So even
              * though they are linked in Contentful, we observe it via their Java client API
@@ -114,6 +126,16 @@ public class StatefulCdnService implements CdnService {
             spaceLock.writeLock().unlock();
         }
         log.info("Re-sync of space {} complete", spaceId);
+
+        var postSyncUserQualifications = this.fetchUserQualifications()
+                .stream().collect(Collectors.toMap(UserQualification::getName, UserQualification::getCourseIds));
+
+        log.info("Post sync user qualifications: {}", MapUtils.convertWithStream(postSyncUserQualifications));
+
+        if (!MapUtils.areEqual(preSyncUserQualifications, postSyncUserQualifications)) {
+            log.info("Detected changes to the user qualifications.");
+            applicationEventPublisher.publishEvent(new UserQualificationsUpdatedEvent(this));
+        }
     }
 
     @Override

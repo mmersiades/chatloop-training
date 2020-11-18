@@ -2,15 +2,15 @@ package org.chatloop.user_training.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.content.UserQualification;
-import org.chatloop.user_training.model.progress.CourseProgress;
-import org.chatloop.user_training.model.progress.CourseResult;
-import org.chatloop.user_training.model.progress.EarnedQualifications;
-import org.chatloop.user_training.model.progress.EvaluationResult;
+import org.chatloop.user_training.model.progress.*;
+import org.chatloop.user_training.model.progress.QualificationChangeSummary.EarnedUserQualificationTo;
 import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.spring.events.*;
+import org.chatloop.user_training.web.ChatloopMonolithFacade;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 
 import java.util.*;
@@ -27,11 +27,13 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
     private final CdnService cdnService;
     private final CourseProgressionService progressionService;
     private final EarnedQualificationsService earnedQualificationsService;
+    private final ChatloopMonolithFacade chatloopMonolithFacade;
 
-    public QualificationEvaluationServiceImpl(CdnService cdnService, CourseProgressionService progressionService, EarnedQualificationsService earnedQualificationsService) {
+    public QualificationEvaluationServiceImpl(CdnService cdnService, CourseProgressionService progressionService, EarnedQualificationsService earnedQualificationsService, ChatloopMonolithFacade facade) {
         this.cdnService = cdnService;
         this.progressionService = progressionService;
         this.earnedQualificationsService = earnedQualificationsService;
+        this.chatloopMonolithFacade = facade;
     }
 
     /**
@@ -106,13 +108,13 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
     }
 
     /**
-     * Listens to a {@link ContentRelatedChangeEvent} which indicates that the underlying content model has changed.
+     * Processes a {@link ContentRelatedChangeEvent} indicating that the underlying content model has changed.
      * When this happens, we need to (re)evaluate the earned qualifications for all users, update the
      * database and notify downstream services about the change delta.
      * @param contentRelatedChangeEvent the {@link ContentRelatedChangeEvent}
      */
     @EventListener
-    public void onApplicationEvent(ContentRelatedChangeEvent contentRelatedChangeEvent) {
+    public void onContentRelatedChangeEvent(ContentRelatedChangeEvent contentRelatedChangeEvent) {
         log.debug("Received {}", contentRelatedChangeEvent.getClass().getSimpleName());
 
         var previouslyEarnedQualifications = earnedQualificationsService
@@ -135,7 +137,7 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
      * @param courseRelatedUserEvent the {@link CoursePassedEvent}
      */
     @EventListener
-    public void onApplicationEvent(CourseRelatedUserEvent courseRelatedUserEvent) {
+    public void onCourseRelatedUserEvent(CourseRelatedUserEvent courseRelatedUserEvent) {
         log.debug("Received {}", courseRelatedUserEvent.getClass().getSimpleName());
 
         String userId = courseRelatedUserEvent.getUserId();
@@ -190,6 +192,15 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
 
         // notify downstream
         log.debug("Notifying downstream services about changes to qualifications.");
+
+        //if (!toRemove.isEmpty() || !changes.isEmpty()) {
+            var removals = toRemove.stream().map(EarnedQualifications::getUserId).collect(Collectors.toList());
+            removals.add("michael");
+            var changeList = changes.stream().map(item -> new EarnedUserQualificationTo(item.getUserId(), new ArrayList<>(item.getQualifications()))).collect(Collectors.toList());
+            changeList.add(new EarnedUserQualificationTo("john", Collections.singletonList("TwentyQuestions")));
+            QualificationChangeSummary summary = new QualificationChangeSummary(removals, changeList);
+            chatloopMonolithFacade.notifyEarnedQualificationsChanges(summary);
+        //}
     }
 
     /**

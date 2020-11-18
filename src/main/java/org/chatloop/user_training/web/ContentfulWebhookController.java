@@ -37,6 +37,8 @@ public class ContentfulWebhookController {
                                     @RequestHeader(value = Headers.TOPIC_NAME) String topicName,
                                     @RequestBody Map<String, Object> payload) throws Exception {
 
+        // Contentful might call this multiple times when a content item is published
+
         log.info("Received call from webhook {}, topic {}", hookName, topicName);
         log.info("Payload " + payload); // TODO handling of JSON payload if we really need it
 

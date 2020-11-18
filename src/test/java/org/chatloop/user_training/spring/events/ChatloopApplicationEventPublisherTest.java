@@ -60,7 +60,7 @@ class ChatloopApplicationEventPublisherTest {
         courseProgressRepository.save(Fixture.courseProgressFor(UserIds.MICHAEL.name(), Courses.COU2.name()));
 
         // triggers an evaluation and updates to the database
-        publisher.publishEvent(new ContentUpdatedEvent(this));
+        publisher.publishApplicationEvent(new ContentUpdatedEvent(this));
 
         var earned = earnedQualificationsRepository.findAll();
         assertEquals(3, earned.size());
@@ -93,7 +93,7 @@ class ChatloopApplicationEventPublisherTest {
         courseProgressRepository.save(Fixture.courseProgressFor(lars, Courses.COU2.name()));
 
         // triggers an evaluation and updates to the database
-        publisher.publishEvent(new CourseResetEvent(lars, this));
+        publisher.publishApplicationEvent(new CourseResetEvent(lars, this));
 
         var earned = earnedQualificationsRepository.findById(lars);
         assertFalse(earned.isPresent());
@@ -106,7 +106,7 @@ class ChatloopApplicationEventPublisherTest {
         courseProgressRepository.save(Fixture.courseProgressFor(bill, Courses.COU1.name()));
 
         // triggers an evaluation and updates to the database
-        publisher.publishEvent(new CoursePassedEvent(bill, this));
+        publisher.publishApplicationEvent(new CoursePassedEvent(bill, this));
 
         var earned = earnedQualificationsRepository.findById(bill);
         assertTrue(earned.isPresent());

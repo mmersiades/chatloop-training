@@ -2,6 +2,7 @@ package org.chatloop.user_training.service.impl;
 
 import org.apache.catalina.User;
 import org.chatloop.user_training.IntegrationTestConfig;
+import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.util.Fixture;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { IntegrationTestConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { LocalTestConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "classpath:db_scripts/delete_all.sql")
 public class CourseProgressionServiceImplTest {

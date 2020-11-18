@@ -13,6 +13,8 @@ import org.chatloop.user_training.spring.events.UserQualificationsUpdatedEvent;
 import org.chatloop.user_training.util.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +34,6 @@ import java.util.stream.Collectors;
  * TODO on cache miss trigger resync
  */
 @Slf4j
-@Service
 public class StatefulCdnService implements CdnService {
 
     @Value("${contentful.spaceId}")
@@ -79,8 +80,9 @@ public class StatefulCdnService implements CdnService {
         return syncedSpace;
     }
 
-    @PostConstruct
-    public void init() {
+    @EventListener
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.info("Received ContextRefreshedEvent indicating that Spring context has been initialized.");
         if (initialized.compareAndSet(false, true)) {
             this.client = createClient();
 
@@ -92,8 +94,8 @@ public class StatefulCdnService implements CdnService {
             log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
             logFetchedContent();
 
-            ApplicationEvent event = new ContentUpdatedEvent(StatefulCdnService.class);
-            this.applicationEventPublisher.publishEvent(event);
+            ContentUpdatedEvent contentUpdatedEvent = new ContentUpdatedEvent(this);
+            this.applicationEventPublisher.publishApplicationEvent(contentUpdatedEvent);
         }
     }
 
@@ -108,7 +110,7 @@ public class StatefulCdnService implements CdnService {
 
         spaceLock.writeLock().lock();
         try {
-            syncedSpace = this.syncData();
+            this.syncedSpace = this.syncData();
             /**
              * This call may lead to missing pointer/edge between program and course. So even
              * though they are linked in Contentful, we observe it via their Java client API
@@ -134,7 +136,7 @@ public class StatefulCdnService implements CdnService {
 
         if (!MapUtils.areEqual(preSyncUserQualifications, postSyncUserQualifications)) {
             log.info("Detected changes to the user qualifications.");
-            applicationEventPublisher.publishEvent(new UserQualificationsUpdatedEvent(this));
+            applicationEventPublisher.publishApplicationEvent(new UserQualificationsUpdatedEvent(this));
         }
     }
 
@@ -143,7 +145,7 @@ public class StatefulCdnService implements CdnService {
         spaceLock.readLock().lock();
         try {
             List<UserProgram> programs = new ArrayList<>();
-            for (CDAEntry entry : syncedSpace.entries().values()) {
+            for (CDAEntry entry : this.syncedSpace.entries().values()) {
                 if (ContentTypes.PROGRAM.supports(entry)) {
                     programs.add(transformer.toUserProgram(entry, true));
                 }
@@ -159,7 +161,7 @@ public class StatefulCdnService implements CdnService {
         spaceLock.readLock().lock();
         try {
             List<UserQualification> qualifications = new ArrayList<>();
-            for (CDAEntry entry : syncedSpace.entries().values()) {
+            for (CDAEntry entry : this.syncedSpace.entries().values()) {
                 if (ContentTypes.QUALIFICATION.supports(entry)) {
                     qualifications.add(transformer.toUserQualification(entry));
                 }
@@ -174,7 +176,7 @@ public class StatefulCdnService implements CdnService {
     public Optional<UserProgram> fetchProgramById(String programId) {
         spaceLock.readLock().lock();
         try {
-            CDAEntry entry = syncedSpace.entries().get(programId);
+            CDAEntry entry = this.syncedSpace.entries().get(programId);
             if (entry == null) {
                 return Optional.empty();
             }
@@ -189,7 +191,7 @@ public class StatefulCdnService implements CdnService {
     public Optional<UserCourse> fetchCourseById(String courseId) {
         spaceLock.readLock().lock();
         try {
-            CDAEntry entry = syncedSpace.entries().get(courseId);
+            CDAEntry entry = this.syncedSpace.entries().get(courseId);
             if (entry == null) {
                 log.warn("Course {} not found in space {}, env {} ", courseId, spaceId, envId);
                 return Optional.empty();

@@ -13,7 +13,7 @@ public class DefaultChatloopApplicationEventPublisher implements ChatloopApplica
     }
 
     @Override
-    public void publishEvent(ApplicationEvent event) {
+    public void publishApplicationEvent(ApplicationEvent event) {
         log.debug("About to publish {}", event.getClass().getSimpleName());
         applicationEventPublisher.publishEvent(event);
     }

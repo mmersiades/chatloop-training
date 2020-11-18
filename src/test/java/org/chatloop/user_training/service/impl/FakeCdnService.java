@@ -8,6 +8,8 @@ import org.chatloop.user_training.util.data.DataFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -29,9 +31,8 @@ public class FakeCdnService implements CdnService {
         return lastReset.get();
     }
 
-    @Override
-    @PostConstruct
-    public void init() {
+    @EventListener
+    public void onApplicationEvent(ContextRefreshedEvent event) {
         DataFactory factory = new DataFactory();
         userPrograms.add(factory.createProgram1());
         userPrograms.add(factory.createProgram2());

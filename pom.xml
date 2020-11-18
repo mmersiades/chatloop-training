@@ -24,6 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <guava.version>20.0</guava.version>
+        <aws.sdk.version>2.15.30</aws.sdk.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
         <start-class>org.chatloop.user_training.ChatloopUserTrainingMain</start-class>
     </properties>
@@ -35,10 +36,18 @@
             <version>4.5.12</version>
         </dependency>
 
+        <!-- Contentful SDK -->
         <dependency>
             <groupId>com.contentful.java</groupId>
             <artifactId>java-sdk</artifactId>
             <version>10.4.3</version>
+        </dependency>
+
+        <!-- AWS SDK -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>secretsmanager</artifactId>
+            <version>${aws.sdk.version}</version>
         </dependency>
 
         <dependency>

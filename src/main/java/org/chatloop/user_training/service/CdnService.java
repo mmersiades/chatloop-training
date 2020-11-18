@@ -16,11 +16,6 @@ import java.util.Optional;
 public interface CdnService {
 
     /**
-     * Will perform initial cache sync.
-     */
-    void init();
-
-    /**
      * Will be generally triggered by webhook.
      */
     void markCacheStale();

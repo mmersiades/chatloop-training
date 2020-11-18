@@ -6,6 +6,7 @@ import org.chatloop.user_training.model.event.TrainingEvent;
 import org.chatloop.user_training.model.event.TrainingEventType;
 import org.chatloop.user_training.repository.TrainingHistoryRepository;
 import org.chatloop.user_training.service.TrainingHistoryService;
+import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 import org.chatloop.user_training.spring.events.CoursePassedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +28,9 @@ public class TrainingHistoryServiceImpl implements TrainingHistoryService {
     private final TrainingHistoryRepository repository;
 
     @Autowired
-    private final ApplicationEventPublisher publisher;
+    private final ChatloopApplicationEventPublisher publisher;
 
-    public TrainingHistoryServiceImpl(TrainingHistoryRepository repository, ApplicationEventPublisher publisher) {
+    public TrainingHistoryServiceImpl(TrainingHistoryRepository repository, ChatloopApplicationEventPublisher publisher) {
         this.repository = repository;
         this.publisher = publisher;
     }
@@ -42,7 +43,7 @@ public class TrainingHistoryServiceImpl implements TrainingHistoryService {
         event.setTrainingEventType(TrainingEventType.COURSE_COMPLETE);
         save(event);
 
-        publisher.publishEvent(new CoursePassedEvent(userId, this));
+        publisher.publishApplicationEvent(new CoursePassedEvent(userId, this));
     }
 
     @Override

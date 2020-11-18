@@ -3,8 +3,7 @@ package org.chatloop.user_training.service.impl;
 import org.chatloop.user_training.IntegrationTestConfig;
 import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
-import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
-import org.chatloop.user_training.spring.events.UserQualificationsUpdatedEvent;
+import org.chatloop.user_training.spring.events.*;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -113,7 +112,7 @@ public class StatefulCdnServiceQualificationsTest {
         private final Collection<ApplicationEvent> events = new ArrayList<>();
 
         @Override
-        public void publishEvent(ApplicationEvent event) {
+        public void publishApplicationEvent(ApplicationEvent event) {
             events.add(event);
         }
     }

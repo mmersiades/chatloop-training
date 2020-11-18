@@ -2,13 +2,12 @@ package org.chatloop.user_training;
 
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.repository.EarnedQualificationsRepository;
-import org.chatloop.user_training.service.CdnService;
-import org.chatloop.user_training.service.CourseProgressionService;
-import org.chatloop.user_training.service.EarnedQualificationsService;
-import org.chatloop.user_training.service.QualificationEvaluationService;
+import org.chatloop.user_training.service.*;
 import org.chatloop.user_training.service.impl.*;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 import org.chatloop.user_training.spring.events.DefaultChatloopApplicationEventPublisher;
+import org.chatloop.user_training.web.ChatloopMonolithFacade;
+import org.chatloop.user_training.web.impl.ChatloopMonolithFacadeImpl;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ChatloopUserTrainingMain implements ApplicationEventPublisherAware {
     public static void main(String[] args) {
-        new SpringApplication(ChatloopUserTrainingMain.class).run(args);
+        SpringApplication.run(ChatloopUserTrainingMain.class, args);
     }
 
     private ApplicationEventPublisher applicationEventPublisher;
@@ -47,14 +46,23 @@ public class ChatloopUserTrainingMain implements ApplicationEventPublisherAware 
     }
 
     @Bean
-    public QualificationEvaluationService qualificationEvaluationService(@Autowired CdnService cdnService,
-        @Autowired CourseProgressionService courseProgressionService, @Autowired EarnedQualificationsService earnedQualificationsService) {
-        return new QualificationEvaluationServiceImpl(cdnService, courseProgressionService, earnedQualificationsService);
+    public QualificationEvaluationService qualificationEvaluationService(@Autowired CourseProgressRepository courseProgressRepository, @Autowired EarnedQualificationsRepository earnedQualificationsRepository) {
+        return new QualificationEvaluationServiceImpl(cdnService(), courseProgressionService(courseProgressRepository), earnedQualificationsService(earnedQualificationsRepository), chatloopMonolithFacade());
     }
 
     @Bean
     public EarnedQualificationsService earnedQualificationsService(@Autowired EarnedQualificationsRepository repository) {
         return new EarnedQualificationsServiceImpl(repository);
+    }
+
+    @Bean
+    public ApplicationSecretsService applicationSecretsService() {
+        return new AWSApplicationSecretsServiceImpl();
+    }
+
+    @Bean
+    public ChatloopMonolithFacade chatloopMonolithFacade() {
+        return new ChatloopMonolithFacadeImpl(applicationSecretsService());
     }
 
     @Bean

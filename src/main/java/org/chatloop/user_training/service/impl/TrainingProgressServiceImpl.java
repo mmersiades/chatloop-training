@@ -8,18 +8,15 @@ import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.model.progress.CourseResult;
 import org.chatloop.user_training.model.progress.ModuleProgress;
 import org.chatloop.user_training.repository.CourseProgressRepository;
-import org.chatloop.user_training.repository.ModuleProgressRepository;
 import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.ContentNotFound;
 import org.chatloop.user_training.service.TrainingHistoryService;
 import org.chatloop.user_training.service.TrainingProgressService;
 import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
 import org.chatloop.user_training.spring.events.CourseResetEvent;
+import org.chatloop.user_training.spring.security.SecurityContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +44,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
-        String userId = getUserId();
+        String userId = SecurityContextUtils.getUserId();
 
         List<UserProgram> userPrograms = cdnService.fetchUserPrograms();
         for (UserProgram userProgram : userPrograms) {
@@ -64,7 +61,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public UserProgram fetchProgram(String programId) {
-        String userId = getUserId();
+        String userId = SecurityContextUtils.getUserId();
 
         UserProgram userProgram = getProgramFromCdnStrict(programId);
         for (UserCourse userCourse : userProgram.getUserCourses()) {
@@ -76,7 +73,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public UserCourse fetchCourse(String courseId) {
-        String userId = getUserId();
+        String userId = SecurityContextUtils.getUserId();
 
         UserCourse userCourse = getCourseFromCdnStrict(courseId);
         CourseProgress progress = getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
@@ -86,7 +83,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public UserCourse resetCourse(String courseId) {
-        String userId = getUserId();
+        String userId = SecurityContextUtils.getUserId();
 
         UserCourse userCourse = getCourseFromCdnStrict(courseId);
         CourseProgress progress = getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
@@ -102,7 +99,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public UserCourse taskAttempt(String courseId, String moduleId, boolean isCorrect) {
-        String userId = getUserId();
+        String userId = SecurityContextUtils.getUserId();
 
         UserCourse userCourse = getCourseFromCdnStrict(courseId);
         UserModule userModule = userCourse.getUserModule(moduleId);
@@ -139,7 +136,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
     }
 
     private void resetCourseProgress(UserCourse userCourse, CourseProgress progress) {
-        String userId = getUserId();
+        String userId = SecurityContextUtils.getUserId();
 
         progress.setCourseResult(CourseResult.NO_RESULT_YET);
 
@@ -227,15 +224,5 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
             }
             return progress;
         });
-    }
-
-    /**
-     * Security context should be populated by JWT filter.
-     */
-    private String  getUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        log.info("Extracted user ID {}", principal);
-        return String.valueOf(principal);
     }
 }

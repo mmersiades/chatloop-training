@@ -7,10 +7,12 @@ import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.LocalTestConfig;
+import org.chatloop.user_training.model.progress.EarnedQualifications;
+import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.TrainingProgressService;
 import org.chatloop.user_training.util.TestUtil;
-import org.chatloop.user_training.util.data.DataFactory;
 import org.chatloop.user_training.util.enums.Courses;
+import org.chatloop.user_training.util.enums.Qualifications;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Order;
@@ -18,9 +20,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -39,6 +47,41 @@ public class TrainingProgressGqlTest {
     private TrainingProgressService service;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private EarnedQualificationsService earnedQualificationsService;
+
+    @TestConfiguration
+    static class TestConfigOverrides {
+        @Bean
+        @Primary
+        public EarnedQualificationsService earnedQualificationsService() {
+            return new EarnedQualificationsService() {
+                private final List<EarnedQualifications> elements = new ArrayList<>();
+
+                @Override
+                public Optional<EarnedQualifications> fetchEarnedQualifications(String userId) {
+                    return elements.stream()
+                            .filter(eqf -> userId.equals(eqf.getUserId()))
+                            .findFirst();
+                }
+
+                @Override
+                public Stream<EarnedQualifications> fetchAllEarnedQualifications() {
+                    return elements.stream();
+                }
+
+                @Override
+                public void storeEarnedQualifications(EarnedQualifications... earnedQualifications) {
+                    elements.addAll(Arrays.asList(earnedQualifications));
+                }
+
+                @Override
+                public void removeEarnedQualifications(EarnedQualifications... earnedQualifications) {
+                    throw new UnsupportedOperationException("not implemented");
+                }
+            };
+        }
+    }
 
     @Before
     public void setUp() {
@@ -145,6 +188,28 @@ public class TrainingProgressGqlTest {
         String courId = fetchProgram.path("id").textValue();
 
         assertEquals(Courses.COU1.name(), courId);
+    }
+
+    @Test
+    @Order(6)
+    public void testFetchEarnedQualifications() throws Exception {
+        var earnedQualifications = new EarnedQualifications();
+        earnedQualifications.setUserId(TestUtil.TEST_JWT_USER_ID);
+        earnedQualifications.setQualifications(Collections.singleton(Qualifications.TOPIC_TEXTS.name()));
+        earnedQualificationsService.storeEarnedQualifications(earnedQualifications);
+
+        String templateFile = "graphql/earnedQualifications.graphql";
+
+        ObjectNode variables = objectMapper.createObjectNode();
+
+        GraphQLResponse response = graphQLTestTemplate.perform(templateFile, variables);
+
+        assertTrue(response.isOk());
+
+        JsonNode root = response.readTree();
+        JsonNode qualifications = root.path("data").path("earnedQualifications");
+        assertEquals(1, qualifications.size());
+        assertEquals(Qualifications.TOPIC_TEXTS.name(), qualifications.get(0).path("name").textValue());
     }
 
     private ObjectNode newVars() {

@@ -11,6 +11,10 @@ type UserProgram {
     userCourses: [UserCourse]
 }
 
+type EarnedQualification {
+    name: String!
+}
+
 type UserCourse {
     id: ID!
     name: String!
@@ -36,6 +40,7 @@ type Mutation {
 
 type Query {
     userPrograms: [UserProgram]
+    earnedQualifications: [EarnedQualification]
     userProgram(id:String!): UserProgram
     userCourse(id:String!): UserCourse
 }

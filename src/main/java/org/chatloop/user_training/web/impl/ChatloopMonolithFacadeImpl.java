@@ -1,6 +1,5 @@
 package org.chatloop.user_training.web.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.chatloop.user_training.model.progress.QualificationChangeSummary;
 import org.chatloop.user_training.service.ApplicationSecretsService;
@@ -59,16 +58,6 @@ public class ChatloopMonolithFacadeImpl implements ChatloopMonolithFacade {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", String.format("Bearer %s", applicationSecretsService.monolithRestServiceJWT()));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json;
-        try {
-            json = objectMapper.writeValueAsString(summary);
-        } catch (Exception e) {
-            // ignore
-        }
-
-
 
         HttpEntity<QualificationChangeSummary> request = new HttpEntity<>(summary, headers);
         ResponseEntity<Integer> response = restTemplate

@@ -8,9 +8,10 @@ import org.chatloop.user_training.service.CdnService;
 import org.chatloop.user_training.service.CourseProgressionService;
 import org.chatloop.user_training.service.EarnedQualificationsService;
 import org.chatloop.user_training.service.QualificationEvaluationService;
-import org.chatloop.user_training.spring.events.*;
+import org.chatloop.user_training.spring.events.ContentRelatedChangeEvent;
+import org.chatloop.user_training.spring.events.CoursePassedEvent;
+import org.chatloop.user_training.spring.events.CourseRelatedUserEvent;
 import org.chatloop.user_training.web.ChatloopMonolithFacade;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 
 import java.util.*;
@@ -193,14 +194,12 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
         // notify downstream
         log.debug("Notifying downstream services about changes to qualifications.");
 
-        //if (!toRemove.isEmpty() || !changes.isEmpty()) {
+        if (!toRemove.isEmpty() || !changes.isEmpty()) {
             var removals = toRemove.stream().map(EarnedQualifications::getUserId).collect(Collectors.toList());
-            removals.add("michael");
             var changeList = changes.stream().map(item -> new EarnedUserQualificationTo(item.getUserId(), new ArrayList<>(item.getQualifications()))).collect(Collectors.toList());
-            changeList.add(new EarnedUserQualificationTo("john", Collections.singletonList("TwentyQuestions")));
             QualificationChangeSummary summary = new QualificationChangeSummary(removals, changeList);
             chatloopMonolithFacade.notifyEarnedQualificationsChanges(summary);
-        //}
+        }
     }
 
     /**

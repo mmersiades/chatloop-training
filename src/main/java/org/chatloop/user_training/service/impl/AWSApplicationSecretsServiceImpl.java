@@ -39,8 +39,16 @@ public class AWSApplicationSecretsServiceImpl implements ApplicationSecretsServi
     private void fetchSecretValueFromSecretsManager() {
         if (secretValueRaw == null) {
             String environment = System.getenv("SPRING_PROFILES_ACTIVE");
-            String secretsName = ("production".equals(environment)) ? "chatloop-training-production-microservice-secrets" : "chatloop-training-staging-microservice-secrets";
-            log.debug("Looking up secrets using secret named: {}", secretsName);
+            String secretsName;
+            if ("production".equals(environment)) {
+                secretsName = "chatloop-training-production-microservice-secrets";
+            } else if ("staging".equals(environment)) {
+                secretsName = "chatloop-training-staging-microservice-secrets";
+            } else {
+                secretsName = "chatloop-training-local-microservice-secrets";
+            }
+
+            log.info("Looking up secrets using secret named: {}", secretsName);
 
             String secretValue = null;
             try {

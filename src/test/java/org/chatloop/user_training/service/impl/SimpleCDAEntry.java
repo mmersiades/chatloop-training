@@ -22,11 +22,16 @@ public class SimpleCDAEntry extends CDAEntry {
     }
 
     private final CDAContentType contentType;
-    private final String id = UUID.randomUUID().toString();
+    private final String id;
     private final Map<String, Object> fields = new HashMap<>();
 
-    public SimpleCDAEntry(String contentType) {
+    public SimpleCDAEntry(String id, String contentType) {
+        this.id = id;
         this.contentType = new SimpleCDAContentType(contentType);
+    }
+
+    public SimpleCDAEntry(String contentType) {
+        this(UUID.randomUUID().toString(), contentType);
     }
 
     @Override

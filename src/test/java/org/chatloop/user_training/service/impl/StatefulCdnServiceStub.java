@@ -29,6 +29,7 @@ public class StatefulCdnServiceStub extends StatefulCdnService {
 
     private final List<SynchronizedSpace> stubbedSpaces;
 
+    @SafeVarargs
     public StatefulCdnServiceStub(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher, Map<String, CDAEntry>... entryResponses) {
         super(transformer, applicationEventPublisher);
         this.stubbedSpaces = Arrays.stream(entryResponses).map(StubbedSynchronizedSpace::new).collect(Collectors.toList());

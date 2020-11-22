@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
@@ -104,16 +103,8 @@ public class StatefulCdnServiceQualificationsTest {
 
         assertTrue(publisher instanceof EventCollectingChatloopApplicationEventPublisher);
         var chatloopApplicationEventPublisher = (EventCollectingChatloopApplicationEventPublisher) this.publisher;
-        var publishedEvents = new ArrayList<>(chatloopApplicationEventPublisher.events);
+        var publishedEvents = new ArrayList<>(chatloopApplicationEventPublisher.getEvents());
         assertEquals(1, publishedEvents.stream().filter(item -> item.getClass().isAssignableFrom(UserQualificationsUpdatedEvent.class)).count());
     }
 
-    private static class EventCollectingChatloopApplicationEventPublisher implements ChatloopApplicationEventPublisher {
-        private final Collection<ApplicationEvent> events = new ArrayList<>();
-
-        @Override
-        public void publishApplicationEvent(ApplicationEvent event) {
-            events.add(event);
-        }
-    }
 }

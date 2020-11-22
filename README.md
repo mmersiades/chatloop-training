@@ -44,6 +44,13 @@ JwtTokenGenerator in tests. For local testing, file `test-jwt-tokens.txt` contai
 Once application is started, GraphQL is available under JWT-secured endpoint `http://localhost:8888/graphql`. Also, there is unsecured
 webhooks endpoint which is intended to be called by Contentful under `http://localhost:8888/webhook`.
 
+In case you want to test integration with the Monolith (nkk), you need to send a valid Bearer token in each request. There \
+are two alternative ways to set the token:
+- generate a JWT in the monolith by running `ServiceTokenGenerator.java` in the monolith and manually setting the `JWT_MONOLITH_REST` \
+envionment variable in your run config to that token, or
+- installing the `aws-cli` on your local computer and not setting the `JWT_MONOLITH_REST` envionment variable, in which \
+case the microservice on startup will fetch a token from `Secrets Manager` in AWS
+
 ### Tests
 
 Tests require postgres database, which can be started with `mvn docker:start`. We intentionally always use postgres for more realistic

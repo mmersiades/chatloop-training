@@ -38,6 +38,7 @@ public class TrainingProgressQueryResolver implements GraphQLQueryResolver {
                 .stream()
                 .map(qualificationName -> {
                     EarnedQualification earnedQualification = new EarnedQualification();
+                    earnedQualification.setId(String.format("%s::%s", userId, qualificationName));
                     earnedQualification.setName(qualificationName);
                     return earnedQualification;
                 }).collect(Collectors.toList());

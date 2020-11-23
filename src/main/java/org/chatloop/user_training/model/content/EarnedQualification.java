@@ -5,7 +5,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @ToString
-public class EarnedQualification {
+public class EarnedQualification extends IdAware {
     @Setter
     private String name;
 }

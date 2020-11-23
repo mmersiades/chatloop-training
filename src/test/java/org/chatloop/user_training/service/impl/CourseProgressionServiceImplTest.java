@@ -1,7 +1,5 @@
 package org.chatloop.user_training.service.impl;
 
-import org.apache.catalina.User;
-import org.chatloop.user_training.IntegrationTestConfig;
 import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;

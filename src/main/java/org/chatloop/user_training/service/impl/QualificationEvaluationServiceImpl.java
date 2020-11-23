@@ -78,6 +78,7 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
                     String firstCourseId = requiredCoursesIds.remove(0);
                     log.debug("Fetching progress in course {} for all users.", firstCourseId);
                     courseProgressFinder.apply(firstCourseId)
+                            .parallel()
                             .filter(courseProgress -> courseProgress.getCourseResult() == CourseResult.COURSE_PASSED)
                             .forEach(courseProgress -> {
                                 String candidateId = courseProgress.getUserId();

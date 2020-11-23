@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {IntegrationTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {IntegrationTestConfig.class, StatefulCdnServiceTest.TestConfigOverrides.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "classpath:db_scripts/delete_all.sql")
 public class StatefulCdnServiceTest {
@@ -41,7 +40,6 @@ public class StatefulCdnServiceTest {
     @Autowired
     private CdnService cdnService;
 
-    @Profile("qualifications")
     @TestConfiguration
     static class TestConfigOverrides {
         @Autowired
@@ -50,7 +48,7 @@ public class StatefulCdnServiceTest {
         @Bean
         @Primary
         public CdnService stubbedCdnService() {
-            SimpleCDAEntry course = new SimpleCDAEntry(Known.COURSE_ID, "program");
+            SimpleCDAEntry course = new SimpleCDAEntry(Known.COURSE_ID, "course");
             course.setField("name", "TestCourse");
             course.setField("modules", Collections.emptyList());
 
@@ -63,7 +61,7 @@ public class StatefulCdnServiceTest {
             return new StatefulCdnServiceStub(
                     transformer,
                     eventPublisher,
-                    Map.of("5qlbxyqJMYZT5HXuuHUIat", program)
+                    Map.of(Known.PROGRAM_ID, program, Known.COURSE_ID, course)
             );
         }
     }

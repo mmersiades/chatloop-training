@@ -6,6 +6,8 @@ import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.progress.CourseResult;
 import org.chatloop.user_training.util.TestUtil;
+import org.chatloop.user_training.util.data.DataFactory;
+import org.chatloop.user_training.util.enums.Courses;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,18 +39,18 @@ public class TrainingProgressServiceTest {
     @Test
     public void testBasicQuery() {
         UserProgram userProgram = service.fetchProgram("pro1");
-        UserCourse userCourse = service.fetchCourse("cou1");
+        UserCourse userCourse = service.fetchCourse(Courses.COU1.name());
         UserModule userModule = userCourse.getUserModule("mod1");
 
         assertEquals("pro1", userProgram.getId());
-        assertEquals("cou1", userCourse.getId());
+        assertEquals(Courses.COU1.name(), userCourse.getId());
         assertEquals("mod1", userModule.getId());
     }
 
     @Test
     public void testConversationProg1() {
         UserProgram userProgram = service.fetchProgram("pro1");
-        UserCourse userCourse = service.fetchCourse("cou1");
+        UserCourse userCourse = service.fetchCourse(Courses.COU1.name());
         UserModule userModule = userCourse.getUserModule("mod1");
 
         userCourse = service.taskAttempt(userCourse.getId(), userModule.getId(), true);

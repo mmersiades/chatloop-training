@@ -3,6 +3,7 @@ package org.chatloop.user_training.model;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.util.enums.Courses;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class ModelTest {
     public void testUserProgram() {
         UserProgram program = new UserProgram();
         UserCourse course = new UserCourse();
-        course.setId("cou1");
+        course.setId(Courses.COU1.name());
 
         UserModule module = new UserModule();
         module.setId("mod1");

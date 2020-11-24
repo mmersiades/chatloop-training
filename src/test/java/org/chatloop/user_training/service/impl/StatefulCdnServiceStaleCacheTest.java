@@ -1,6 +1,7 @@
 package org.chatloop.user_training.service.impl;
 
 import org.chatloop.user_training.IntegrationTestConfig;
+import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.service.CdnService;
 import org.junit.Test;
@@ -19,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {IntegrationTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { IntegrationTestConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "classpath:db_scripts/delete_all.sql")
-public class StatefulCdnServiceTest {
+public class StatefulCdnServiceStaleCacheTest {
 
     @Autowired
     private StatefulCdnService cdnService;

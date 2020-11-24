@@ -2,13 +2,24 @@ package org.chatloop.user_training.service.impl;
 
 import com.contentful.java.cda.*;
 import lombok.extern.slf4j.Slf4j;
+import org.chatloop.user_training.model.content.ContentTypes;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
 import org.chatloop.user_training.service.CdnService;
+import org.chatloop.user_training.spring.events.ChatloopApplicationEventPublisher;
+import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
+import org.chatloop.user_training.spring.events.UserQualificationsUpdatedEvent;
+import org.chatloop.user_training.util.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -41,6 +52,17 @@ public class StatefulCdnService implements CdnService {
 
     private SynchronizedSpace syncedSpace;
 
+    private final Transformer transformer;
+
+    private final ChatloopApplicationEventPublisher applicationEventPublisher;
+
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
+
+    public StatefulCdnService(Transformer transformer, ChatloopApplicationEventPublisher applicationEventPublisher) {
+        this.transformer = transformer;
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
+
     // TODO double check, not much in their docs about thread safety
     private final ReadWriteLock spaceLock = new ReentrantReadWriteLock();
 
@@ -58,20 +80,37 @@ public class StatefulCdnService implements CdnService {
         return syncedSpace;
     }
 
-    @PostConstruct
-    public void init() {
-        createClient();
-        syncSchema();
-        syncData();
+    @EventListener
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.info("Received ContextRefreshedEvent indicating that Spring context has been initialized.");
+        if (initialized.compareAndSet(false, true)) {
+            this.client = createClient();
+
+            log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
+
+            syncSchema();
+            this.syncedSpace = syncData();
+
+            log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
+            logFetchedContent();
+
+            ContentUpdatedEvent contentUpdatedEvent = new ContentUpdatedEvent(this);
+            this.applicationEventPublisher.publishApplicationEvent(contentUpdatedEvent);
+        }
     }
 
     @Override
     public void markCacheStale() {
         log.info("Cached marked as stale, starting re-sync of space {}", spaceId);
+
+        // get current user qualifications, so we can compare after the sync
+        var preSyncUserQualifications = this.fetchUserQualifications()
+                .stream().collect(Collectors.toMap(UserQualification::getName, UserQualification::getCourseIds));
+        log.info("Pre sync user qualifications: {}", MapUtils.convertWithStream(preSyncUserQualifications));
+
         spaceLock.writeLock().lock();
         try {
-            SyncQuery syncQuery = this.client.sync(); // replaces below
-            syncedSpace = syncQuery.fetch();
+            this.syncedSpace = this.syncData();
             /**
              * This call may lead to missing pointer/edge between program and course. So even
              * though they are linked in Contentful, we observe it via their Java client API
@@ -89,18 +128,26 @@ public class StatefulCdnService implements CdnService {
             spaceLock.writeLock().unlock();
         }
         log.info("Re-sync of space {} complete", spaceId);
+
+        var postSyncUserQualifications = this.fetchUserQualifications()
+                .stream().collect(Collectors.toMap(UserQualification::getName, UserQualification::getCourseIds));
+
+        log.info("Post sync user qualifications: {}", MapUtils.convertWithStream(postSyncUserQualifications));
+
+        if (!MapUtils.areEqual(preSyncUserQualifications, postSyncUserQualifications)) {
+            log.info("Detected changes to the user qualifications.");
+            applicationEventPublisher.publishApplicationEvent(new UserQualificationsUpdatedEvent(this));
+        }
     }
 
     @Override
     public List<UserProgram> fetchUserPrograms() {
         spaceLock.readLock().lock();
         try {
-            Transformer tform = new Transformer();
             List<UserProgram> programs = new ArrayList<>();
-            for (CDAEntry entry : syncedSpace.entries().values()) {
-                CDAContentType cdnType = entry.contentType();
-                if (cdnType.name().equals("program")) {
-                    programs.add(tform.toUserProgram(entry, true));
+            for (CDAEntry entry : this.syncedSpace.entries().values()) {
+                if (ContentTypes.PROGRAM.supports(entry)) {
+                    programs.add(transformer.toUserProgram(entry, true));
                 }
             }
             return programs;
@@ -110,16 +157,31 @@ public class StatefulCdnService implements CdnService {
     }
 
     @Override
+    public List<UserQualification> fetchUserQualifications() {
+        spaceLock.readLock().lock();
+        try {
+            List<UserQualification> qualifications = new ArrayList<>();
+            for (CDAEntry entry : this.syncedSpace.entries().values()) {
+                if (ContentTypes.QUALIFICATION.supports(entry)) {
+                    qualifications.add(transformer.toUserQualification(entry));
+                }
+            }
+            return qualifications;
+        } finally {
+            spaceLock.readLock().unlock();
+        }
+    }
+
+    @Override
     public Optional<UserProgram> fetchProgramById(String programId) {
         spaceLock.readLock().lock();
         try {
-            CDAEntry entry = syncedSpace.entries().get(programId);
+            CDAEntry entry = this.syncedSpace.entries().get(programId);
             if (entry == null) {
                 return Optional.empty();
             }
             log.info("Resolved program ID {} to {}", programId, entry);
-            Transformer tform = new Transformer();
-            return Optional.of(tform.toUserProgram(entry, true));
+            return Optional.of(transformer.toUserProgram(entry, true));
         } finally {
             spaceLock.readLock().unlock();
         }
@@ -129,22 +191,25 @@ public class StatefulCdnService implements CdnService {
     public Optional<UserCourse> fetchCourseById(String courseId) {
         spaceLock.readLock().lock();
         try {
-            CDAEntry entry = syncedSpace.entries().get(courseId);
+            CDAEntry entry = this.syncedSpace.entries().get(courseId);
             if (entry == null) {
                 log.warn("Course {} not found in space {}, env {} ", courseId, spaceId, envId);
                 return Optional.empty();
             }
             log.info("Resolved course ID {} to {}", courseId, entry);
-            Transformer tform = new Transformer();
-            UserCourse userCourse = tform.toUserCourse(entry);
+            UserCourse userCourse = transformer.toUserCourse(entry);
             return Optional.of(userCourse);
         } finally {
             spaceLock.readLock().unlock();
         }
     }
 
-    private void syncSchema() {
-        FetchQuery query = client.fetch(CDAContentType.class);
+    /**
+     * Runs a bunch of validations against the Contentful schema. For instance it checks,
+     * that all required content types exist.
+     */
+    protected void syncSchema() {
+        FetchQuery<CDAContentType> query = client.fetch(CDAContentType.class);
         CDAArray types = query.all();
 
         Set<String> detectedContentTypes = types.items().stream()
@@ -160,20 +225,23 @@ public class StatefulCdnService implements CdnService {
         log.info("Schema synchronized, detected content types {}", detectedContentTypes);
     }
 
-    private void syncData() {
+    /**
+     * Fetches and returns a {@link SynchronizedSpace} from Contentful.
+     */
+    protected SynchronizedSpace syncData() {
         SyncQuery syncQuery = this.client.sync();
-        syncedSpace = syncQuery.fetch();
-        log.info("Initial sync of space {} complete, data is now cached in JVM", spaceId);
-        logFetchedContent();
+        return syncQuery.fetch();
     }
 
-    private void createClient() {
-        this.client = CDAClient.builder()
+    /**
+     * Initializes the {@link CDAClient} for communication with Contentful.
+     */
+    protected CDAClient createClient() {
+        return CDAClient.builder()
                 .setSpace(spaceId)
                 .setEnvironment(envId)
                 .setToken(deliveryToken)
                 .build();
-        log.info("Connected to Contentful space {}, environment {}", spaceId, envId);
     }
 
     private void logFetchedContent() {
@@ -181,7 +249,8 @@ public class StatefulCdnService implements CdnService {
             return;
         }
         int count = 0;
-        Set<String> types = new HashSet<>(Arrays.asList("program", "course", "module"));
+
+        Set<String> types = new HashSet<>(ContentTypes.allContentTypes());
         for (CDAEntry entry : syncedSpace.entries().values()) {
             CDAContentType cdnType = entry.contentType();
             if (types.contains(cdnType.name())) {
@@ -192,7 +261,7 @@ public class StatefulCdnService implements CdnService {
         log.info("Fetched total {} entries", count);
     }
 
-    private static final Set<String> REQUIRED_TYPEs = new HashSet<>(Arrays.asList("program", "course", "module"));
+    private static final Set<String> REQUIRED_TYPEs = new HashSet<>(ContentTypes.allContentTypes());
 
 //    private Program getParentFor(Course course) {
 //        for(Program program : this.programs) {

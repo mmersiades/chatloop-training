@@ -1,11 +1,17 @@
 package org.chatloop.user_training.util.data;
 
+import org.assertj.core.util.Lists;
 import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
+import org.chatloop.user_training.model.content.UserQualification;
+import org.chatloop.user_training.util.enums.Courses;
+import org.chatloop.user_training.util.enums.Qualifications;
+
+import java.util.Collection;
 
 /**
- * Used to generate hierarchical data for testing with face CDN service.
+ * Used to generate hierarchical data for testing with fake CDN service.
  */
 public final class DataFactory {
 
@@ -22,7 +28,7 @@ public final class DataFactory {
         userProgram.setName("Program 1");
 
         UserCourse userCourse = new UserCourse();
-        userCourse.setId("cou1");
+        userCourse.setId(Courses.COU1.name());
         userCourse.setName("Course 1");
         userProgram.addUserCourse(userCourse);
 
@@ -86,6 +92,16 @@ public final class DataFactory {
         }
 
         return userProgram;
+    }
+
+    /**
+     * Returns two {@link UserQualification}s, one called {@code topicTexts} the other {@code twentyQuestions}.
+     * @return List<UserQualification>
+     */
+    public Collection<UserQualification> userQualifications() {
+        UserQualification topicTexts = UserQualification.create(Qualifications.TOPIC_TEXTS.name(), Courses.COU1.name());
+        UserQualification twentyQuestions = UserQualification.create(Qualifications.TWENTY_QUESTIONS.name(), Courses.COU1.name(), Courses.COU2.name());
+        return Lists.list(topicTexts, twentyQuestions);
     }
 
 //    public static void main(String[] args) {

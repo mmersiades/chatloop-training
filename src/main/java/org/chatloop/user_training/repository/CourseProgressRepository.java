@@ -5,13 +5,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CourseProgressRepository extends JpaRepository<CourseProgress, Long> {
 
-    @Query("FROM CourseProgress cp WHERE cp.userId = ?1 AND cp.courseId = ?2")
-    Optional<CourseProgress> findByUserIdCourseId(String userId, String courseId);
+    @Query("FROM CourseProgress cp WHERE cp.courseId = ?1 AND cp.userId in ?2")
+    List<CourseProgress> findByCourseIdAndUserIds(String courseId, List<String> userIds);
+
+    @Query("FROM CourseProgress cp WHERE cp.courseId = ?1")
+    List<CourseProgress> findByCourseId(String courseId);
 
     @Query("FROM CourseProgress cp WHERE cp.spaceId = ?1 AND cp.envId = ?2 AND cp.userId = ?3 AND cp.courseId = ?4")
     Optional<CourseProgress> findByCompositeId(String spaceId, String envId,

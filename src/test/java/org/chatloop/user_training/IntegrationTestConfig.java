@@ -1,7 +1,7 @@
 package org.chatloop.user_training;
 
-import org.chatloop.user_training.service.CdnService;
-import org.chatloop.user_training.service.impl.StatefulCdnService;
+import org.chatloop.user_training.service.ApplicationSecretsService;
+import org.chatloop.user_training.web.ChatloopMonolithFacade;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -9,7 +9,14 @@ import org.springframework.context.annotation.Bean;
 public class IntegrationTestConfig {
 
     @Bean
-    public CdnService cdnService() {
-        return new StatefulCdnService();
+    public ChatloopMonolithFacade chatloopMonolithFacade() {
+        return summary -> {
+            // do nothing
+        };
+    }
+
+    @Bean
+    public ApplicationSecretsService applicationSecretsService() {
+        return () -> "";
     }
 }

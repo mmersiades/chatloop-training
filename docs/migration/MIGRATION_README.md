@@ -119,6 +119,6 @@ Run psql from the project's root folder (see instructions above).
 From within psql, execute command `\i ./docs/migration/migrator.sql;`.
 
 If psql reports no errors, double check the data has been inserted into the db. You can do this directly
-from your psql by writing SQL queries like `SELECT * FROM courses_progress;`. You should see a lot of rows for users
+from your psql by writing SQL queries like `SELECT * FROM course_progress;`. You should see a lot of rows for users
 with completed courses and modules. YOu can also check this via pgadmin if you prefer.
 

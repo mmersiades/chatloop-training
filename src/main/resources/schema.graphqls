@@ -12,6 +12,7 @@ type UserProgram {
 }
 
 type EarnedQualification {
+    id: ID!
     name: String!
 }
 

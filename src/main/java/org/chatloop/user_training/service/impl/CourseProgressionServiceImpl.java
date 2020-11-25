@@ -3,6 +3,8 @@ package org.chatloop.user_training.service.impl;
 import org.chatloop.user_training.model.progress.CourseProgress;
 import org.chatloop.user_training.repository.CourseProgressRepository;
 import org.chatloop.user_training.service.CourseProgressionService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +28,11 @@ public class CourseProgressionServiceImpl implements CourseProgressionService {
     @Override
     public Stream<CourseProgress> progressForCourse(String courseId) {
         return repository.findByCourseId(courseId).stream();
+    }
+
+    @Override
+    public Slice<CourseProgress> courseProgress(String courseId, Pageable pageable) {
+        return repository.sliceByCourseId(courseId, pageable);
     }
 
     /**

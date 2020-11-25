@@ -135,23 +135,23 @@ public class QualificationEvaluationServiceImpl implements QualificationEvaluati
         log.info("Evaluating who qualifies for qualification: {}, which requires course(s): {} to be finished.", qualificationName, String.join(", ", requiredCoursesIds));
         if (!requiredCoursesIds.isEmpty()) {
             String firstCourseId = requiredCoursesIds.remove(0);
-            log.info("Fetching progress in course {} for all users.", firstCourseId);
+            log.info("Fetching course progress in course {}.", firstCourseId);
             courseProgressFinder.apply(firstCourseId)
                     .parallel()
                     .filter(courseProgress -> courseProgress.getCourseResult() == CourseResult.COURSE_PASSED)
                     .forEach(courseProgress -> {
                         String candidateId = courseProgress.getUserId();
-                        log.info("User {} has passed course {}.", candidateId, firstCourseId);
+                        log.debug("User {} has passed course {}.", candidateId, firstCourseId);
 
                         boolean satisfiesAll = true;
                         for (String requiredCourseId : requiredCoursesIds) {
-                            log.info("Checking if user {} has also passed course {}.", candidateId, requiredCourseId);
+                            log.debug("Checking if user {} has also passed course {}.", candidateId, requiredCourseId);
                             Optional<CourseProgress> otherCourseProgress = progressionService.singleUserProgressForCourse(candidateId, requiredCourseId);
                             satisfiesAll = otherCourseProgress
                                     .map(other -> other.getCourseResult() == CourseResult.COURSE_PASSED)
                                     .orElse(false);
                             if (!satisfiesAll) {
-                                log.info("User {} has not passed that course.", candidateId);
+                                log.debug("User {} has not passed that course.", candidateId);
                                 break;
                             }
                         }

@@ -1,5 +1,7 @@
 package org.chatloop.user_training.model.progress;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +13,7 @@ import java.util.stream.Stream;
 /**
  * Encapsulates the results when evaluating user qualifications based on their course progress.
  */
+@Slf4j
 public final class EvaluationResult {
     private final ConcurrentMap<String, Set<String>> qualifiedUsers = new ConcurrentHashMap<>();
 
@@ -43,5 +46,27 @@ public final class EvaluationResult {
                     earnedQualifications.setQualifications(userEarnedQualifications);
                     return earnedQualifications;
                 });
+    }
+
+    /**
+     * Merges this {@link EvaluationResult} with the given other {@link EvaluationResult}.
+     * @param other another {@link EvaluationResult}
+     * @return merged {@link EvaluationResult}
+     */
+    public EvaluationResult merge(EvaluationResult other) {
+        var otherQualifications = other.qualifiedUsers;
+        for (String qualificationName : otherQualifications.keySet()) {
+            log.debug("Merging qualification {}", qualificationName);
+            var otherEarners = otherQualifications.get(qualificationName);
+
+            if (qualifiedUsers.containsKey(qualificationName)) {
+                var thisEarners = qualifiedUsers.get(qualificationName);
+                thisEarners.addAll(otherEarners);
+                qualifiedUsers.put(qualificationName, thisEarners);
+            } else {
+                qualifiedUsers.put(qualificationName, otherEarners);
+            }
+        }
+        return this;
     }
 }

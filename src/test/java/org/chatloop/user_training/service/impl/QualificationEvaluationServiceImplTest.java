@@ -1,14 +1,10 @@
 package org.chatloop.user_training.service.impl;
 
-import org.chatloop.user_training.IntegrationTestConfig;
 import org.chatloop.user_training.LocalTestConfig;
 import org.chatloop.user_training.model.progress.EarnedQualifications;
-import org.chatloop.user_training.model.progress.EvaluationResult;
 import org.chatloop.user_training.repository.CourseProgressRepository;
-import org.chatloop.user_training.repository.EarnedQualificationsRepository;
 import org.chatloop.user_training.service.QualificationEvaluationService;
 import org.chatloop.user_training.util.Fixture;
-import org.chatloop.user_training.util.data.DataFactory;
 import org.chatloop.user_training.util.enums.Courses;
 import org.chatloop.user_training.util.enums.Qualifications;
 import org.junit.jupiter.api.Test;
@@ -26,7 +22,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)

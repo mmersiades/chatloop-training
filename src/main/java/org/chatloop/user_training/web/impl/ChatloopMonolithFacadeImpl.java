@@ -52,7 +52,7 @@ public class ChatloopMonolithFacadeImpl implements ChatloopMonolithFacade {
         }
     }
 
-    protected Integer sendChangeSummaryRequest(QualificationChangeSummary summary) {
+    private Integer sendChangeSummaryRequest(QualificationChangeSummary summary) {
         String url = String.format("%s/qualifications", restEndpoint);
         log.debug("About to send PUT request against: {}", url);
 
@@ -60,9 +60,12 @@ public class ChatloopMonolithFacadeImpl implements ChatloopMonolithFacade {
         headers.set("Authorization", String.format("Bearer %s", applicationSecretsService.monolithRestServiceJWT()));
 
         HttpEntity<QualificationChangeSummary> request = new HttpEntity<>(summary, headers);
-        ResponseEntity<Integer> response = restTemplate
-                .exchange(url, HttpMethod.PUT, request, Integer.class);
+        ResponseEntity<Integer> response = makeRestCall(url, request);
         return response.getBody();
+    }
+
+    protected ResponseEntity<Integer> makeRestCall(String url, HttpEntity<QualificationChangeSummary> request) {
+        return restTemplate.exchange(url, HttpMethod.PUT, request, Integer.class);
     }
 
     /**

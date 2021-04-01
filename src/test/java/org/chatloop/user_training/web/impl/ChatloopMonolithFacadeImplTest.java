@@ -7,6 +7,9 @@ import org.chatloop.user_training.util.enums.Qualifications;
 import org.chatloop.user_training.web.ChatloopMonolithFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,9 +35,16 @@ class ChatloopMonolithFacadeImplTest {
         var summaries = new ArrayList<QualificationChangeSummary>();
         ChatloopMonolithFacade facade = new ChatloopMonolithFacadeImpl(() -> "") {
             @Override
-            protected Integer sendChangeSummaryRequest(QualificationChangeSummary summary) {
-                summaries.add(summary);
-                return summary.getChanges().size() + summary.getUsersToReset().size();
+            protected ResponseEntity<Integer> makeRestCall(String url, HttpEntity<QualificationChangeSummary> request) {
+                QualificationChangeSummary changeSummary = request.getBody();
+                if (changeSummary != null) {
+                    summaries.add(changeSummary);
+                    var size = changeSummary.getChanges().size() + changeSummary.getUsersToReset().size();
+                    return new ResponseEntity<Integer>(size, HttpStatus.OK);
+                } else {
+                    throw new IllegalArgumentException("QualificationChangeSummary cannot be null");
+                }
+
             }
         };
         facade.notifyEarnedQualificationsChanges(summary);

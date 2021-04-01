@@ -4,7 +4,7 @@ import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.util.enums.Courses;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

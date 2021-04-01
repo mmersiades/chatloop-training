@@ -1,6 +1,8 @@
 package org.chatloop.user_training.service;
 
 import org.chatloop.user_training.model.progress.CourseProgress;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -17,6 +19,15 @@ public interface CourseProgressionService {
      * @return {@link Stream}
      */
     Stream<CourseProgress> progressForCourse(String courseId);
+
+    /**
+     * Returns a {@link Slice} containing {@link CourseProgress} elements denoting the progress of all users
+     * in the course having the specified {@code courseId}.
+     * @param courseId the id of a course
+     * @param pageable a {@link Pageable}
+     * @return Slice
+     */
+    Slice<CourseProgress> courseProgress(String courseId, Pageable pageable);
 
     /**
      * Potentially returns the {@link CourseProgress} for the specified user in the course having the

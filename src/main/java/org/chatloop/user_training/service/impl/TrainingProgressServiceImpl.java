@@ -73,6 +73,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
 
     @Override
     public UserCourse fetchCourse(String courseId) {
+        System.out.println("fetchCourse");
         String userId = SecurityContextUtils.getUserId();
 
         UserCourse userCourse = getCourseFromCdnStrict(courseId);

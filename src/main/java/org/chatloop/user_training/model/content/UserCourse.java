@@ -10,6 +10,7 @@ import org.chatloop.user_training.service.ContentNotFound;
 import org.chatloop.user_training.service.impl.LimitCalculator;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,6 +31,9 @@ public class UserCourse extends IdAware {
     private int incorrectAttempts;
 
     private int attemptLimit;
+
+    @Setter
+    private List<String> prerequisiteCourses;
 
     @Setter
     private CourseResult courseResult = CourseResult.NO_RESULT_YET;

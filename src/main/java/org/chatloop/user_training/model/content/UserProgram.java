@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
@@ -18,7 +18,7 @@ public class UserProgram extends IdAware {
     @Setter
     private String description;
 
-    private final Set<UserCourse> userCourses = new HashSet<>();
+    private final List<UserCourse> userCourses = new ArrayList<>();
 
     public void addUserCourse(UserCourse userCourse) {
         this.userCourses.add(userCourse);

@@ -12,12 +12,9 @@ import org.chatloop.user_training.spring.events.ContentUpdatedEvent;
 import org.chatloop.user_training.spring.events.UserQualificationsUpdatedEvent;
 import org.chatloop.user_training.util.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;

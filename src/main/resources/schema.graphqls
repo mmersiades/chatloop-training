@@ -24,6 +24,7 @@ type UserCourse {
     attemptLimit: Int!
     incorrectAttempts: Int!
     courseResult: CourseResult!
+    prerequisiteCourses: [String]
     userModules: [UserModule]
 }
 

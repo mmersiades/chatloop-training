@@ -6,12 +6,8 @@ import org.chatloop.user_training.model.content.UserCourse;
 import org.chatloop.user_training.model.content.UserModule;
 import org.chatloop.user_training.model.content.UserProgram;
 import org.chatloop.user_training.model.content.UserQualification;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Ideally Contentful Java API would provide tooling to automatically generate
@@ -46,10 +42,16 @@ public class Transformer {
 
         if (recursive) {
             List<CDAEntry> courses = entry.getField("courses");
+
+            // Using List here allows course order to be maintained
+            List<UserCourse> userCourses = new ArrayList<>();
+
             for (CDAEntry courseEntry : courses) {
                 UserCourse userCourse = toUserCourse(courseEntry);
-                userProgram.addUserCourse(userCourse);
+                userCourses.add(userCourse);
             }
+
+            userCourses.forEach(userProgram::addUserCourse);
         }
 
         return userProgram;
@@ -59,6 +61,8 @@ public class Transformer {
         UserCourse userCourse = new UserCourse();
         userCourse.setId(entry.id());
         userCourse.setName(entry.getField("name"));
+        userCourse.setPrerequisiteCourses(entry.getField("prerequisiteCourses"));
+        userCourse.setDescription(entry.getField("description"));
 
         List<CDAEntry> modules = entry.getField("modules");
         for (CDAEntry moduleEntry : modules) {
@@ -88,3 +92,5 @@ public class Transformer {
         return userQualification;
     }
 }
+
+

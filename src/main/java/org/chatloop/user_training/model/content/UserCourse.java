@@ -33,7 +33,7 @@ public class UserCourse extends IdAware {
     private int attemptLimit;
 
     @Setter
-    private List<String> preReqCourses;
+    private List<String> prerequisiteCourses;
 
     @Setter
     private CourseResult courseResult = CourseResult.NO_RESULT_YET;

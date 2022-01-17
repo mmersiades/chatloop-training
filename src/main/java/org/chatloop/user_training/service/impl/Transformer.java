@@ -63,7 +63,6 @@ public class Transformer {
         userCourse.setName(entry.getField("name"));
         userCourse.setPrerequisiteCourses(entry.getField("prerequisiteCourses"));
         userCourse.setDescription(entry.getField("description"));
-        System.out.println("entry = " + entry.getField("description"));
 
         List<CDAEntry> modules = entry.getField("modules");
         for (CDAEntry moduleEntry : modules) {

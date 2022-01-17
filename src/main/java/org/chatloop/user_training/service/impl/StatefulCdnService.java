@@ -193,7 +193,6 @@ public class StatefulCdnService implements CdnService {
                 log.warn("Course {} not found in space {}, env {} ", courseId, spaceId, envId);
                 return Optional.empty();
             }
-            System.out.println("entry = " + entry);
             log.info("Resolved course ID {} to {}", courseId, entry);
             UserCourse userCourse = transformer.toUserCourse(entry);
             return Optional.of(userCourse);

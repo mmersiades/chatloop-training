@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.nkk</groupId>
-    <artifactId>chatloop-user-training</artifactId>
+    <artifactId>chatloop-training</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -190,7 +190,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.30.0</version>
+                <version>0.39.0</version>
                 <configuration>
                     <verbose>true</verbose>
                     <images>
@@ -276,23 +276,6 @@
                     <runOrder>alphabetical</runOrder>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>2.22.2</version>-->
-<!--                <configuration>-->
-<!--                    <includes>-->
-<!--                        <include>**/*Tests.java</include>-->
-<!--                        <include>**/*Test.java</include>-->
-<!--                        <include>**/Test*.java</include>-->
-<!--                    </includes>-->
-<!--                    <excludes>-->
-<!--                        <exclude>**/Abstract*.java</exclude>-->
-<!--                    </excludes>-->
-<!--                    <argLine>-->
-<!--                        &#45;&#45;illegal-access=permit-->
-<!--                    </argLine>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

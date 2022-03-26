@@ -23,7 +23,7 @@ pipelines:
 #            - ./mvnw --batch-mode clean package -Dmaven.test.skip=true # Need to rebuild because jar disappears after tests
             - ls
             - ls target
-            - cp target/chatloop-user-training-*-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
+#            - cp target/chatloop-user-training-*-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-user-training-elastic-beanstalk.zip
 

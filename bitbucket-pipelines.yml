@@ -15,11 +15,10 @@ pipelines:
             - maven
           script:
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true # Need to build Docker image before running tests
-            - ls
-            - ls target
             - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
-            - ./mvnw --batch-mode verify # run tests
+            - ./mvnw --batch-mode test # run tests
             - ./mvnw --batch-mode docker:stop # stop postgres
+            - ./mvnw --batch-mode clean package -Dmaven.test.skip=true # Need to rebuild because jar disappears after tests
             - ls
             - ls target
             - cp target/chatloop-user-training-*-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip

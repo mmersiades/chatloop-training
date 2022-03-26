@@ -14,10 +14,10 @@ pipelines:
             - docker
             - maven
           script:
+            - ./mvnw --batch-mode package -Dmaven.test.skip=true # Need to build Docker image before running tests
             - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
             - ./mvnw --batch-mode clean test # run tests
             - ./mvnw --batch-mode docker:stop # stop postgres
-            - ./mvnw --batch-mode package -Dmaven.test.skip=true
             - cp target/chatloop-user-training-*-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-user-training-elastic-beanstalk.zip

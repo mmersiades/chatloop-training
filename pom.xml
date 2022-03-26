@@ -213,39 +213,37 @@
                                 </wait>
                             </run>
                         </image>
+                        <image>
+                            <name>neonkingkong/chatloop-user-training</name>
+                            <build>
+                                <contextDir>${project.basedir}</contextDir>
+                                <args>
+                                    <JAR_FILE>target/${project.build.finalName}.jar
+                                    </JAR_FILE>
+                                </args>
+                            </build>
+                        </image>
                     </images>
                     <skip>${skipTests}</skip>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>postgres</id>
                         <phase>none</phase>
                         <goals>
                             <goal>start</goal>
                             <goal>stop</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>server</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.spotify</groupId>-->
-<!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
-<!--                <version>1.4.10</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>build-docker-image</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>build</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <repository>neonkingkong/chatloop-user-training</repository>-->
-<!--                    <buildArgs>-->
-<!--                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
-<!--                    </buildArgs>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>

@@ -9,13 +9,11 @@ pipelines:
     build:
       - step: &build
           name: Build and Test
-          image: maven:3.8.4
           caches:
             - docker
             - maven
           script:
-            - mvn --version
-            - MVN_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+            - MVN_VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
             - echo $MVN_VERSION
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true # Need to build Docker image before running tests
             - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
@@ -34,12 +32,11 @@ pipelines:
       - step: &build_without_testing
           name: Build
           docker: true
-          image: maven:3.8.4
           caches:
             - docker
             - maven
           script:
-            - MVN_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+            - MVN_VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
             - echo $MVN_VERSION
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true
             - ls

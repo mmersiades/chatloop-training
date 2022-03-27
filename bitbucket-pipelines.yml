@@ -9,7 +9,6 @@ pipelines:
     build:
       - step: &build
           name: Build and Test
-          docker: true
           image: maven:3.8.4
           caches:
             - docker
@@ -27,6 +26,8 @@ pipelines:
             - cp target/chatloop-user-training-${MVN_VERSION}-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-user-training-elastic-beanstalk.zip
+          services:
+            - docker
 
     # Package the app (no tests)
     build_without_testing:
@@ -46,6 +47,8 @@ pipelines:
             - cp target/chatloop-user-training-${MVN_VERSION}-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-user-training-elastic-beanstalk.zip
+          services:
+            - docker
 
     # Deploy to staging environment (no tests run)
     deploy_staging:

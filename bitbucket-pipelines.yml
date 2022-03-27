@@ -17,8 +17,6 @@ pipelines:
             - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
             - ./mvnw --batch-mode test # run tests
             - ./mvnw --batch-mode docker:stop # stop postgres
-            - ls
-            - ls target
             - cp target/chatloop-training-*-elastic-beanstalk.zip target/chatloop-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-training-elastic-beanstalk.zip
@@ -34,8 +32,6 @@ pipelines:
             - maven
           script:
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true
-            - ls
-            - ls target
             - cp target/chatloop-training-*-elastic-beanstalk.zip target/chatloop-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-training-elastic-beanstalk.zip
@@ -84,7 +80,6 @@ pipelines:
   # All branches get built and tested
   default:
     - step: *build
-    - step: *build_without_testing
 
   branches:
     # Tests all commits to master

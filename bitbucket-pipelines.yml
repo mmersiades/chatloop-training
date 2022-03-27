@@ -20,6 +20,7 @@ pipelines:
             - ./mvnw --batch-mode docker:stop # stop postgres
             - ls
             - ls target
+            - cp target/chatloop-user-training-*-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-user-training-elastic-beanstalk.zip
 
@@ -34,6 +35,7 @@ pipelines:
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true
             - ls
             - ls target
+            - cp target/chatloop-user-training-*-elastic-beanstalk.zip target/chatloop-user-training-elastic-beanstalk.zip
           artifacts:
             - target/chatloop-user-training-elastic-beanstalk.zip
 

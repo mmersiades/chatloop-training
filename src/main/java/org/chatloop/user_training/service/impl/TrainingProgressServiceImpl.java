@@ -45,6 +45,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
     @Override
     public List<UserProgram> fetchUserPrograms() {
         String userId = SecurityContextUtils.getUserId();
+        System.out.println("fetchUserPrograms, userId: " + userId);
 
         List<UserProgram> userPrograms = cdnService.fetchUserPrograms();
         for (UserProgram userProgram : userPrograms) {
@@ -52,6 +53,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
                 log.warn("Program {}/{} with 0 courses, is Contentful model correct?", userProgram.getName(), userProgram.getId());
             }
             for (UserCourse userCourse : userProgram.getUserCourses()) {
+                System.out.println("fetchUserPrograms, userCourse: " + userCourse.getId() + "' " + userCourse.getName());
                 getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
                 userCourse.calculateDerivedInfo();
             }
@@ -193,7 +195,9 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
      * attempts stored in DB, if any.
      */
     private CourseProgress getOrCreateCourseProgressAndModuleProgresses(String userId, UserCourse userCourse) {
+        System.out.println("getOrCreateCourseProgressAndModuleProgresses, userId: " + userId + ", course: " + userCourse.getId());
         CourseProgress courseProgress = getOrCreateCourseProgress(userId, userCourse.getId(), false);
+        System.out.println("getOrCreateCourseProgressAndModuleProgresses, courseProgress id: " + courseProgress.getCourseId());
 
         // if module progress for user/course does not exist, create it
         for (UserModule userModule : userCourse.getUserModules()) {
@@ -213,6 +217,7 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
      */
     private CourseProgress getOrCreateCourseProgress(String userId, String courseId, boolean doSave) {
         Optional<CourseProgress> progressOpt = courseRepo.findByCompositeId(spaceId, envId, userId, courseId);
+        System.out.println("getOrCreateCourseProgress progressOpt.isPresent(): " + progressOpt.isPresent());
         return progressOpt.orElseGet(() -> {
             CourseProgress progress = new CourseProgress();
             progress.setSpaceId(spaceId);

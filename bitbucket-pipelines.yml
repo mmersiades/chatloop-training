@@ -1,7 +1,6 @@
 image: openjdk:11-slim
 
 options:
-  docker: true
   max-time: 10
 
 pipelines:
@@ -18,8 +17,11 @@ pipelines:
             - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
             - ./mvnw --batch-mode test # run tests
             - ./mvnw --batch-mode docker:stop # stop postgres
+            - cp target/chatloop-training-*-elastic-beanstalk.zip target/chatloop-training-elastic-beanstalk.zip
           artifacts:
-            - target/chatloop-user-training-elastic-beanstalk.zip
+            - target/chatloop-training-elastic-beanstalk.zip
+          services:
+            - docker
 
     # Package the app (no tests)
     build_without_testing:
@@ -30,8 +32,11 @@ pipelines:
             - maven
           script:
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true
+            - cp target/chatloop-training-*-elastic-beanstalk.zip target/chatloop-training-elastic-beanstalk.zip
           artifacts:
-            - target/chatloop-user-training-beanstalk.zip
+            - target/chatloop-training-elastic-beanstalk.zip
+          services:
+            - docker
 
     # Deploy to staging environment (no tests run)
     deploy_staging:
@@ -48,7 +53,7 @@ pipelines:
                     APPLICATION_NAME: neonkingkong
                     ENVIRONMENT_NAME: staging-user-training
                     S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
-                    ZIP_FILE: target/chatloop-user-training-elastic-beanstalk.zip
+                    ZIP_FILE: target/chatloop-training-elastic-beanstalk.zip
                     VERSION_LABEL: deploy-staging-user-training-$BITBUCKET_BUILD_NUMBER
                     DEBUG: "true"
 
@@ -68,7 +73,7 @@ pipelines:
                 APPLICATION_NAME: neonkingkong
                 ENVIRONMENT_NAME: production-user-training
                 S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
-                ZIP_FILE: target/chatloop-user-training-elastic-beanstalk.zip
+                ZIP_FILE: target/chatloop-training-elastic-beanstalk.zip
                 VERSION_LABEL: deploy-production-user-training-$BITBUCKET_BUILD_NUMBER
                 DEBUG: "true"
 

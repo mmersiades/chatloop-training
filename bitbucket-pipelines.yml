@@ -1,7 +1,6 @@
 image: openjdk:11-slim
 
 options:
-  docker: true
   max-time: 10
 
 pipelines:
@@ -10,10 +9,13 @@ pipelines:
     build:
       - step: &build
           name: Build and Test
+          docker: true
+          image: maven:3.8.4
           caches:
             - docker
             - maven
           script:
+            - mvn --version
             - MVN_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
             - echo $MVN_VERSION
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true # Need to build Docker image before running tests
@@ -30,6 +32,8 @@ pipelines:
     build_without_testing:
       - step: &build_without_testing
           name: Build
+          docker: true
+          image: maven:3.8.4
           caches:
             - docker
             - maven

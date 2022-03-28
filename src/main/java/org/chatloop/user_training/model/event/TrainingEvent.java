@@ -20,7 +20,7 @@ public class TrainingEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TrainingEventSequenceGen")
-    @SequenceGenerator(name = "TrainingEventSequenceGen", allocationSize = 100)
+    @SequenceGenerator(name = "TrainingEventSequenceGen", allocationSize = 0)
     private Long id;
 
     @Column(nullable = false)

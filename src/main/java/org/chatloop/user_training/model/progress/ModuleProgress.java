@@ -16,7 +16,7 @@ public class ModuleProgress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ModuleProgressSequenceGen")
-    @SequenceGenerator(name = "ModuleProgressSequenceGen", allocationSize = 100)
+    @SequenceGenerator(name = "ModuleProgressSequenceGen", allocationSize = 0)
     private Long id;
 
     @Column(nullable = false)

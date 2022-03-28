@@ -26,7 +26,7 @@ public class CourseProgress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CourseProgressSequenceGen")
-    @SequenceGenerator(name = "CourseProgressSequenceGen", allocationSize = 100)
+    @SequenceGenerator(name = "CourseProgressSequenceGen", allocationSize = 0)
     private Long id;
 
     @Column(nullable = false)

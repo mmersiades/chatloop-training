@@ -58,6 +58,9 @@ testing rather than using embedded H2 database.
 
 To run all tests from command line execute `mvn clean test`. It will also perform checkstyle verification.
 
+*NOTE*: The `application-test.properties` files has not been checked into the repo because it contains sensitive info.
+You'll need get a copy of it and add in manually before running any tests.
+
 ### Profile options:
 
 Default only used for now.

@@ -11,4 +11,4 @@
 **/.terraform/*
 *.tfstate
 *.tfstate.*
-application-test.properties
+application-test-private.properties

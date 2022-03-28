@@ -47,7 +47,7 @@ webhooks endpoint which is intended to be called by Contentful under `http://loc
 In case you want to test integration with the Monolith (nkk), you need to send a valid Bearer token in each request. There \
 are two alternative ways to set the token:
 - generate a JWT in the monolith by running `ServiceTokenGenerator.java` in the monolith and manually setting the `JWT_MONOLITH_REST` \
-envionment variable in your run config to that token, or
+environment variable in your run config to that token, or
 - installing the `aws-cli` on your local computer and not setting the `JWT_MONOLITH_REST` envionment variable, in which \
 case the microservice on startup will fetch a token from `Secrets Manager` in AWS
 
@@ -57,9 +57,6 @@ Tests require postgres database, which can be started with `mvn docker:start`. W
 testing rather than using embedded H2 database. 
 
 To run all tests from command line execute `mvn clean test`. It will also perform checkstyle verification.
-
-*NOTE*: The `application-test.properties` files has not been checked into the repo because it contains sensitive info.
-You'll need get a copy of it and add in manually before running any tests.
 
 ### Profile options:
 

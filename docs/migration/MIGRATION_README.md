@@ -96,7 +96,8 @@ Next, we need list of all unique space_id/env_id/course_id/module_id tuples from
 
 Use the class `CdnCrawler` to extract a CSV file with this data by connecting to real Contentful. The class is in the
 project's `test` folder. To run it, un-comment the `@ignore` statement at the top of the class, and then run it like
-you would run any individual test.
+you would run any individual test. You'll also need to add `application-test-private.properties` to your local project. 
+The file contains sensitive data and is not checked into git.
 
 `CdnCrawler` will create a file in the project root folder called `contentful-data.csv`. See example test file with same
 name in test package.

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Files;
@@ -26,12 +27,13 @@ import java.util.stream.Collectors;
  * Used to scan Contentful and export CSV file with course/module pairs which
  * are needed/used for migration from Monolith. Comment out Ignore annotation when
  * running. Also, change PATH to any directory of your preference. Change space/env
- * IDs if needed in application-test.properties to desired values.
+ * IDs if needed in application-test-private.properties to desired values.
  */
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {IntegrationTestConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
+@TestPropertySource(locations = "classpath:/application-test-private.properties")
 @Ignore // comment it out when running
 public class CdnCrawler {
 

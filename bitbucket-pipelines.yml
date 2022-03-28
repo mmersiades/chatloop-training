@@ -13,6 +13,9 @@ pipelines:
             - docker
             - maven
           script:
+            - export CFUL_SPACE_ID = $CFUL_SPACE_ID
+            - export CFUL_ENV_ID = $CFUL_ENV_ID
+            - export CFUL_DELIVERY_TOKEN = $CFUL_DELIVERY_TOKEN
             - ./mvnw --batch-mode clean package -Dmaven.test.skip=true # Need to build Docker image before running tests
             - ./mvnw --batch-mode docker:stop docker:start # start postgres (assumes we have docker runtime on host machine)
             - ./mvnw --batch-mode test # run tests

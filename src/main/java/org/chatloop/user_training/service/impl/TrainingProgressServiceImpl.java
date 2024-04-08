@@ -208,7 +208,6 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
      */
     private CourseProgress getOrCreateCourseProgressAndModuleProgresses(String userId, UserCourse userCourse) {
         CourseProgress courseProgress = getOrCreateCourseProgress(userId, userCourse.getId(), false);
-        System.out.println("courseProgress = " + courseProgress);
 
         // if module progress for user/course does not exist, create it
         for (UserModule userModule : userCourse.getUserModules()) {

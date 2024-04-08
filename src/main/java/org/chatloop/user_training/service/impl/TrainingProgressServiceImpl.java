@@ -65,7 +65,6 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
         List<UserCourse> userCourses = cdnService.fetchUserCourses();
         for (UserCourse userCourse : userCourses) {
             CourseProgress progress = getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
-            System.out.println("progress = " + progress);
             userCourse.calculateDerivedInfo();
             userCourse.setAttemptLimit(progress);
             userCourse.setCourseResult(progress.getCourseResult());

@@ -29,7 +29,7 @@ INSERT INTO public.course_progress VALUES (26501, '38hd2i94nfzaTMYVbuCDQ1', 'COU
 INSERT INTO public.course_progress VALUES (26601, '3XcUxGwXOe2BPFOqZgBHqj', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '6');
 INSERT INTO public.course_progress VALUES (26701, '3ZIcxNDKl5httULSLUbxjL', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '6');
 INSERT INTO public.course_progress VALUES (26801, '6iNaSQUKLDKyDb6ozknTzH', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '6');
-INSERT INTO public.course_progress VALUES (26901, '7114gOsCRlvK8usn9be2pY', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '6');
+INSERT INTO public.course_progress VALUES (26901, '7114gOsCRlvK8usn9be2pY', 'NO_RESULT_YET', 'master', 'zjf0mnbplhc5', '6');
 
 INSERT INTO public.course_progress VALUES (27001, '2pwAStILW4umeas65cQB49', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '7');
 INSERT INTO public.course_progress VALUES (27101, '38hd2i94nfzaTMYVbuCDQ1', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '7');
@@ -282,7 +282,7 @@ INSERT INTO public.module_progress VALUES (413501, true, 0, '3ISMtOaa0aDaBHhoTwq
 INSERT INTO public.module_progress VALUES (413601, true, 0, '6VJqeBnqwJP0mlX8xSyKp3', 26901);
 INSERT INTO public.module_progress VALUES (413701, true, 0, '7KPUctNNLSWwRny03Dd5VD', 26901);
 INSERT INTO public.module_progress VALUES (413801, true, 0, '6xMtLUoNuXhslQqpmQUM1d', 26901);
-INSERT INTO public.module_progress VALUES (413901, true, 0, '5T9GfiwTNSAUCC78gdvcmj', 26901);
+INSERT INTO public.module_progress VALUES (413901, false, 0, '5T9GfiwTNSAUCC78gdvcmj', 26901);
 INSERT INTO public.module_progress VALUES (414001, true, 0, '5uh4Iv5HvqN24Q5QQZied0', 27001);
 INSERT INTO public.module_progress VALUES (414101, true, 0, '53LIe68t4HbaWkqU9FdD0y', 27001);
 INSERT INTO public.module_progress VALUES (414201, true, 0, '3kKw91nAh98w11RQR1svrY', 27001);

@@ -154,6 +154,22 @@ public class StatefulCdnService implements CdnService {
     }
 
     @Override
+    public List<UserCourse> fetchUserCourses() {
+        spaceLock.readLock().lock();
+        try {
+            List<UserCourse> courses = new ArrayList<>();
+            for (CDAEntry entry : this.syncedSpace.entries().values()) {
+                if (ContentTypes.COURSE.supports(entry)) {
+                    courses.add(transformer.toUserCourse(entry));
+                }
+            }
+            return courses;
+        } finally {
+            spaceLock.readLock().unlock();
+        }
+    }
+
+    @Override
     public List<UserQualification> fetchUserQualifications() {
         spaceLock.readLock().lock();
         try {

@@ -47,6 +47,11 @@ public class FakeCdnService implements CdnService {
     }
 
     @Override
+    public List<UserCourse> fetchUserCourses() {
+        return null;
+    }
+
+    @Override
     public List<UserQualification> fetchUserQualifications() {
         return userQualifications;
     }

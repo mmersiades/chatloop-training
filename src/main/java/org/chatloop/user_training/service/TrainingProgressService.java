@@ -12,6 +12,8 @@ public interface TrainingProgressService {
 
     List<UserProgram> fetchUserPrograms();
 
+    List<UserCourse> fetchUserCourses();
+
     UserProgram fetchProgram(String programId);
 
     UserCourse fetchCourse(String courseId);

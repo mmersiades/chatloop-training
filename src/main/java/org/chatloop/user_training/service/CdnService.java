@@ -26,6 +26,9 @@ public interface CdnService {
      */
     List<UserProgram> fetchUserPrograms();
 
+
+    List<UserCourse> fetchUserCourses();
+
     /**
      * Fetches and returns a list of all {@link UserQualification}s from the underlying content database.
      * @return {@link List}

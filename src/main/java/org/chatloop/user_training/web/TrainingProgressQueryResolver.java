@@ -51,4 +51,8 @@ public class TrainingProgressQueryResolver implements GraphQLQueryResolver {
     public UserCourse userCourse(String courseId) {
         return trainingProgressService.fetchCourse(courseId);
     }
+
+    public List<UserCourse> userCourses() {
+        return trainingProgressService.fetchUserCourses();
+    }
 }

@@ -65,6 +65,7 @@ Default only used for now.
     local               - generally used locally
     staging             - when deploying to staging environment in AWS
     production          - enables several production environment settings
+    e2e                 - same as local, but loads test data
 
 ## Deployment
 

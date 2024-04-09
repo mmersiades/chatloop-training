@@ -60,6 +60,19 @@ public class TrainingProgressServiceImpl implements TrainingProgressService {
     }
 
     @Override
+    public List<UserCourse> fetchUserCourses() {
+        String userId = SecurityContextUtils.getUserId();
+        List<UserCourse> userCourses = cdnService.fetchUserCourses();
+        for (UserCourse userCourse : userCourses) {
+            CourseProgress progress = getOrCreateCourseProgressAndModuleProgresses(userId, userCourse);
+            userCourse.calculateDerivedInfo();
+            userCourse.setAttemptLimit(progress);
+            userCourse.setCourseResult(progress.getCourseResult());
+        }
+        return userCourses;
+    }
+
+    @Override
     public UserProgram fetchProgram(String programId) {
         String userId = SecurityContextUtils.getUserId();
 

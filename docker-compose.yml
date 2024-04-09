@@ -22,7 +22,7 @@ services:
     links:
       - db
   db:
-    image: postgres:11.4-alpine
+    image: postgres:15.4-alpine
     ports:
       - 5555:5432
     environment:

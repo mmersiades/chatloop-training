@@ -157,6 +157,19 @@ INSERT INTO public.course_progress VALUES (39901, '3ZIcxNDKl5httULSLUbxjL', 'COU
 INSERT INTO public.course_progress VALUES (40001, '6iNaSQUKLDKyDb6ozknTzH', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '23');
 INSERT INTO public.course_progress VALUES (40101, '7114gOsCRlvK8usn9be2pY', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '23');
 
+INSERT INTO public.course_progress VALUES (40201, '2pwAStILW4umeas65cQB49', 'NO_RESULT_YET', 'master', 'zjf0mnbplhc5', '15');
+INSERT INTO public.course_progress VALUES (40301, '38hd2i94nfzaTMYVbuCDQ1', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '15');
+INSERT INTO public.course_progress VALUES (40401, '3XcUxGwXOe2BPFOqZgBHqj', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '15');
+INSERT INTO public.course_progress VALUES (40501, '3ZIcxNDKl5httULSLUbxjL', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '15');
+INSERT INTO public.course_progress VALUES (40601, '6iNaSQUKLDKyDb6ozknTzH', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '15');
+INSERT INTO public.course_progress VALUES (40701, '7114gOsCRlvK8usn9be2pY', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '15');
+
+INSERT INTO public.course_progress VALUES (40801, '2pwAStILW4umeas65cQB49', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '16');
+INSERT INTO public.course_progress VALUES (40901, '38hd2i94nfzaTMYVbuCDQ1', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '16');
+INSERT INTO public.course_progress VALUES (41001, '3XcUxGwXOe2BPFOqZgBHqj', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '16');
+INSERT INTO public.course_progress VALUES (41101, '3ZIcxNDKl5httULSLUbxjL', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '16');
+INSERT INTO public.course_progress VALUES (41201, '6iNaSQUKLDKyDb6ozknTzH', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '16');
+INSERT INTO public.course_progress VALUES (41301, '7114gOsCRlvK8usn9be2pY', 'COURSE_PASSED', 'master', 'zjf0mnbplhc5', '16');
 
 --
 -- TOC entry 3371 (class 0 OID 16415)
@@ -183,6 +196,7 @@ INSERT INTO public.earned_qualifications VALUES ('100678', 'TopicText=:=Partner'
 INSERT INTO public.earned_qualifications VALUES ('100634', 'TopicText=:=Partner');
 INSERT INTO public.earned_qualifications VALUES ('100679', 'TopicText=:=Partner');
 INSERT INTO public.earned_qualifications VALUES ('23', 'TopicText=:=Partner');
+INSERT INTO public.earned_qualifications VALUES ('15', 'Partner');
 
 
 --
@@ -1942,6 +1956,193 @@ INSERT INTO public.module_progress VALUES (616101, true, 0, '7KPUctNNLSWwRny03Dd
 INSERT INTO public.module_progress VALUES (616201, true, 0, '6xMtLUoNuXhslQqpmQUM1d', 40101);
 INSERT INTO public.module_progress VALUES (616301, true, 0, '5T9GfiwTNSAUCC78gdvcmj', 40101);
 
+-- User 15 - Final TopicText course module is not complete
+INSERT INTO public.module_progress VALUES (616401, true, 0, '5uh4Iv5HvqN24Q5QQZied0', 40201);
+INSERT INTO public.module_progress VALUES (616501, true, 0, '53LIe68t4HbaWkqU9FdD0y', 40201);
+INSERT INTO public.module_progress VALUES (616601, true, 0, '3kKw91nAh98w11RQR1svrY', 40201);
+INSERT INTO public.module_progress VALUES (616701, true, 0, '4iodBLCGGymMOzjMQ2vt0r', 40201);
+-- INSERT INTO public.module_progress VALUES (616801, true, 0, 'h0fQaeIKSZ6tRRsgy4btu', 40201); final TopicText course module
+INSERT INTO public.module_progress VALUES (616901, true, 0, '3Mc33IhjR1maFrkTAuO3G6', 40201);
+INSERT INTO public.module_progress VALUES (617001, true, 0, '32utHGlV7kQLI2wrYK57Ma', 40201);
+INSERT INTO public.module_progress VALUES (617101, true, 0, '6leixNWH6ESVxqiE3RYV1B', 40201);
+INSERT INTO public.module_progress VALUES (617201, true, 0, '2GEmYtit0QJrgfFnDkJten', 40201);
+INSERT INTO public.module_progress VALUES (617301, true, 0, '1DXwV1lP19YWptXNiph8vN', 40301);
+INSERT INTO public.module_progress VALUES (617401, true, 0, '6kng0zvp3caC3wnKOsmSZc', 40301);
+INSERT INTO public.module_progress VALUES (617501, true, 0, '6B9rVfhfy2YVOtZKbQ4Eci', 40301);
+INSERT INTO public.module_progress VALUES (617601, true, 0, '6AnKuoTGE4j3LCG2kDoVKO', 40301);
+INSERT INTO public.module_progress VALUES (617701, true, 0, '78zoADIzblxbJap2Yb7VTG', 40301);
+INSERT INTO public.module_progress VALUES (617801, true, 0, '6QcDrOpWFXKoOfn35xTnMe', 40301);
+INSERT INTO public.module_progress VALUES (617901, true, 0, '3drcmIJhVk6XfoNd0gp3Cf', 40301);
+INSERT INTO public.module_progress VALUES (618001, true, 0, '6LrKMCUhcxwqETeA7GtTKr', 40301);
+INSERT INTO public.module_progress VALUES (618101, true, 0, '5FxDi35WVVUPSaujjqzgPT', 40301);
+INSERT INTO public.module_progress VALUES (618201, true, 0, '6xpH4etEFMwonjAvbVYz9h', 40301);
+INSERT INTO public.module_progress VALUES (618301, true, 0, 'RFKntlE8vrjbX8yIwxIgi', 40301);
+INSERT INTO public.module_progress VALUES (618401, true, 0, '7dUC4F3xGcPZRwgQTHZHqo', 40301);
+INSERT INTO public.module_progress VALUES (618501, true, 0, '2wHPYAcwD4nf8omuGxp8KH', 40301);
+INSERT INTO public.module_progress VALUES (618601, true, 0, 'KgIbOxJiqDSM9IgD877xR', 40301);
+INSERT INTO public.module_progress VALUES (618701, true, 0, '4tsKDMi1AqnWNOyKqHW0mB', 40301);
+INSERT INTO public.module_progress VALUES (618801, true, 0, '2IbIMHZtHZPj3MUMTfgoP3', 40301);
+INSERT INTO public.module_progress VALUES (618901, true, 0, '6NXv5jfFmiTkddvB9tabE1', 40401);
+INSERT INTO public.module_progress VALUES (620001, true, 0, '2PXI5kOIrakluX2eDCE0Ry', 40401);
+INSERT INTO public.module_progress VALUES (620101, true, 0, '562YzYhRFZKTq3q1OMDHJn', 40401);
+INSERT INTO public.module_progress VALUES (620201, true, 0, '67IKM2tAwbznmJAAGumGqY', 40401);
+INSERT INTO public.module_progress VALUES (620301, true, 0, '7EvC4sS8bmYOF9WQeQiqQf', 40401);
+INSERT INTO public.module_progress VALUES (620401, true, 0, '4RG0eH4ADAqFmuToKEkpDQ', 40401);
+INSERT INTO public.module_progress VALUES (620501, true, 0, 'eYylRk257IiI1ZSgy9wHD', 40401);
+INSERT INTO public.module_progress VALUES (620601, true, 0, '5Q5fmeL20RyN3NiXMeA85t', 40401);
+INSERT INTO public.module_progress VALUES (620701, true, 0, '7s6Jk9tqAlDalxpTjCC1Oz', 40401);
+INSERT INTO public.module_progress VALUES (620801, true, 0, '6uwEBczAp0Oo4WJ0l7BOBA', 40401);
+INSERT INTO public.module_progress VALUES (620901, true, 0, '72hb7pRUes9ZCQThnDxn9N', 40401);
+INSERT INTO public.module_progress VALUES (621001, true, 0, '46ha8gKOc0GROeJj6ebmC5', 40401);
+INSERT INTO public.module_progress VALUES (621101, true, 0, '3DLNXtaoO7jO5iEXKEcXuJ', 40401);
+INSERT INTO public.module_progress VALUES (621201, true, 0, '1TDvIl62DPKmAHbCLo395j', 40401);
+INSERT INTO public.module_progress VALUES (621301, true, 0, '2mqQg2yZUv2TC7Glps4Gha', 40401);
+INSERT INTO public.module_progress VALUES (621401, true, 0, '2oO5FTogQ2PdplgXbENv9j', 40501);
+INSERT INTO public.module_progress VALUES (621501, true, 0, '3CJjhh9DHIvQiTZAOsAv0T', 40501);
+INSERT INTO public.module_progress VALUES (621601, true, 0, '5QPfFBE2ipvELK01PV0wQ9', 40501);
+INSERT INTO public.module_progress VALUES (621701, true, 0, '2F0S1XEjCvrq04OtUAnUVH', 40501);
+INSERT INTO public.module_progress VALUES (621801, true, 0, '5lzBhb9leqGwcfwvtufILB', 40501);
+INSERT INTO public.module_progress VALUES (621901, true, 0, '43MaV9VMdIe0NOF2TcxsAh', 40501);
+INSERT INTO public.module_progress VALUES (622001, true, 0, '1SCsXhgLYGiCS1Nm5aQW4K', 40501);
+INSERT INTO public.module_progress VALUES (622101, true, 0, '3Ds91uUttJBiXK5NuYqWie', 40501);
+INSERT INTO public.module_progress VALUES (622201, true, 0, '1qx4SJvfMKzY8m78fLDDor', 40501);
+INSERT INTO public.module_progress VALUES (622301, true, 0, '626Chq3ND2URupWosuDNvi', 40501);
+INSERT INTO public.module_progress VALUES (622401, true, 0, '2L2M3JAiY87saTvLVDZaqT', 40501);
+INSERT INTO public.module_progress VALUES (622501, true, 0, '5ce25wLANnepMse20YpOMx', 40501);
+INSERT INTO public.module_progress VALUES (622601, true, 0, '7K65cy9SrkD0YPA9dmIail', 40501);
+INSERT INTO public.module_progress VALUES (622701, true, 0, '5DUG4rarWhl5ClfieRLprv', 40501);
+INSERT INTO public.module_progress VALUES (622801, true, 0, '3bj01wz21hu0ahM8MZCdnh', 40501);
+INSERT INTO public.module_progress VALUES (622901, true, 0, '5IsTWUJNAyY5w59apIgSSw', 40501);
+INSERT INTO public.module_progress VALUES (623001, true, 0, '3GUFNVS9tfqry7no2J9X2a', 40501);
+INSERT INTO public.module_progress VALUES (623101, true, 0, '2DzbNd9y0pZ8iihgvvQb6Z', 40501);
+INSERT INTO public.module_progress VALUES (623201, true, 0, '1a20oSRtjQdH0eQd53W5KQ', 40501);
+INSERT INTO public.module_progress VALUES (623301, true, 0, '3d7cEpD0sLAHAnjT7nK3mP', 40501);
+INSERT INTO public.module_progress VALUES (623401, true, 0, 'hjVaKfCvOCbOgqWs2sQr0', 40501);
+INSERT INTO public.module_progress VALUES (623501, true, 0, '1DrLmbzR0M8QDALWTvxfrt', 40501);
+INSERT INTO public.module_progress VALUES (623601, true, 0, '6GHnlYZPL21MU7dPkXTVL0', 40501);
+INSERT INTO public.module_progress VALUES (623701, true, 0, '3mC47y1PSSXfMoOLDcRYzf', 40501);
+INSERT INTO public.module_progress VALUES (623801, true, 0, '4BPaXGwMQShQCT5XPJ5jls', 40501);
+INSERT INTO public.module_progress VALUES (623901, true, 0, '4BjISbRDqPuZiJOCW3Z9gU', 40601);
+INSERT INTO public.module_progress VALUES (624001, true, 0, 'piohLDRSwdErxNnzEnwu1', 40601);
+INSERT INTO public.module_progress VALUES (624101, true, 0, 'oBmGSRXRJgjfwiDazlIyf', 40601);
+INSERT INTO public.module_progress VALUES (624201, true, 0, '2rNRau9QbVQAvvtZO1lGrd', 40601);
+INSERT INTO public.module_progress VALUES (624301, true, 0, '7H1tGkvmqVpDouBkhTImR7', 40601);
+INSERT INTO public.module_progress VALUES (624401, true, 0, '6SXKV398wU1MYHL4vk0klq', 40601);
+INSERT INTO public.module_progress VALUES (624501, true, 0, '54cUFHlZFvNeIjklLFQcXg', 40601);
+INSERT INTO public.module_progress VALUES (624601, true, 0, '6DBq16TCnkUhs55oxJSMGJ', 40601);
+INSERT INTO public.module_progress VALUES (624701, true, 0, '6H7wjj6dhApxXeR5eOfI9f', 40601);
+INSERT INTO public.module_progress VALUES (624801, true, 0, '2OSOZiYR3AQcQfEFNPReel', 40601);
+INSERT INTO public.module_progress VALUES (624901, true, 0, '5VDwGT7oMd0AhnpqUI4Ucw', 40601);
+INSERT INTO public.module_progress VALUES (625001, true, 0, '70NliW2SBMiV1J6IkncQnf', 40601);
+INSERT INTO public.module_progress VALUES (625101, true, 0, '72ExGAgBeyfKPpy37WbKVV', 40601);
+INSERT INTO public.module_progress VALUES (625201, true, 0, '5t7eI25WIoCBsVk4lm4ZKJ', 40601);
+INSERT INTO public.module_progress VALUES (625301, true, 0, '6fIOUG6aWcBVRQtlDdZlu1', 40601);
+INSERT INTO public.module_progress VALUES (625401, true, 0, '2LlqMVPvVLpS7zg5891ju5', 40601);
+INSERT INTO public.module_progress VALUES (625501, true, 0, '6CgtgF0EYqhOB48yUoEhlO', 40601);
+INSERT INTO public.module_progress VALUES (625601, true, 0, '3EGHEPgAdIUtXlIBWuQrBI', 40701);
+INSERT INTO public.module_progress VALUES (625701, true, 0, '18WRxxUxQo93unZj2uQHdk', 40701);
+INSERT INTO public.module_progress VALUES (625801, true, 0, '5zr976xIbo3syYHRvKLcZA', 40701);
+INSERT INTO public.module_progress VALUES (625901, true, 0, '3N6wk4d39fPB6cPRdtsFML', 40701);
+INSERT INTO public.module_progress VALUES (626001, true, 0, '4EBOMlHxk5JruLpss9wHiD', 40701);
+INSERT INTO public.module_progress VALUES (626101, true, 0, '3ISMtOaa0aDaBHhoTwqtgh', 40701);
+INSERT INTO public.module_progress VALUES (626201, true, 0, '6VJqeBnqwJP0mlX8xSyKp3', 40701);
+INSERT INTO public.module_progress VALUES (626301, true, 0, '7KPUctNNLSWwRny03Dd5VD', 40701);
+INSERT INTO public.module_progress VALUES (626401, true, 0, '6xMtLUoNuXhslQqpmQUM1d', 40701);
+INSERT INTO public.module_progress VALUES (626501, true, 0, '5T9GfiwTNSAUCC78gdvcmj', 40701);
+
+-- User 16
+INSERT INTO public.module_progress VALUES (626601, true, 0, '5uh4Iv5HvqN24Q5QQZied0', 40801);
+INSERT INTO public.module_progress VALUES (626701, true, 0, '53LIe68t4HbaWkqU9FdD0y', 40801);
+INSERT INTO public.module_progress VALUES (626801, true, 0, '3kKw91nAh98w11RQR1svrY', 40801);
+INSERT INTO public.module_progress VALUES (626901, true, 0, '4iodBLCGGymMOzjMQ2vt0r', 40801);
+INSERT INTO public.module_progress VALUES (627001, true, 0, 'h0fQaeIKSZ6tRRsgy4btu', 40801);
+INSERT INTO public.module_progress VALUES (627101, true, 0, '3Mc33IhjR1maFrkTAuO3G6', 40801);
+INSERT INTO public.module_progress VALUES (627201, true, 0, '32utHGlV7kQLI2wrYK57Ma', 40801);
+INSERT INTO public.module_progress VALUES (627301, true, 0, '6leixNWH6ESVxqiE3RYV1B', 40801);
+INSERT INTO public.module_progress VALUES (627401, true, 0, '2GEmYtit0QJrgfFnDkJten', 40801);
+INSERT INTO public.module_progress VALUES (627501, true, 0, '1DXwV1lP19YWptXNiph8vN', 40901);
+INSERT INTO public.module_progress VALUES (627601, true, 0, '6kng0zvp3caC3wnKOsmSZc', 40901);
+INSERT INTO public.module_progress VALUES (627801, true, 0, '6B9rVfhfy2YVOtZKbQ4Eci', 40901);
+INSERT INTO public.module_progress VALUES (627901, true, 0, '6AnKuoTGE4j3LCG2kDoVKO', 40901);
+INSERT INTO public.module_progress VALUES (628001, true, 0, '78zoADIzblxbJap2Yb7VTG', 40901);
+INSERT INTO public.module_progress VALUES (628101, true, 0, '6QcDrOpWFXKoOfn35xTnMe', 40901);
+INSERT INTO public.module_progress VALUES (628201, true, 0, '3drcmIJhVk6XfoNd0gp3Cf', 40901);
+INSERT INTO public.module_progress VALUES (628301, true, 0, '6LrKMCUhcxwqETeA7GtTKr', 40901);
+INSERT INTO public.module_progress VALUES (628401, true, 0, '5FxDi35WVVUPSaujjqzgPT', 40901);
+INSERT INTO public.module_progress VALUES (628501, true, 0, '6xpH4etEFMwonjAvbVYz9h', 40901);
+INSERT INTO public.module_progress VALUES (628601, true, 0, 'RFKntlE8vrjbX8yIwxIgi', 40901);
+INSERT INTO public.module_progress VALUES (628701, true, 0, '7dUC4F3xGcPZRwgQTHZHqo', 40901);
+INSERT INTO public.module_progress VALUES (628801, true, 0, '2wHPYAcwD4nf8omuGxp8KH', 40901);
+INSERT INTO public.module_progress VALUES (628901, true, 0, 'KgIbOxJiqDSM9IgD877xR', 40901);
+INSERT INTO public.module_progress VALUES (629001, true, 0, '4tsKDMi1AqnWNOyKqHW0mB', 40901);
+INSERT INTO public.module_progress VALUES (629101, true, 0, '2IbIMHZtHZPj3MUMTfgoP3', 40901);
+INSERT INTO public.module_progress VALUES (629201, true, 0, '6NXv5jfFmiTkddvB9tabE1', 41001);
+INSERT INTO public.module_progress VALUES (629301, true, 0, '2PXI5kOIrakluX2eDCE0Ry', 41001);
+INSERT INTO public.module_progress VALUES (629401, true, 0, '562YzYhRFZKTq3q1OMDHJn', 41001);
+INSERT INTO public.module_progress VALUES (629501, true, 0, '67IKM2tAwbznmJAAGumGqY', 41001);
+INSERT INTO public.module_progress VALUES (629601, true, 0, '7EvC4sS8bmYOF9WQeQiqQf', 41001);
+INSERT INTO public.module_progress VALUES (629701, true, 0, '4RG0eH4ADAqFmuToKEkpDQ', 41001);
+INSERT INTO public.module_progress VALUES (629801, true, 0, 'eYylRk257IiI1ZSgy9wHD', 41001);
+INSERT INTO public.module_progress VALUES (629901, true, 0, '5Q5fmeL20RyN3NiXMeA85t', 41001);
+INSERT INTO public.module_progress VALUES (630001, true, 0, '7s6Jk9tqAlDalxpTjCC1Oz', 41001);
+INSERT INTO public.module_progress VALUES (630101, true, 0, '6uwEBczAp0Oo4WJ0l7BOBA', 41001);
+INSERT INTO public.module_progress VALUES (630201, true, 0, '72hb7pRUes9ZCQThnDxn9N', 41001);
+INSERT INTO public.module_progress VALUES (630301, true, 0, '46ha8gKOc0GROeJj6ebmC5', 41001);
+INSERT INTO public.module_progress VALUES (630401, true, 0, '3DLNXtaoO7jO5iEXKEcXuJ', 41001);
+INSERT INTO public.module_progress VALUES (630501, true, 0, '1TDvIl62DPKmAHbCLo395j', 41001);
+INSERT INTO public.module_progress VALUES (630601, true, 0, '2mqQg2yZUv2TC7Glps4Gha', 41001);
+INSERT INTO public.module_progress VALUES (630701, true, 0, '2oO5FTogQ2PdplgXbENv9j', 41101);
+INSERT INTO public.module_progress VALUES (630801, true, 0, '3CJjhh9DHIvQiTZAOsAv0T', 41101);
+INSERT INTO public.module_progress VALUES (630901, true, 0, '5QPfFBE2ipvELK01PV0wQ9', 41101);
+INSERT INTO public.module_progress VALUES (631001, true, 0, '2F0S1XEjCvrq04OtUAnUVH', 41101);
+INSERT INTO public.module_progress VALUES (631101, true, 0, '5lzBhb9leqGwcfwvtufILB', 41101);
+INSERT INTO public.module_progress VALUES (631201, true, 0, '43MaV9VMdIe0NOF2TcxsAh', 41101);
+INSERT INTO public.module_progress VALUES (631301, true, 0, '1SCsXhgLYGiCS1Nm5aQW4K', 41101);
+INSERT INTO public.module_progress VALUES (631401, true, 0, '3Ds91uUttJBiXK5NuYqWie', 41101);
+INSERT INTO public.module_progress VALUES (631501, true, 0, '1qx4SJvfMKzY8m78fLDDor', 41101);
+INSERT INTO public.module_progress VALUES (631601, true, 0, '626Chq3ND2URupWosuDNvi', 41101);
+INSERT INTO public.module_progress VALUES (631701, true, 0, '2L2M3JAiY87saTvLVDZaqT', 41101);
+INSERT INTO public.module_progress VALUES (631801, true, 0, '5ce25wLANnepMse20YpOMx', 41101);
+INSERT INTO public.module_progress VALUES (631901, true, 0, '7K65cy9SrkD0YPA9dmIail', 41101);
+INSERT INTO public.module_progress VALUES (632001, true, 0, '5DUG4rarWhl5ClfieRLprv', 41101);
+INSERT INTO public.module_progress VALUES (632101, true, 0, '3bj01wz21hu0ahM8MZCdnh', 41101);
+INSERT INTO public.module_progress VALUES (632201, true, 0, '5IsTWUJNAyY5w59apIgSSw', 41101);
+INSERT INTO public.module_progress VALUES (632301, true, 0, '3GUFNVS9tfqry7no2J9X2a', 41101);
+INSERT INTO public.module_progress VALUES (632401, true, 0, '2DzbNd9y0pZ8iihgvvQb6Z', 41101);
+INSERT INTO public.module_progress VALUES (632501, true, 0, '1a20oSRtjQdH0eQd53W5KQ', 41101);
+INSERT INTO public.module_progress VALUES (632601, true, 0, '3d7cEpD0sLAHAnjT7nK3mP', 41101);
+INSERT INTO public.module_progress VALUES (632701, true, 0, 'hjVaKfCvOCbOgqWs2sQr0', 41101);
+INSERT INTO public.module_progress VALUES (632801, true, 0, '1DrLmbzR0M8QDALWTvxfrt', 41101);
+INSERT INTO public.module_progress VALUES (632901, true, 0, '6GHnlYZPL21MU7dPkXTVL0', 41101);
+INSERT INTO public.module_progress VALUES (633001, true, 0, '3mC47y1PSSXfMoOLDcRYzf', 41101);
+INSERT INTO public.module_progress VALUES (633101, true, 0, '4BPaXGwMQShQCT5XPJ5jls', 41101);
+INSERT INTO public.module_progress VALUES (633201, true, 0, '4BjISbRDqPuZiJOCW3Z9gU', 41201);
+INSERT INTO public.module_progress VALUES (633301, true, 0, 'piohLDRSwdErxNnzEnwu1', 41201);
+INSERT INTO public.module_progress VALUES (633401, true, 0, 'oBmGSRXRJgjfwiDazlIyf', 41201);
+INSERT INTO public.module_progress VALUES (633501, true, 0, '2rNRau9QbVQAvvtZO1lGrd', 41201);
+INSERT INTO public.module_progress VALUES (633601, true, 0, '7H1tGkvmqVpDouBkhTImR7', 41201);
+INSERT INTO public.module_progress VALUES (633701, true, 0, '6SXKV398wU1MYHL4vk0klq', 41201);
+INSERT INTO public.module_progress VALUES (633801, true, 0, '54cUFHlZFvNeIjklLFQcXg', 41201);
+INSERT INTO public.module_progress VALUES (633901, true, 0, '6DBq16TCnkUhs55oxJSMGJ', 41201);
+INSERT INTO public.module_progress VALUES (634001, true, 0, '6H7wjj6dhApxXeR5eOfI9f', 41201);
+INSERT INTO public.module_progress VALUES (634101, true, 0, '2OSOZiYR3AQcQfEFNPReel', 41201);
+INSERT INTO public.module_progress VALUES (634201, true, 0, '5VDwGT7oMd0AhnpqUI4Ucw', 41201);
+INSERT INTO public.module_progress VALUES (634301, true, 0, '70NliW2SBMiV1J6IkncQnf', 41201);
+INSERT INTO public.module_progress VALUES (634401, true, 0, '72ExGAgBeyfKPpy37WbKVV', 41201);
+INSERT INTO public.module_progress VALUES (634501, true, 0, '5t7eI25WIoCBsVk4lm4ZKJ', 41201);
+INSERT INTO public.module_progress VALUES (634601, true, 0, '6fIOUG6aWcBVRQtlDdZlu1', 41201);
+INSERT INTO public.module_progress VALUES (634701, true, 0, '2LlqMVPvVLpS7zg5891ju5', 41201);
+INSERT INTO public.module_progress VALUES (634801, true, 0, '6CgtgF0EYqhOB48yUoEhlO', 41201);
+INSERT INTO public.module_progress VALUES (634901, true, 0, '3EGHEPgAdIUtXlIBWuQrBI', 41301);
+INSERT INTO public.module_progress VALUES (635001, true, 0, '18WRxxUxQo93unZj2uQHdk', 41301);
+INSERT INTO public.module_progress VALUES (635101, true, 0, '5zr976xIbo3syYHRvKLcZA', 41301);
+INSERT INTO public.module_progress VALUES (635201, true, 0, '3N6wk4d39fPB6cPRdtsFML', 41301);
+INSERT INTO public.module_progress VALUES (635301, true, 0, '4EBOMlHxk5JruLpss9wHiD', 41301);
+INSERT INTO public.module_progress VALUES (635401, true, 0, '3ISMtOaa0aDaBHhoTwqtgh', 41301);
+INSERT INTO public.module_progress VALUES (635501, true, 0, '6VJqeBnqwJP0mlX8xSyKp3', 41301);
+INSERT INTO public.module_progress VALUES (635601, true, 0, '7KPUctNNLSWwRny03Dd5VD', 41301);
+INSERT INTO public.module_progress VALUES (635701, true, 0, '6xMtLUoNuXhslQqpmQUM1d', 41301);
+INSERT INTO public.module_progress VALUES (635801, true, 0, '5T9GfiwTNSAUCC78gdvcmj', 41301);
 
 --
 -- TOC entry 3369 (class 0 OID 16399)
@@ -1957,7 +2158,7 @@ INSERT INTO public.module_progress VALUES (616301, true, 0, '5T9GfiwTNSAUCC78gdv
 -- Name: course_progress_sequence_gen; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.course_progress_sequence_gen', 40201, true);
+SELECT pg_catalog.setval('public.course_progress_sequence_gen', 41401, true);
 
 
 --
@@ -1966,7 +2167,7 @@ SELECT pg_catalog.setval('public.course_progress_sequence_gen', 40201, true);
 -- Name: module_progress_sequence_gen; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.module_progress_sequence_gen', 616401, true);
+SELECT pg_catalog.setval('public.module_progress_sequence_gen', 635901, true);
 
 
 --

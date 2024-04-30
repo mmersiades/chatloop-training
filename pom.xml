@@ -197,7 +197,7 @@
                     <containerNamePattern>%a-%i</containerNamePattern>
                     <images>
                         <image>
-                            <name>postgres:15-alpine</name>
+                            <name>postgres:15.4-alpine</name>
                             <alias>cut-postgres</alias>
                             <run>
                                 <!-- see their data-jolokia example for more details -->
@@ -215,16 +215,16 @@
                                 </wait>
                             </run>
                         </image>
-<!--                        <image>-->
-<!--                            <name>neonkingkong/chatloop-user-training</name>-->
-<!--                            <build>-->
-<!--                                <contextDir>${project.basedir}</contextDir>-->
-<!--                                <args>-->
-<!--                                    <JAR_FILE>target/${project.build.finalName}.jar-->
-<!--                                    </JAR_FILE>-->
-<!--                                </args>-->
-<!--                            </build>-->
-<!--                        </image>-->
+                        <image>
+                            <name>neonkingkong/chatloop-user-training</name>
+                            <build>
+                                <contextDir>${project.basedir}</contextDir>
+                                <args>
+                                    <JAR_FILE>target/${project.build.finalName}.jar
+                                    </JAR_FILE>
+                                </args>
+                            </build>
+                        </image>
                     </images>
                     <skip>${skipTests}</skip>
                 </configuration>

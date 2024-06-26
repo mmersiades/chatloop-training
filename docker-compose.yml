@@ -17,6 +17,9 @@ services:
       - RDS_DB_NAME=${RDS_DB_NAME}
       - RDS_USERNAME=${RDS_USERNAME}
       - RDS_PASSWORD=${RDS_PASSWORD}
+      - MONOLITH_REST_ENDPOINT=${MONOLITH_REST_ENDPOINT}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     build:
       context: .
     links:

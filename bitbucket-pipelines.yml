@@ -58,13 +58,11 @@ pipelines:
             - export AWS_DEFAULT_REGION=ap-southeast-2
             - aws configure list
             - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com
-            - ls -l application/
             - ./mvnw clean package -DskipTests --batch-mode
-            - ls -l application/
             - docker build -t 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest .
             - docker tag 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
             - docker tag 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
-            - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloo-user-training-staging:latest
+            - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
             - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
           variables:
             - AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID

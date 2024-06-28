@@ -40,22 +40,34 @@ pipelines:
 
     # Deploy to staging environment (no tests run)
     deploy_staging:
-      - step: *build_without_testing
       - step: &deploy_staging
-              name: Deploy to Staging
-              deployment: staging
-              script:
-                - pipe: atlassian/aws-elasticbeanstalk-deploy:0.3.1
-                  variables:
-                    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                    AWS_DEFAULT_REGION: ap-southeast-2
-                    APPLICATION_NAME: neonkingkong
-                    ENVIRONMENT_NAME: staging-user-training
-                    S3_BUCKET: elasticbeanstalk-ap-southeast-2-640879528632
-                    ZIP_FILE: target/chatloop-training-elastic-beanstalk.zip
-                    VERSION_LABEL: deploy-staging-user-training-$BITBUCKET_BUILD_NUMBER
-                    DEBUG: "true"
+          services:
+            - docker
+          caches:
+            - docker
+            - maven
+          script:
+            - apt-get update
+            - apt-get install -y unzip
+            - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            - unzip awscliv2.zip
+            - ./aws/install
+            - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            - export AWS_DEFAULT_REGION=ap-southeast-2
+            - aws configure list
+            - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com
+            - ls -l application/
+            - ./mvnw clean package -DskipTests --batch-mode
+            - ls -l application/
+            - docker build -t 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest .
+            - docker tag 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
+            - docker tag 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
+            - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloo-user-training-staging:latest
+            - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
+          variables:
+            - AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            - AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
 
     # Deploy to production environment (no tests run), with manual trigger in BitBucket Pipeline browser interface
     deploy_production:
@@ -79,7 +91,8 @@ pipelines:
 
   # All branches get built and tested
   default:
-    - step: *build
+    # - step: *build
+    - step: *deploy_staging
 
   branches:
     # Tests all commits to master

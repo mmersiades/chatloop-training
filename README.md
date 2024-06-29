@@ -18,7 +18,7 @@ This data is then available for the front-end to request via a graphql endpoint.
 ## Spring Profiles
 
 This app can run with 4 spring profiles.
-These profiles are set by the SPRING_ACTIVE_PROFILE environment variable.
+These profiles are set by the SPRING_PROFILES_ACTIVE environment variable.
 
 |      Profile       |                                        Purpose                                        | 
 |:------------------:|:-------------------------------------------------------------------------------------:|

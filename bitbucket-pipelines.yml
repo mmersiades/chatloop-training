@@ -98,6 +98,6 @@ pipelines:
     master:
       - step: *build
       # Deploys all commits to master automatically to the staging environment
-#      - step: *deploy_staging
+      - step: *deploy_staging
       # Prepares all commits to master for manual deployment to production environment via the pipeline interface on BitBucket
       - step: *deploy_production

@@ -6,8 +6,8 @@ options:
 pipelines:
   custom:
     # Build the app and run tests
-    build:
-      - step: &build
+    test:
+      - step: &test
           name: Build and Test
           caches:
             - docker
@@ -23,9 +23,9 @@ pipelines:
           services:
             - docker
 
-    # Package the app (no tests)
-    build_without_testing:
-      - step: &build_without_testing
+    # Package the app (no tests), producing .zip file
+    build_production:
+      - step: &build_production
           name: Build
           caches:
             - docker
@@ -70,7 +70,7 @@ pipelines:
 
     # Deploy to production environment (no tests run), with manual trigger in BitBucket Pipeline browser interface
     deploy_production:
-      - step: *build_without_testing
+      - step: *build_production
       - step: &deploy_production
           name: Deploy to Production
           deployment: production
@@ -90,13 +90,12 @@ pipelines:
 
   # All branches get built and tested
   default:
-    # - step: *build
-    - step: *deploy_staging
+     - step: *test
 
   branches:
     # Tests all commits to master
     master:
-      - step: *build
+      - step: *test
       # Deploys all commits to master automatically to the staging environment
       - step: *deploy_staging
       # Prepares all commits to master for manual deployment to production environment via the pipeline interface on BitBucket

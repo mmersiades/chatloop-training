@@ -66,7 +66,9 @@ Note that the app also fetches a JWT from AWS Secrets Manager. It is used for ma
 
 ## Development
 
-### Running the App in IDE
+### Running the app
+
+#### Running the App in IDE
 
 For app development, it is recommended to run the app in the IDE, rather than in a Docker container (see Local
 Deployment Test below).
@@ -121,6 +123,14 @@ are two alternative ways to set the token:
 - installing the `aws-cli` on your local computer and not setting the `JWT_MONOLITH_REST` envionment variable, in
   which \
   case the microservice on startup will fetch a token from `Secrets Manager` in AWS
+
+#### Running the app using Docker (docker-compose.yaml)
+
+[//]: # (TODO)
+
+#### Running the app using `chatloop-network`
+
+[//]: # (TODO: &#40;for local e2e testing or local front-end development&#41;)
 
 ### Tests
 

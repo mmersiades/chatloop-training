@@ -41,6 +41,7 @@ pipelines:
     # Deploy to staging environment (no tests run)
     deploy_staging:
       - step: &deploy_staging
+          name: Deploy staging to ECR
           services:
             - docker
           caches:
@@ -72,7 +73,7 @@ pipelines:
     deploy_production:
       - step: *build_production
       - step: &deploy_production
-          name: Deploy to Production
+          name: Deploy .zip to production
           deployment: production
           trigger: manual
           script:

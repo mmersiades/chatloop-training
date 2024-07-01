@@ -42,7 +42,7 @@ public class AWSApplicationSecretsServiceImpl implements ApplicationSecretsServi
             String secretsName;
             if ("production".equals(environment)) {
                 secretsName = "chatloop-training-production-microservice-secrets";
-            } else if ("staging".equals(environment)) {
+            } else if ("staging".equals(environment) || "e2e".equals(environment)) {
                 secretsName = "chatloop-training-staging-microservice-secrets";
             } else {
                 secretsName = "chatloop-training-local-microservice-secrets";

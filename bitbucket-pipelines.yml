@@ -8,7 +8,7 @@ pipelines:
     # Build the app and run tests
     test:
       - step: &test
-          name: Build and Test
+          name: Run tests
           caches:
             - docker
             - maven
@@ -26,7 +26,7 @@ pipelines:
     # Package the app (no tests), producing .zip file
     build_production:
       - step: &build_production
-          name: Build
+          name: Build prod
           caches:
             - docker
             - maven
@@ -58,13 +58,13 @@ pipelines:
             - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
             - export AWS_DEFAULT_REGION=ap-southeast-2
             - aws configure list
-            - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com
+            - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com
             - ./mvnw clean package -DskipTests --batch-mode
-            - docker build -t 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest .
-            - docker tag 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
-            - docker tag 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
-            - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
-            - docker push 640879528632.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
+            - docker build -t 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest .
+            - docker tag 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
+            - docker tag 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
+            - docker push 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-staging:latest
+            - docker push 891377207095.dkr.ecr.ap-southeast-2.amazonaws.com/chatloop-user-training-e2e:latest
           variables:
             - AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
             - AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
@@ -73,7 +73,7 @@ pipelines:
     deploy_production:
       - step: *build_production
       - step: &deploy_production
-          name: Deploy .zip to production
+          name: Deploy prod to EB
           deployment: production
           trigger: manual
           script:

@@ -83,7 +83,7 @@ pipelines:
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: ap-southeast-2
                 APPLICATION_NAME: chatloop-production
-                ENVIRONMENT_NAME: chatloop-production-user-training
+                ENVIRONMENT_NAME: chatloop-production-usertraining
                 S3_BUCKET: elasticbeanstalk-ap-southeast-2-891377207095
                 ZIP_FILE: target/chatloop-training-elastic-beanstalk.zip
                 VERSION_LABEL: deploy-production-user-training-$BITBUCKET_BUILD_NUMBER

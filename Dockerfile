@@ -1,4 +1,5 @@
-FROM openjdk:11-slim
+FROM eclipse-temurin:11
+
 EXPOSE 8888
 
 ARG JAR_FILE=target/chatloop-training-*[^o].jar

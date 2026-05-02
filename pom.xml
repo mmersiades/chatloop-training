@@ -181,7 +181,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
+                            <version>1.18.30</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -190,14 +190,14 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.43.4</version>
+                <version>0.48.1</version>
                 <configuration>
                     <verbose>true</verbose>
                     <showLogs>true</showLogs>
                     <containerNamePattern>%a-%i</containerNamePattern>
                     <images>
                         <image>
-                            <name>postgres:15.4-alpine</name>
+                            <name>postgres:17.9-alpine</name>
                             <alias>cut-postgres</alias>
                             <run>
                                 <!-- see their data-jolokia example for more details -->

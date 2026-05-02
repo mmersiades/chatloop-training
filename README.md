@@ -135,8 +135,7 @@ are two alternative ways to set the token:
 ### Tests
 
 Tests require postgres database, which can be started with `mvn docker:start`. We intentionally always use postgres for
-more realistic
-testing rather than using embedded H2 database.
+more realistic testing rather than using embedded H2 database.
 
 To run all tests from command line execute `mvn clean test`. It will also perform checkstyle verification.
 
@@ -154,28 +153,25 @@ Default only used for now.
 ### Local Deployment Test
 
 Before deploying remotely, full stack docker deploy should be tested locally. `.env` file contains all environment
-variables, some of which
-need to be changed, such as Contentful parameters or JWT secret if they are different from default.
+variables, some of which need to be changed, such as Contentful parameters or JWT secret if they are different from
+default.
 
 First ensure all our docker containers are down (our app, our postgres and our pgadmin), and app is not running in IDE
-either, to avoid
-port conflicts.
+either, to avoid port conflicts.
 
 Next `mvn clean package -Dmaven.test.skip=true`, which builds and packages new docker image of app. You can verify that
-new image is
-built via `docker images`.
+new image is built via `docker images`.
 
 Next, execute `docker-compose --env-file ./.env up`. This will boot docker containers for our app, postgres and pgadmin.
 
 They expose the 8888 web port, the 5555 postgres port and 29000 pgadmin port (`http://localhost:29000/browser/`), all of
-which should be accessible
-on the host machine. To shut down all containers, pressing Ctrl+C should do the trick.
+which should be accessible on the host machine. To shut down all containers, pressing Ctrl+C should do the trick.
 
 You can stop & remove ALL containers and networks with `./scripts/docker_reset.sh`. Optional, and use with care.
 
 If there are port conflict related errors or warnings, it probably means some prior container was not shut down (
-properly) and
-clean it first before retrying. Or, if unable to connect type of errors are seen, then some containers are not started.
+properly) and clean it first before retrying. Or, if unable to connect type of errors are seen, then some containers are
+not started.
 
 ### Manual AWS Deployment
 

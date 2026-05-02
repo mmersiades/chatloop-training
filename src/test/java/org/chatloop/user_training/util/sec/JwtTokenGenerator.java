@@ -31,7 +31,7 @@ public class JwtTokenGenerator {
                     .withIssuer(issuer)
                     .withSubject(subject)
                     .withClaim("user_id", 123) // needed
-                    .withExpiresAt(new GregorianCalendar(2025, Calendar.JANUARY, 1).getTime())
+                    .withExpiresAt(new GregorianCalendar(2050, Calendar.JANUARY, 1).getTime())
                     .sign(algorithm);
 
             System.out.println(subject);
